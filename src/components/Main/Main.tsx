@@ -16,13 +16,26 @@ import { useCallback } from 'react';
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
-    const { pages } = useAppSelector((state) => state.list)
+    const { pages, id } = useAppSelector((state) => state.list)
     const dispatch = useAppDispatch()
 
     const saveToFile = useCallback(() => {
         // create file in browser
         const fileName = "random";
-        const json = JSON.stringify({ pages: pages }, null, 2);
+
+        /**Обновляем в массиве текущую страницу */
+        const pagesToSave = pages.map(page => {
+            if (page.id === id) {
+                return {
+                    ...page,
+                    nodes: nodes,
+                    edges: edges
+                }
+            }
+            return page
+        })
+
+        const json = JSON.stringify({ pages: pagesToSave }, null, 2);
         const blob = new Blob([json], { type: "application/json" });
         const href = URL.createObjectURL(blob);
 
@@ -36,7 +49,7 @@ function Main() {
         // clean up "a" element & remove ObjectURL
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
-    }, [pages])
+    }, [pages, nodes, edges])
 
     return (
         <div style={{ height: '100vh', width: '100vw' }}>
