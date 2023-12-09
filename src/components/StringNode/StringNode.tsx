@@ -30,20 +30,8 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
         }
     }, [data.value])
 
-    useEffect(() => {
-        const handleClickOutside = (event: any) => {
-            if (isDoubleClick && ref.current && !ref.current.contains(event.target)) {
-                setIsDoubleClick(false)
-            }
-        }
-        document.addEventListener('click', handleClickOutside)
-        return () => {
-            document.removeEventListener('click', handleClickOutside)
-        }
-    });
-
     return (
-        <NodeWrapper onDoubleClick={handleDoubleClick}>
+        <NodeWrapper onDoubleClick={handleDoubleClick} isDoubleClick={isDoubleClick} setIsDoubleClick={setIsDoubleClick}>
             <Handle
                 type="target"
                 position={Position.Left}
