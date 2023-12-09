@@ -15,7 +15,7 @@ function Main() {
     const dispatch = useAppDispatch()
 
     return (
-        <div style={{ height: '100vh', width: '100vw' }}>
+        <div style={{ height: '97vh', width: '100vw' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -27,6 +27,10 @@ function Main() {
                 <Background />
                 <Controls />
             </ReactFlow>
+            <div style={{width: '100vw', height: '30px', backgroundColor: 'red', display: 'flex', zIndex: 100, position: 'absolute'}}>
+                <div>1</div>
+                <div>2</div>
+            </div>
         </div>
     );
 }
