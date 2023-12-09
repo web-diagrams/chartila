@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Connection, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges, addEdge } from 'reactflow';
-import {FlowState} from "@/features/flow/interface";
+import { FlowState } from './interface';
 
 const initialNodes: Node[] = [
     {
