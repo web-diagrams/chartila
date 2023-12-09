@@ -7,10 +7,10 @@ import ReactFlow, {
     EdgeChange,
     Connection,
 } from 'reactflow';
-import { onNodesChange, onEdgesChange, onConnect } from './features/flow/flowSlice';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { onNodesChange, onEdgesChange, onConnect } from '@/features/flow/flowSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
-function Flow() {
+function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
     const dispatch = useAppDispatch()
 
@@ -31,4 +31,4 @@ function Flow() {
     );
 }
 
-export default Flow;
+export default Main;
