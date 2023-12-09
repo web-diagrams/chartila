@@ -1,0 +1,11 @@
+.list_item {
+    display: flex;
+    justify-content: center;
+    padding: 6px;
+    margin-top: 5px;
+    border-radius: 8px;
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
