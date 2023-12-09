@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {memo, useEffect, useRef, useState} from 'react';
 import styles from './styles.module.scss';
 import ListItem from "@/components/Lists/components/ListItem/ListItem";
 import {useAppSelector} from "@/app/hooks";
@@ -16,7 +16,7 @@ const items = [
         name: 'List 3',
     }
 ]
-const Lists = () => {
+const Lists = memo(() => {
     const { id } = useAppSelector((state) => state.list);
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
@@ -31,7 +31,6 @@ const Lists = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     })
-    console.log(isOpen)
     return (
         <div className={styles.lists_container}>
             <div ref={ref}>
@@ -42,6 +41,6 @@ const Lists = () => {
             </div>
         </div>
     );
-};
+});
 
 export default Lists;
