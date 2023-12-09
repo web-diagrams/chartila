@@ -9,11 +9,8 @@ import ReactFlow, {
 } from 'reactflow';
 import { onNodesChange, onEdgesChange, onConnect, flowActions } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-<<<<<<< HEAD
-import { NodeTypes } from './interface';
-=======
 import Lists from "@/components/Lists/Lists";
->>>>>>> 79c4eae78ef2ff24c87141742e4bea517773f6f4
+import { NodeTypes } from './interface';
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
@@ -21,7 +18,7 @@ function Main() {
 
     return (
         <div style={{ height: '100vh', width: '100vw' }}>
-            <div style={{ position: 'fixed', top: '15px', right: '15px', zIndex: '111' }}>
+            <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
                 <button onClick={() => dispatch(flowActions.onAddNode({ type: 'stringNode' }))}>Добавить текстовый инпут</button>
             </div>
             <ReactFlow
