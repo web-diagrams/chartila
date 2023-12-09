@@ -20,6 +20,7 @@ function Main() {
         <div style={{ height: '100vh', width: '100vw' }}>
             <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
                 <button onClick={() => dispatch(flowActions.onAddNode({ type: 'stringNode' }))}>Добавить текстовый инпут</button>
+                <button onClick={() => dispatch(flowActions.onAddNode({ type: 'codeNode' }))}>Добавить инпут под код</button>
             </div>
             <ReactFlow
                 nodes={nodes}
