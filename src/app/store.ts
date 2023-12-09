@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import flowReducer from '../features/flow/flowSlice'
+import flowReducer from '../redux/flowSlice/flowSlice'
 
 export const store = configureStore({
     reducer: {

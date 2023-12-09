@@ -7,7 +7,7 @@ import ReactFlow, {
     EdgeChange,
     Connection,
 } from 'reactflow';
-import { onNodesChange, onEdgesChange, onConnect } from '@/features/flow/flowSlice';
+import { onNodesChange, onEdgesChange, onConnect } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 function Main() {
