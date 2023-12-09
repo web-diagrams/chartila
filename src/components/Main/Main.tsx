@@ -9,13 +9,14 @@ import ReactFlow, {
 } from 'reactflow';
 import { onNodesChange, onEdgesChange, onConnect } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import Lists from "@/components/Lists/Lists";
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
     const dispatch = useAppDispatch()
 
     return (
-        <div style={{ height: '97vh', width: '100vw' }}>
+        <div style={{ height: '100vh', width: '100vw' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -27,10 +28,7 @@ function Main() {
                 <Background />
                 <Controls />
             </ReactFlow>
-            <div style={{width: '100vw', height: '30px', backgroundColor: 'red', display: 'flex', zIndex: 100, position: 'absolute'}}>
-                <div>1</div>
-                <div>2</div>
-            </div>
+            <Lists />
         </div>
     );
 }
