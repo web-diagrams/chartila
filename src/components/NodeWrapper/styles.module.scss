@@ -1,0 +1,19 @@
+.node_wrapper_container {
+  background-color: white;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding: 10px;
+  position: relative;
+  width: 150px;
+  height: max-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node_wrapper_children_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}

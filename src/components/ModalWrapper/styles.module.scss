@@ -1,12 +1,18 @@
 .modal_wrapper_container {
     position: absolute;
-    top: -25px;
-    width: 100%;
-    margin-bottom: 20px;
+    top: -30px;
+    right: 0;
+    width: max-content;
     border-radius: 3px;
     background-color: white;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.icon_container {
+    margin: 3px 5px 0 5px;
+    &:hover {
+        cursor: pointer;
+    }
 }
