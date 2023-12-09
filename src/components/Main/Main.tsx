@@ -9,7 +9,11 @@ import ReactFlow, {
 } from 'reactflow';
 import { onNodesChange, onEdgesChange, onConnect, flowActions } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+<<<<<<< HEAD
 import { NodeTypes } from './interface';
+=======
+import Lists from "@/components/Lists/Lists";
+>>>>>>> 79c4eae78ef2ff24c87141742e4bea517773f6f4
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
@@ -32,6 +36,7 @@ function Main() {
                 <Background />
                 <Controls />
             </ReactFlow>
+            <Lists />
         </div>
     );
 }
