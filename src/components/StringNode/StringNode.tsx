@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, {ChangeEvent, FC, memo, useCallback, useEffect, useRef, useState} from 'react';
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import { IStringNode } from '@/redux/flowSlice/interface';
@@ -11,15 +11,18 @@ type StringNodeProps = {
 }
 
 const StringNode: FC<StringNodeProps> = memo(({ data }) => {
-
     const dispatch = useAppDispatch()
-
+    const [isDoubleClick, setIsDoubleClick] = useState(false);
     const [v, setV] = useState<string>('')
 
+    const ref = useRef(null);
     const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.currentTarget.value
         setV(_ => value)
     }, [v])
+    const handleDoubleClick = () => {
+        setIsDoubleClick(true)
+    }
 
     useEffect(() => {
         if (data?.value) {
@@ -27,34 +30,42 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
         }
     }, [data.value])
 
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            if (isDoubleClick && ref.current && !ref.current.contains(event.target)) {
+                setIsDoubleClick(false)
+            }
+        }
+        document.addEventListener('click', handleClickOutside)
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        }
+    });
+
     return (
-        <NodeWrapper>
+        <NodeWrapper onDoubleClick={handleDoubleClick}>
             <Handle
                 type="target"
                 position={Position.Left}
                 style={{ background: '#555' }}
                 onConnect={(params) => console.log('handle onConnect', params)}
-            // isConnectable={isConnectable}
             />
-            {/* <input
-                className="nodrag"
-                type="text"
-                value={v}
-                onBlur={(e) => dispatch(flowActions.onStringNodeChange({ id: data.id, value: e.currentTarget.value }))}
-                onChange={onChange}
-            /> */}
-            <textarea
-                className={s.stringInput}
-                value={v}
-                onBlur={(e) => dispatch(flowActions.onStringNodeChange({ id: data.id, value: e.currentTarget.value }))}
-                onChange={onChange}
-            />
+            {isDoubleClick ? (
+                <textarea
+                    className={s.stringInput}
+                    value={v}
+                    onBlur={(e) => {
+                        dispatch(flowActions.onStringNodeChange({ id: data.id, value: e.currentTarget.value }))
+                        setIsDoubleClick(false)
+                    }}
+                    onChange={onChange}
+                />
+            )  : <div>{v}</div>}
             <Handle
                 type="source"
                 position={Position.Right}
                 id="a"
                 style={{ background: '#555' }}
-            // isConnectable={isConnectable}
             />
         </NodeWrapper>
     );
