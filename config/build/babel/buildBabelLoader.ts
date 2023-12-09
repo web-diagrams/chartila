@@ -1,13 +1,13 @@
-import {BuildOptions} from "../types/types";
-import {removeDataTestIdBabelPlugin} from "./removeDataTestIdBabelPlugin";
+import { BuildOptions } from "../types/types";
+import { removeDataTestIdBabelPlugin } from "./removeDataTestIdBabelPlugin";
 
-export function buildBabelLoader({mode}: BuildOptions) {
+export function buildBabelLoader({ mode }: BuildOptions) {
     const isDev = mode === 'development';
-    const isProd= mode === 'production';
+    const isProd = mode === 'production';
 
     const plugins = [];
 
-    if(isProd) {
+    if (isProd) {
         plugins.push([
             removeDataTestIdBabelPlugin,
             {
@@ -28,7 +28,7 @@ export function buildBabelLoader({mode}: BuildOptions) {
                     [
                         "@babel/preset-react",
                         {
-                            runtime: isDev ? 'automatic' : 'classic',
+                            runtime: 'automatic'
                         }
                     ]
                 ],
