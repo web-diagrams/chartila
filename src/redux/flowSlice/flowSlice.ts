@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Connection, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeChanges, addEdge } from 'reactflow';
-import { FlowState } from './interface';
+import { FlowState, ICodeNode } from './interface';
 import { v1 } from 'uuid';
 
 const initialNodes: Node[] = [
@@ -45,7 +45,20 @@ export const flowSlice = createSlice({
                     state.nodes.push({
                         id: id,
                         type: 'stringNode',
-                        data: { value: 'oleg', id: id },
+                        data: { value: '', id: id },
+                        position: { x: 300, y: 50 },
+                    })
+                }
+                case 'codeNode': {
+                    const id = v1()
+                    state.nodes.push({
+                        id: id,
+                        type: 'codeNode',
+                        data: {
+                            value: '',
+                            id: id,
+                            isWrapped: false
+                        } as ICodeNode,
                         position: { x: 300, y: 50 },
                     })
                 }
@@ -54,7 +67,12 @@ export const flowSlice = createSlice({
         onStringNodeChange: (state, action: PayloadAction<{ id: string, value: string }>) => {
             const { id, value } = action.payload
             state.nodes.find(node => node.id === id).data.value = value
-        }
+        },
+        onCodeNodeChange: (state, action: PayloadAction<{ id: string, key: keyof ICodeNode, value: any }>) => {
+            const { id, value, key } = action.payload
+            state.nodes.find(node => node.id === id).data[key] = value
+        },
+
     },
 })
 

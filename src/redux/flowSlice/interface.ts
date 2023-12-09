@@ -8,3 +8,8 @@ export interface FlowState {
 export interface IStringNode extends Node {
     value: string
 }
+
+export interface ICodeNode extends Node {
+    value: string
+    isWrapped: boolean
+}

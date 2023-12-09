@@ -1,34 +1,67 @@
-import React, { FC, memo } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
+import { useAppDispatch } from '@/app/hooks';
+import { ICodeNode } from '@/redux/flowSlice/interface';
+import s from './CodeNode.module.scss'
+import { flowActions } from '@/redux/flowSlice/flowSlice';
+import { classNames } from '@/utils';
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const CodeNode: FC = memo(() => {
+type CodeNodeProps = {
+    data: ICodeNode
+}
+
+const CodeNode: FC<CodeNodeProps> = memo(({ data }) => {
+
+    const dispatch = useAppDispatch()
+
+    const [v, setV] = useState<string>('')
+
+    const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.currentTarget.value
+        setV(_ => value)
+    }, [v])
+
+    useEffect(() => {
+        if (data?.value) {
+            setV(_ => data.value)
+        }
+    }, [data.value])
+
     return (
         <NodeWrapper>
             <Handle
                 type="target"
                 position={Position.Left}
-                style={{ background: '#555' }}
                 onConnect={(params) => console.log('handle onConnect', params)}
-            // isConnectable={isConnectable}
             />
-            {/* <div>
-                Custom Color Picker Node: <strong>{data.color}</strong>
-            </div> */}
-            <input className="nodrag" type="color" />
+            <div className={classNames(s.container)}>
+                <div className={classNames(
+                    '',
+                    { [s.inputWrapper]: data.isWrapped },
+                    []
+                )}>
+                    <textarea
+                        rows={data.isWrapped
+                            ? 1
+                            : v.split('\n').length
+                        }
+                        className={classNames(s.codeInput)}
+                        value={v}
+                        onBlur={(e) => dispatch(flowActions.onCodeNodeChange({ id: data.id, key: 'value', value: e.currentTarget.value }))}
+                        onChange={onChange}
+                    />
+                </div>
+                <button
+                    className={s.wrapButton}
+                    onClick={() => dispatch(flowActions.onCodeNodeChange({ id: data.id, key: 'isWrapped', value: !data.isWrapped }))}
+                >{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
+            </div>
             <Handle
                 type="source"
                 position={Position.Right}
                 id="a"
-                style={{ top: 10, background: '#555' }}
-            // isConnectable={isConnectable}
-            />
-            <Handle
-                type="source"
-                position={Position.Right}
-                id="b"
-                style={{ bottom: 10, top: 'auto', background: '#555' }}
-            // isConnectable={isConnectable}
             />
         </NodeWrapper>
     );
