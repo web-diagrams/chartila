@@ -7,8 +7,9 @@ import ReactFlow, {
     EdgeChange,
     Connection,
 } from 'reactflow';
-import { onNodesChange, onEdgesChange, onConnect } from '@/redux/flowSlice/flowSlice';
+import { onNodesChange, onEdgesChange, onConnect, flowActions } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { NodeTypes } from './interface';
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
@@ -16,6 +17,9 @@ function Main() {
 
     return (
         <div style={{ height: '100vh', width: '100vw' }}>
+            <div style={{ position: 'fixed', top: '15px', right: '15px', zIndex: '111' }}>
+                <button onClick={() => dispatch(flowActions.onAddNode({ type: 'stringNode' }))}>Добавить текстовый инпут</button>
+            </div>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -23,6 +27,7 @@ function Main() {
                 onEdgesChange={(changes: EdgeChange[]) => dispatch(onEdgesChange(changes))}
                 onConnect={(changes: Connection) => dispatch(onConnect(changes))}
                 fitView
+                nodeTypes={NodeTypes}
             >
                 <Background />
                 <Controls />

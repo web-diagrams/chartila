@@ -1,6 +1,10 @@
-import {Edge, Node} from "reactflow";
+import { Edge, Node } from "reactflow";
 
 export interface FlowState {
     nodes: Node[],
     edges: Edge[]
+}
+
+export interface IStringNode extends Node {
+    value: string
 }
