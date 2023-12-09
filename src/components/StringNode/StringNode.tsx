@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, memo, useCallback, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, memo, useCallback, useEffect, useState} from 'react';
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import { IStringNode } from '@/redux/flowSlice/interface';
@@ -15,7 +15,6 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
     const [isDoubleClick, setIsDoubleClick] = useState(false);
     const [v, setV] = useState<string>('')
 
-    const ref = useRef(null);
     const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.currentTarget.value
         setV(_ => value)
