@@ -4,29 +4,19 @@ import { Connection, EdgeChange, Node, NodeChange, applyEdgeChanges, applyNodeCh
 import { FlowState, ICodeNode } from './interface';
 import { v1 } from 'uuid';
 
-const initialNodes: Node[] = [
-    {
-        id: '1',
-        data: { label: 'Hello' },
-        position: { x: 0, y: 0 },
-        type: 'input',
-    },
-    {
-        id: '2',
-        data: { label: 'World' },
-        position: { x: 100, y: 100 },
-    },
-];
-
 const initialState: FlowState = {
-    nodes: initialNodes,
-    edges: []
+    nodes: null,
+    edges: null
 }
 
 export const flowSlice = createSlice({
     name: 'flow',
     initialState,
     reducers: {
+        onStateUpdate: (state, action: PayloadAction<FlowState>) => {
+            state.nodes = action.payload.nodes
+            state.edges = action.payload.edges
+        },
         onNodesChange: (state, action: PayloadAction<NodeChange[]>) => {
             state.nodes = applyNodeChanges(action.payload, state.nodes)
         },
@@ -40,28 +30,28 @@ export const flowSlice = createSlice({
             const { type } = action.payload
 
             switch (type) {
-                case 'stringNode': {
-                    const id = v1()
-                    state.nodes.push({
+            case 'stringNode': {
+                const id = v1()
+                state.nodes.push({
+                    id: id,
+                    type: 'stringNode',
+                    data: { value: '', id: id },
+                    position: { x: 300, y: 50 },
+                })
+            }
+            case 'codeNode': {
+                const id = v1()
+                state.nodes.push({
+                    id: id,
+                    type: 'codeNode',
+                    data: {
+                        value: '',
                         id: id,
-                        type: 'stringNode',
-                        data: { value: '', id: id },
-                        position: { x: 300, y: 50 },
-                    })
-                }
-                case 'codeNode': {
-                    const id = v1()
-                    state.nodes.push({
-                        id: id,
-                        type: 'codeNode',
-                        data: {
-                            value: '',
-                            id: id,
-                            isWrapped: false
-                        } as ICodeNode,
-                        position: { x: 300, y: 50 },
-                    })
-                }
+                        isWrapped: false
+                    } as ICodeNode,
+                    position: { x: 300, y: 50 },
+                })
+            }
             }
         },
         onStringNodeChange: (state, action: PayloadAction<{ id: string, value: string }>) => {

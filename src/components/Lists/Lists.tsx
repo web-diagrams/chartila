@@ -1,25 +1,13 @@
-import {memo, useEffect, useRef, useState} from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import ListItem from "@/components/Lists/components/ListItem/ListItem";
-import {useAppSelector} from "@/app/hooks";
-const items = [
-    {
-        id: '0',
-        name: 'List 1',
-    },
-    {
-        id: '1',
-        name: 'List 2',
-    },
-    {
-        id: '2',
-        name: 'List 3',
-    }
-]
+import { useAppSelector } from "@/app/hooks";
 const Lists = memo(() => {
-    const { id } = useAppSelector((state) => state.list);
+    const { id, pages } = useAppSelector((state) => state.list);
+
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
+
     useEffect(() => {
         const handleClickOutside = (event: any) => {
             if (ref.current && !ref.current.contains(event.target)) {
@@ -31,16 +19,18 @@ const Lists = memo(() => {
             document.removeEventListener('click', handleClickOutside);
         };
     })
+
     return (
         <div className={styles.lists_container}>
             <div ref={ref}>
                 <div className={styles.lists_select_element} onClick={() => setIsOpen(!isOpen)}>
-                    {items.find(value => value.id === id)?.name}
+                    {pages.find(page => page.id === id)?.pageName}
                 </div>
-                {isOpen && items.map((item) => <ListItem key={item.id} iteIid={item.id} name={item.name} setIsOpen={setIsOpen} />)}
+                {isOpen && pages.map((item) => <ListItem key={item.id} itemId={item.id} name={item.pageName} setIsOpen={setIsOpen} />)}
             </div>
         </div>
     );
 });
+Lists.displayName = 'Lists'
 
 export default Lists;
