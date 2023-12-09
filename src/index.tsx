@@ -1,13 +1,12 @@
-import {createRoot} from "react-dom/client";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {Suspense} from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Flow from "./Flow";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 
 const root = document.getElementById('root')
 
-if(!root) {
+if (!root) {
     throw new Error('root not found')
 }
 

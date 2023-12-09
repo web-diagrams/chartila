@@ -9,17 +9,19 @@
     "build:prod": "webpack --env mode=production",
     "build:mobile": "webpack --env mode=production --env platform=mobile",
     "build:desktop": "webpack --env mode=production --env platform=desktop",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint:ts": "eslint \"**/*.{ts,tsx}\"",
+    "lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@reduxjs/toolkit": "^1.9.7",
     "@babel/core": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.23.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@reduxjs/toolkit": "^1.9.7",
     "@svgr/webpack": "^8.1.0",
     "@types/babel__core": "^7.20.3",
     "@types/node": "^20.8.3",
@@ -28,9 +30,13 @@
     "@types/webpack": "^5.28.3",
     "@types/webpack-bundle-analyzer": "^4.6.1",
     "@types/webpack-dev-server": "^4.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
     "babel-loader": "^9.1.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
     "fork-ts-checker-webpack-plugin": "^9.0.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.7.6",
@@ -50,8 +56,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0",
     "react-redux": "^8.1.3",
+    "react-router-dom": "^6.16.0",
     "reactflow": "^11.10.1"
   }
 }
