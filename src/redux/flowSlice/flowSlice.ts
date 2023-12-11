@@ -30,28 +30,29 @@ export const flowSlice = createSlice({
             const { type } = action.payload
 
             switch (type) {
-            case 'stringNode': {
-                const id = v1()
-                state.nodes.push({
-                    id: id,
-                    type: 'stringNode',
-                    data: { value: '', id: id },
-                    position: { x: 300, y: 50 },
-                })
-            }
-            case 'codeNode': {
-                const id = v1()
-                state.nodes.push({
-                    id: id,
-                    type: 'codeNode',
-                    data: {
-                        value: '',
+                case 'stringNode': {
+                    const id = v1()
+                    state.nodes.push({
                         id: id,
-                        isWrapped: false
-                    } as ICodeNode,
-                    position: { x: 300, y: 50 },
-                })
-            }
+                        type: 'stringNode',
+                        data: { value: '', id: id },
+                        position: { x: 300, y: 50 },
+                    })
+                    break
+                }
+                case 'codeNode': {
+                    const id = v1()
+                    state.nodes.push({
+                        id: id,
+                        type: 'codeNode',
+                        data: {
+                            value: '',
+                            id: id,
+                            isWrapped: false
+                        } as ICodeNode,
+                        position: { x: 300, y: 50 },
+                    })
+                }
             }
         },
         onStringNodeChange: (state, action: PayloadAction<{ id: string, value: string }>) => {
