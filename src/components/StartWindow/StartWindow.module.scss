@@ -10,27 +10,66 @@
 }
 
 .form {
-    padding: 30px;
+    padding: 50px 100px;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 15px;
+    gap: 15px;
+
+    input[type="file"] {
+        display: none;
+    }
 }
 
 .title {
-    margin: 0 0 30px;
+    margin: 0;
     padding: 0;
+    font-size: 2.5rem;
 }
 
-.inputContanier {
+.list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.listItem {
     display: flex;
     flex-direction: row;
-    margin-bottom: 15px;
     gap: 5px;
 }
 
-.text {
+.button {
+    padding: 15px 30px;
     margin: 0;
-    padding: 0;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: black;
+    color: white;
+    text-align: center;
+
+    transition: all 0.25s ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+    }
+}
+
+.button_type_label {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+
+    &:hover {
+        background-color: black;
+        color: white;
+        opacity: 1;
+    }
 }

@@ -1,0 +1,11 @@
+@import 'global';
+
+body {
+    margin: 0;
+    overflow: hidden;
+
+    * {
+        font-family: var(--font-family-main);
+        font-size: 15px;
+    }
+}
