@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import flowReducer from '../redux/flowSlice/flowSlice'
-import listReducer from '../redux/listSlice/listSlice'
+import listReducer from '../redux/list/listSlice'
+import { flowReducer } from '@/redux/flow/slice/flowSlice'
 
 
 export const store = configureStore({

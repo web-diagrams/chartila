@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { InitialState, Page } from "@/redux/listSlice/interface";
-import { FlowState } from "../flowSlice/interface";
+import { InitialState, Page } from "@/redux/list/interface";
+import { FlowState } from "../flow/interfaces/flowStateInterfaces";
+import { v1 } from "uuid";
 
 
 const initialState: InitialState = {
@@ -12,7 +13,17 @@ export const listSlice = createSlice({
     name: 'list',
     initialState,
     reducers: {
-        updatePages: (state, action: PayloadAction<Page[]>) => {
+        initPages: (state) => {
+            const id = v1()
+            state.pages = [{
+                id,
+                pageName: 'New page',
+                nodes: [],
+                edges: []
+            }]
+            state.id = id
+        },
+        setPages: (state, action: PayloadAction<Page[]>) => {
             state.pages = action.payload
             state.id = action.payload[0].id
         },
@@ -24,10 +35,6 @@ export const listSlice = createSlice({
             state.id = newID
         },
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase()
-    // }
 })
 export const { actions: listActions } = listSlice
 

@@ -1,10 +1,10 @@
-import React, {ChangeEvent, FC, memo, useCallback, useEffect, useState} from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
-import { IStringNode } from '@/redux/flowSlice/interface';
 import { useAppDispatch } from '@/app/hooks';
-import { flowActions } from '@/redux/flowSlice/flowSlice';
 import s from './StringNode.module.scss'
+import { IStringNode } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { flowActions } from '@/redux/flow/slice/flowSlice';
 
 type StringNodeProps = {
     data: IStringNode
@@ -42,12 +42,12 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
                     className={s.stringInput}
                     value={v}
                     onBlur={(e) => {
-                        dispatch(flowActions.onStringNodeChange({ id: data.id, value: e.currentTarget.value }))
+                        dispatch(flowActions.onChangeStringNode({ id: data.id, value: e.currentTarget.value }))
                         setIsDoubleClick(false)
                     }}
                     onChange={onChange}
                 />
-            )  : <div>{v}</div>}
+            ) : <div>{v}</div>}
             <Handle
                 type="source"
                 position={Position.Right}
