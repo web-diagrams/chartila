@@ -2,11 +2,11 @@ import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from '
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import { useAppDispatch } from '@/app/hooks';
-import { ICodeNode } from '@/redux/flowSlice/interface';
 import s from './CodeNode.module.scss'
-import { flowActions } from '@/redux/flowSlice/flowSlice';
 import { classNames } from '@/utils';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { ICodeNode } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { flowActions } from '@/redux/flow/slice/flowSlice';
 
 type CodeNodeProps = {
     data: ICodeNode
@@ -48,23 +48,23 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data }) => {
                             { [s.inputWrapper]: data.isWrapped },
                             []
                         )}>
-                    <textarea
-                        rows={data.isWrapped
-                            ? 1
-                            : v.split('\n').length
-                        }
-                        className={classNames(s.codeInput)}
-                        value={v}
-                        onBlur={(e) => dispatch(flowActions.onCodeNodeChange({ id: data.id, key: 'value', value: e.currentTarget.value }))}
-                        onChange={onChange}
-                    />
+                            <textarea
+                                rows={data.isWrapped
+                                    ? 1
+                                    : v.split('\n').length
+                                }
+                                className={classNames(s.codeInput)}
+                                value={v}
+                                onBlur={(e) => dispatch(flowActions.onChangeCodeNode({ id: data.id, key: 'value', value: e.currentTarget.value }))}
+                                onChange={onChange}
+                            />
                         </div>
                         <button
                             className={s.wrapButton}
-                            onClick={() => dispatch(flowActions.onCodeNodeChange({ id: data.id, key: 'isWrapped', value: !data.isWrapped }))}
+                            onClick={() => dispatch(flowActions.onChangeCodeNode({ id: data.id, key: 'isWrapped', value: !data.isWrapped }))}
                         >{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
                     </>
-                ): (
+                ) : (
                     <div>{v}</div>
                 )}
             </div>

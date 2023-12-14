@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import styles from './styles.module.scss';
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { FaCheck } from "react-icons/fa";
-import { listActions } from '@/redux/listSlice/listSlice';
+import { listActions } from '@/redux/list/listSlice';
 import { batch } from 'react-redux';
-import { flowActions } from '@/redux/flowSlice/flowSlice';
-import { dtoToFlow } from '@/redux/flowSlice/flowUtils';
+import { dtoToFlow } from '@/redux/flow/flowUtils';
+import { flowActions } from '@/redux/flow/slice/flowSlice';
 
 interface ListItemProps {
     itemId: string;
@@ -20,7 +20,7 @@ const ListItem = ({ itemId, name, setIsOpen }: ListItemProps) => {
     const onClick = useCallback(() => {
         batch(() => {
             dispatch(listActions.changePage({ newID: itemId, flowState: flowState }))
-            dispatch(flowActions.onStateUpdate(dtoToFlow(pages.find(page => page.id === itemId))))
+            dispatch(flowActions.onUpdateState(dtoToFlow(pages.find(page => page.id === itemId))))
         })
         setIsOpen(false)
     }, [])

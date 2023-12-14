@@ -7,12 +7,12 @@ import ReactFlow, {
     EdgeChange,
     Connection,
 } from 'reactflow';
-import { onNodesChange, onEdgesChange, onConnect, flowActions } from '@/redux/flowSlice/flowSlice';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Lists from "@/components/Lists/Lists";
 import { NodeTypes } from './interface';
 import StartWindow from '../StartWindow/StartWindow';
 import { useCallback } from 'react';
+import { flowActions } from '@/redux/flow/slice/flowSlice';
 
 function Main() {
     const { nodes, edges } = useAppSelector((state) => state.flow)
@@ -61,9 +61,9 @@ function Main() {
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
-                        onNodesChange={(changes: NodeChange[]) => dispatch(onNodesChange(changes))}
-                        onEdgesChange={(changes: EdgeChange[]) => dispatch(onEdgesChange(changes))}
-                        onConnect={(changes: Connection) => dispatch(onConnect(changes))}
+                        onNodesChange={(changes: NodeChange[]) => dispatch(flowActions.onChangeNodes(changes))}
+                        onEdgesChange={(changes: EdgeChange[]) => dispatch(flowActions.onChangeEdges(changes))}
+                        onConnect={(changes: Connection) => dispatch(flowActions.onConnect(changes))}
                         fitView
                         nodeTypes={NodeTypes}
                     >
