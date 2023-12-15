@@ -64,6 +64,7 @@ function Main() {
                         onNodesChange={(changes: NodeChange[]) => dispatch(flowActions.onChangeNodes(changes))}
                         onEdgesChange={(changes: EdgeChange[]) => dispatch(flowActions.onChangeEdges(changes))}
                         onConnect={(changes: Connection) => dispatch(flowActions.onConnect(changes))}
+                        onNodesDelete={(e) => console.log(e)}
                         fitView
                         nodeTypes={NodeTypes}
                     >
