@@ -30,7 +30,12 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
     }, [data.value])
 
     return (
-        <NodeWrapper onDoubleClick={handleDoubleClick} isDoubleClick={isDoubleClick} setIsDoubleClick={setIsDoubleClick}>
+        <NodeWrapper
+            id={data.id}
+            onDoubleClick={handleDoubleClick}
+            isDoubleClick={isDoubleClick}
+            setIsDoubleClick={setIsDoubleClick}
+        >
             <Handle
                 type="target"
                 position={Position.Left}

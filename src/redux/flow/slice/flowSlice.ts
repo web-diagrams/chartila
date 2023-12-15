@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { Connection, EdgeChange, NodeChange, applyEdgeChanges, applyNodeChanges, addEdge } from 'reactflow';
+import { Connection, EdgeChange, NodeChange, applyEdgeChanges, applyNodeChanges, addEdge, getConnectedEdges } from 'reactflow';
 import { FlowState, ICodeNode } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
+import { node } from 'webpack';
 
 const initialState: FlowState = {
     nodes: null,
@@ -34,6 +35,14 @@ export const flowSlice = createSlice({
         onAddNode: (state, action: PayloadAction<{ type: 'stringNode' | 'codeNode' }>) => {
             const { type } = action.payload
             createNode(state, type)
+        },
+        onDeleteNode: (state, action: PayloadAction<string>) => {
+            const id = action.payload
+            const nodeToDelete = state.nodes.find(node => node.id === id)
+            const connectedEdges = getConnectedEdges([nodeToDelete], state.edges)
+
+            state.nodes = state.nodes.filter(node => node !== nodeToDelete)
+            state.edges = state.edges.filter((edge) => !connectedEdges.includes(edge));
         },
         onChangeStringNode: (state, action: PayloadAction<{ id: string, value: string }>) => {
             const { id, value } = action.payload
