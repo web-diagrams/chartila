@@ -1,12 +1,12 @@
-import { Edge, Node } from "reactflow"
+import { Edge, Node } from 'reactflow';
 
 export type FlowFile = {
-    pages: DtoPage[]
-}
+  pages: DtoPage[];
+};
 
 export type DtoPage = {
-    id: string,
-    pageName: string,
-    nodes: Node[],
-    edges: Edge[],
-}
+  id: string;
+  pageName: string;
+  nodes: Node[];
+  edges: Edge[];
+};
