@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback } from 'react';
 import s from './StartWindow.module.scss';
 import { useAppDispatch } from '@/app/hooks';
-import { listActions } from '@/redux/list/listSlice';
 import { batch } from 'react-redux';
 import { classNames } from '@/utils';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
@@ -19,7 +18,6 @@ const StartWindow: FC = memo(() => {
   const onStartNewProject = useCallback(() => {
     batch(() => {
       dispatch(flowActions.onInitState());
-      dispatch(listActions.initPages());
     });
   }, []);
 

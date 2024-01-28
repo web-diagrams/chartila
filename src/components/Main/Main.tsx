@@ -1,34 +1,26 @@
 import 'reactflow/dist/style.css';
 
 import ReactFlow, { Controls, Background, NodeChange, EdgeChange, Connection } from 'reactflow';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import Lists from '@/components/Lists/Lists';
+import { useAppDispatch } from '@/app/hooks';
+import Pages from '@/components/Pages/Pages';
 import { NodeTypes } from './interface';
 import StartWindow from '../StartWindow/StartWindow';
 import { useCallback } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { useSelector } from 'react-redux';
+import { getFlow } from '@/redux/flow/selectors/getFlow';
+import { getLastIndexOfQuestions } from '@/redux/flow/selectors/getCurrentPage';
 
 function Main() {
-  const { nodes, edges } = useAppSelector((state) => state.flow);
-  const { pages, id } = useAppSelector((state) => state.list);
+  const { pages, currentPageId } = useSelector(getFlow);
   const dispatch = useAppDispatch();
+
+  const currentPage = useSelector(getLastIndexOfQuestions);
 
   const saveToFile = useCallback(() => {
     const fileName = 'random';
 
-    /**Обновляем в массиве страниц текущую страницу */
-    const pagesToSave = pages.map((page) => {
-      if (page.id === id) {
-        return {
-          ...page,
-          nodes: nodes,
-          edges: edges,
-        };
-      }
-      return page;
-    });
-
-    const json = JSON.stringify({ pages: pagesToSave }, null, 2);
+    const json = JSON.stringify({ pages: pages }, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const href = URL.createObjectURL(blob);
 
@@ -40,11 +32,11 @@ function Main() {
 
     document.body.removeChild(link);
     URL.revokeObjectURL(href);
-  }, [pages, nodes, edges]);
+  }, [pages, currentPageId]);
 
   return (
     <div style={{ height: '100vh', width: '100vw' }}>
-      {nodes ? (
+      {currentPage ? (
         <>
           <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
             <button onClick={() => dispatch(flowActions.onAddNode({ type: 'stringNode' }))}>
@@ -56,8 +48,8 @@ function Main() {
             <button onClick={saveToFile}>Сохранить страницу</button>
           </div>
           <ReactFlow
-            nodes={nodes}
-            edges={edges}
+            nodes={currentPage.nodes}
+            edges={currentPage.edges}
             onNodesChange={(changes: NodeChange[]) => dispatch(flowActions.onChangeNodes(changes))}
             onEdgesChange={(changes: EdgeChange[]) => dispatch(flowActions.onChangeEdges(changes))}
             onConnect={(changes: Connection) => dispatch(flowActions.onConnect(changes))}
@@ -68,7 +60,7 @@ function Main() {
             <Background />
             <Controls />
           </ReactFlow>
-          <Lists />
+          <Pages />
         </>
       ) : (
         <StartWindow />

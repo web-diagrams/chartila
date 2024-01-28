@@ -1,12 +1,16 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
-import ListItem from '@/components/Lists/components/ListItem/ListItem';
-import { useAppSelector } from '@/app/hooks';
-const Lists = memo(() => {
-  const { id, pages } = useAppSelector((state) => state.list);
+import { useSelector } from 'react-redux';
+import { getLastIndexOfQuestions } from '@/redux/flow/selectors/getCurrentPage';
+import { getFlow } from '@/redux/flow/selectors/getFlow';
+import PageItem from './components/PageItem/PageItem';
 
+const Pages = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
+
+  const { pages } = useSelector(getFlow);
+  const currentPage = useSelector(getLastIndexOfQuestions);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -24,14 +28,14 @@ const Lists = memo(() => {
     <div className={styles.lists_container}>
       <div ref={ref}>
         <div className={styles.lists_select_element} onClick={() => setIsOpen(!isOpen)}>
-          {pages.find((page) => page.id === id)?.pageName}
+          {currentPage?.pageName}
         </div>
         {isOpen &&
-          pages.map((item) => <ListItem key={item.id} itemId={item.id} name={item.pageName} setIsOpen={setIsOpen} />)}
+          pages.map((item) => <PageItem key={item.id} itemId={item.id} name={item.pageName} setIsOpen={setIsOpen} />)}
       </div>
     </div>
   );
 });
-Lists.displayName = 'Lists';
+Pages.displayName = 'Pages';
 
-export default Lists;
+export default Pages;

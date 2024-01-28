@@ -1,11 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { flowReducer } from '@/redux/flow/slice/flowSlice';
-import { listReducer } from '@/redux/list/listSlice';
+import { StateSchema } from './StateSchema';
 
-export const store = configureStore({
+export const store = configureStore<StateSchema>({
   reducer: {
     flow: flowReducer,
-    list: listReducer,
   },
 });
 
