@@ -1,43 +1,37 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+    env: {
+        browser: true,
+        es2021: true,
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended"
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:react/recommended',
+        'plugin:prettier/recommended',
+        'prettier',
     ],
-    "overrides": [
+    overrides: [
         {
-            "env": {
-                "node": true
+            env: {
+                node: true,
             },
-            "files": [
-                ".eslintrc.{js,cjs}"
-            ],
-            "parserOptions": {
-                "sourceType": "script"
-            }
-        }
+            files: ['.eslintrc.{js,cjs}'],
+            parserOptions: {
+                sourceType: 'script',
+            },
+        },
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
     },
-    "plugins": [
-        "@typescript-eslint",
-        "react"
-    ],
-    "rules": {
-        'react/jsx-indent': [2, 4],
-        'react/jsx-indent-props': [2, 4],
-        indent: [2, 4],
-        'react/jsx-filename-extension': [
-            2,
-            { extensions: ['.js', '.jsx', '.tsx'] },
-        ],
+    plugins: ['@typescript-eslint', 'react'],
+    rules: {
+        // 'react/jsx-indent': [2, 4],
+        // 'react/jsx-indent-props': [2, 4],
+        // indent: [2, 4],
+        'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.tsx'] }],
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
         'no-unused-vars': 'warn',
@@ -49,8 +43,12 @@ module.exports = {
         'import/extensions': 'off',
         'import/no-extraneous-dependencies': 'off',
         'no-underscore-dangle': 'off',
-        "react/prop-types": 'off',
-        'max-len': ['error', { ignoreComments: true, code: 180 }],
-        // 'singleQuote': true,
-    }
-}
+        'react/prop-types': 'off',
+        'prettier/prettier': [
+            'warn',
+            {
+                endOfLine: 'auto',
+            },
+        ],
+    },
+};
