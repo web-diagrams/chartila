@@ -2,9 +2,7 @@
 import { useCallback } from 'react';
 import styles from './styles.module.scss';
 import { FaCheck } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-import { getFlow } from '@/redux/flow/selectors/getFlow';
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 
 interface PageItemProps {
@@ -14,7 +12,7 @@ interface PageItemProps {
 }
 const PageItem = ({ itemId, name, setIsOpen }: PageItemProps) => {
   const dispatch = useAppDispatch();
-  const { currentPageId } = useSelector(getFlow);
+  const { currentPageId } = useAppSelector((state) => state.flow);
 
   const onClick = useCallback(() => {
     dispatch(flowActions.onChangePage(itemId));

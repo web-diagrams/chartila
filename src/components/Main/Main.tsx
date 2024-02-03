@@ -1,21 +1,19 @@
 import 'reactflow/dist/style.css';
 
 import ReactFlow, { Controls, Background, NodeChange, EdgeChange, Connection } from 'reactflow';
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
 import { NodeTypes } from './interface';
 import StartWindow from '../StartWindow/StartWindow';
 import { useCallback } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
-import { useSelector } from 'react-redux';
-import { getFlow } from '@/redux/flow/selectors/getFlow';
-import { getLastIndexOfQuestions } from '@/redux/flow/selectors/getCurrentPage';
+import { useCurrentPage } from '@/hooks/useCurrentPage';
 
 function Main() {
-  const { pages, currentPageId } = useSelector(getFlow);
+  const { pages, currentPageId } = useAppSelector((state) => state.flow);
   const dispatch = useAppDispatch();
 
-  const currentPage = useSelector(getLastIndexOfQuestions);
+  const currentPage = useCurrentPage(pages, currentPageId);
 
   const saveToFile = useCallback(() => {
     const fileName = 'random';

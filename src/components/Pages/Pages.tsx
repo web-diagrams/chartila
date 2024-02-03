@@ -1,16 +1,16 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
-import { useSelector } from 'react-redux';
-import { getLastIndexOfQuestions } from '@/redux/flow/selectors/getCurrentPage';
-import { getFlow } from '@/redux/flow/selectors/getFlow';
 import PageItem from './components/PageItem/PageItem';
+import { useAppSelector } from '@/app/hooks';
+import { useCurrentPage } from '@/hooks/useCurrentPage';
 
 const Pages = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
 
-  const { pages } = useSelector(getFlow);
-  const currentPage = useSelector(getLastIndexOfQuestions);
+  const { pages, currentPageId } = useAppSelector((state) => state.flow);
+
+  const currentPage = useCurrentPage(pages, currentPageId);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
