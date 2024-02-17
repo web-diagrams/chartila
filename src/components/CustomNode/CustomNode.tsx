@@ -4,9 +4,9 @@ import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import { useAppDispatch } from '@/app/hooks';
 import styles from './CustomeNode.module.scss';
 import { classNames } from '@/utils';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { CommonNodeDataType } from '@/redux/flow/interfaces/flowStateInterfaces';
+import CodeNode from '../CodeNode/CodeNode';
 
 type CustomNodeProps = {
   data: CommonNodeDataType;
@@ -35,26 +35,9 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
     }
   }, [data.value]);
 
-  const a = 'for(let i = 0; i < 10; i++){\n' + '    console.log(i)\n' + '  }';
-
   const getNode = () => {
     if (data.nodeType === 'codeNode') {
-      return (
-        <>
-          <div className={classNames('', { [styles.inputWrapper]: data.isWrapped }, [])}>
-            {/*<textarea*/}
-            {/*  rows={data.isWrapped ? 1 : text.split('\n').length}*/}
-            {/*  className={classNames(styles.codeInput)}*/}
-            {/*  value={text}*/}
-            {/*  onChange={onChange}*/}
-            {/*/>*/}
-            <pre>
-              <code>{a}</code>
-            </pre>
-          </div>
-          <button className={styles.wrapButton}>{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
-        </>
-      );
+      return <CodeNode data={data} />;
     } else {
       return (
         <textarea

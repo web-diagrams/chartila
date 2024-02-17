@@ -30,12 +30,11 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
   );
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(e);
     switch (e.detail) {
       case 1:
         break;
       case 2:
-        console.log('double click');
+        // console.log('double click');
         onDoubleClick();
     }
   };
@@ -66,7 +65,6 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
       ref={ref}
       onFocus={onFocus}
       onClick={handleClick}
-      onMouseDown={(e) => console.log('down')}
       className={styles.node_wrapper}
       tabIndex={0}
       onKeyDown={onKeyDown}
