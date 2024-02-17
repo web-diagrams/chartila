@@ -1,19 +1,12 @@
 import { v1 } from 'uuid';
-import { DtoPage } from './interfaces/dtoInterfaces';
 import { FlowState, ICodeNode } from './interfaces/flowStateInterfaces';
 
-export const dtoToFlow = (page: DtoPage): FlowState => {
-  return {
-    nodes: page.nodes,
-    edges: page.edges ?? [],
-  };
-};
-
 export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') => {
+  const currentPage = state.pages.find((page) => page.id === state.currentPageId);
   switch (type) {
     case 'stringNode': {
       const id = v1();
-      state.nodes.push({
+      currentPage.nodes.push({
         id: id,
         type: 'stringNode',
         data: { value: '', id: id },
@@ -23,7 +16,7 @@ export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') =>
     }
     case 'codeNode': {
       const id = v1();
-      state.nodes.push({
+      currentPage.nodes.push({
         id: id,
         type: 'codeNode',
         data: {
