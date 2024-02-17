@@ -32,6 +32,8 @@ const StringNode: FC<StringNodeProps> = memo(({ data }) => {
     }
   }, [data.value]);
 
+  console.log('1');
+
   return (
     <NodeWrapper
       id={data.id}

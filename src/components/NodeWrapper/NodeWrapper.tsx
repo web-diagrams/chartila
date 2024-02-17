@@ -4,6 +4,8 @@ import styles from './styles.module.scss';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { classNames } from '@/utils';
+import { NodeMenu } from './NodeMenu/NodeMenu';
 
 type NodeWrapperProps = {
   isDoubleClick: boolean;
@@ -15,6 +17,7 @@ type NodeWrapperProps = {
 
 const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDoubleClick, setIsDoubleClick, id }) => {
   const [isModal, setIsModal] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
 
@@ -29,8 +32,13 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isDoubleClick && ref.current && !ref.current.contains(event.target)) {
-        setIsDoubleClick(false);
+      if (ref.current && !ref.current.contains(event.target)) {
+        if (isDoubleClick) {
+          // setIsDoubleClick(false);
+        }
+        if (isFocused) {
+          setIsFocused(false);
+        }
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -39,10 +47,15 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
     };
   });
 
+  const onFocus = () => {
+    setIsFocused(true);
+  };
+
   return (
-    <div ref={ref} onDoubleClick={onDoubleClick} tabIndex={0} onKeyDown={onKeyDown}>
+    <div ref={ref} onFocus={onFocus} tabIndex={0} onKeyDown={onKeyDown}>
       {isModal && <ModalWrapper />}
-      <div className={styles.node_wrapper_container}>
+      <div className={classNames(styles.node_wrapper_container, { [styles.focused]: isFocused }, [])}>
+        {isFocused && <NodeMenu nodeId={id} />}
         <div className={styles.node_wrapper_children_container}>{children}</div>
         <BsThreeDotsVertical onClick={() => setIsModal(!isModal)} />
       </div>

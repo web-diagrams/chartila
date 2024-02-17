@@ -9,7 +9,7 @@ export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') =>
       currentPage.nodes.push({
         id: id,
         type: 'stringNode',
-        data: { value: '', id: id },
+        data: { value: '', id: id, color: 'black' },
         position: { x: 300, y: 50 },
       });
       break;
@@ -22,6 +22,7 @@ export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') =>
         data: {
           value: '',
           id: id,
+          color: 'black',
           isWrapped: false,
         } as ICodeNode,
         position: { x: 300, y: 50 },

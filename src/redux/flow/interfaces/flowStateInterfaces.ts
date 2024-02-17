@@ -8,15 +8,17 @@ export interface FlowState {
 export interface Page {
   id: string;
   pageName: string;
-  nodes: Node[];
+  nodes: Node<SelfNode>[];
   edges: Edge[];
 }
 
-export interface IStringNode extends Node {
+interface SelfNode extends Omit<Node, 'position' | 'data'> {
   value: string;
+  color: string;
 }
 
-export interface ICodeNode extends Node {
-  value: string;
+export interface IStringNode extends SelfNode { }
+
+export interface ICodeNode extends SelfNode {
   isWrapped: boolean;
 }

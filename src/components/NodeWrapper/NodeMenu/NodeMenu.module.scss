@@ -1,0 +1,12 @@
+.menu {
+    position: absolute;
+    top: -50px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}

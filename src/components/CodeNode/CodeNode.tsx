@@ -35,6 +35,8 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data }) => {
     }
   }, [data.value]);
 
+  console.log('1');
+
   return (
     <NodeWrapper
       id={data.id}

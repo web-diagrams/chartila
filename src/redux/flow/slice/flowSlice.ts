@@ -64,6 +64,13 @@ export const flowSlice = createSlice({
       currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete);
       currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge));
     },
+
+    onChangeNodeColor: (state, action: PayloadAction<{ id: string; color: string }>) => {
+      const { id, color } = action.payload;
+      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
+      currentPage.nodes.find((node) => node.id === id).data.color = color;
+    },
+
     onChangeStringNode: (state, action: PayloadAction<{ id: string; value: string }>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       const { id, value } = action.payload;
@@ -72,8 +79,9 @@ export const flowSlice = createSlice({
     onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof ICodeNode; value: any }>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       const { id, value, key } = action.payload;
-      currentPage.nodes.find((node) => node.id === id).data[key] = value;
+      // currentPage.nodes.find((node) => node.id === id).data[key] = value;
     },
+
     onChangePage: (state, action: PayloadAction<string>) => {
       state.currentPageId = action.payload;
     },
