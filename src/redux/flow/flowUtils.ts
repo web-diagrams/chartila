@@ -1,10 +1,11 @@
 import { v1 } from 'uuid';
-import { CommonNode, FlowState } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { NodeData } from './constants/constants';
+import { FlowState } from './interfaces/flowStateInterfaces';
 
-export const createNode = (state: FlowState, type: CommonNode) => {
+export const createNode = (state: FlowState, type: NodeData) => {
   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-  switch (type.data.nodeType) {
-    case 'stringNode': {
+  switch (type) {
+    case NodeData.STRING_NODE: {
       const id = v1();
       currentPage.nodes.push({
         id: id,
@@ -14,7 +15,7 @@ export const createNode = (state: FlowState, type: CommonNode) => {
       });
       break;
     }
-    case 'codeNode': {
+    case NodeData.CODE_NODE: {
       const id = v1();
       currentPage.nodes.push({
         id: id,

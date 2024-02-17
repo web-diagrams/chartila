@@ -8,6 +8,7 @@ import StartWindow from '../StartWindow/StartWindow';
 import { useCallback } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
+import { NodeData } from '@/redux/flow/constants/constants';
 
 function Main() {
   const { pages, currentPageId } = useAppSelector((state) => state.flow);
@@ -37,10 +38,10 @@ function Main() {
       {currentPage ? (
         <>
           <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
-            <button onClick={() => dispatch(flowActions.onAddNode({ type: 'stringNode' }))}>
+            <button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.STRING_NODE }))}>
               Добавить текстовый инпут
             </button>
-            <button onClick={() => dispatch(flowActions.onAddNode({ type: 'codeNode' }))}>
+            <button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.CODE_NODE }))}>
               Добавить инпут под код
             </button>
             <button onClick={saveToFile}>Сохранить страницу</button>

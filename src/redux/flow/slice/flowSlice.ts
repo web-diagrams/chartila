@@ -9,10 +9,11 @@ import {
   addEdge,
   getConnectedEdges,
 } from 'reactflow';
-import { CommonNode, FlowState, Page } from '../interfaces/flowStateInterfaces';
+import { FlowState, Page } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
 import { v1 } from 'uuid';
+import { NodeData } from '../constants/constants';
 
 const initialState: FlowState = {
   pages: null,
@@ -52,7 +53,7 @@ export const flowSlice = createSlice({
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.edges = addEdge(action.payload, currentPage.edges);
     },
-    onAddNode: (state, action: PayloadAction<{ type: CommonNode }>) => {
+    onAddNode: (state, action: PayloadAction<{ type: NodeData }>) => {
       const { type } = action.payload;
       createNode(state, type);
     },

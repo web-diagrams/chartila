@@ -2,17 +2,17 @@ import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from '
 import { Handle, Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import { useAppDispatch } from '@/app/hooks';
-import styles from './CodeNode.module.scss';
+import styles from './CustomeNode.module.scss';
 import { classNames } from '@/utils';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
-import { CodeNodeData, StringNodeData } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { CommonNodeDataType } from '@/redux/flow/interfaces/flowStateInterfaces';
 
-type CodeNodeProps = {
-  data: StringNodeData | CodeNodeData;
+type CustomNodeProps = {
+  data: CommonNodeDataType;
 };
 
-const CustomNode: FC<CodeNodeProps> = memo(({ data }) => {
+export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
   const dispatch = useAppDispatch();
   const [isDoubleClick, setIsDoubleClick] = useState(false);
   const [text, setText] = useState<string>('');
@@ -78,6 +78,4 @@ const CustomNode: FC<CodeNodeProps> = memo(({ data }) => {
     </NodeWrapper>
   );
 });
-CustomNode.displayName = 'CodeNode';
-
-export default CustomNode;
+CustomNode.displayName = 'CustomNode';

@@ -8,7 +8,7 @@ export interface FlowState {
 export interface Page {
   id: string;
   pageName: string;
-  nodes: CommonNode[];
+  nodes: Node<CommonNodeDataType>[];
   edges: Edge[];
 }
 
@@ -18,15 +18,7 @@ export interface customData {
   color: string;
 }
 
-export interface StringNode extends Omit<Node<customData>, 'data'> {
-  data: StringNodeData;
-}
-export interface CodeNode extends Omit<Node<customData>, 'data'> {
-  data: CodeNodeData;
-}
-
-export type CommonNode = StringNode | CodeNode;
-
+export type CommonNodeDataType = StringNodeData | CodeNodeData;
 export type StringNodeData = {
   nodeType: 'stringNode';
 } & customData;
