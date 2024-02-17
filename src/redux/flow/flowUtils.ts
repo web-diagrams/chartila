@@ -1,15 +1,15 @@
 import { v1 } from 'uuid';
-import { FlowState, ICodeNode } from './interfaces/flowStateInterfaces';
+import { CommonNode, FlowState } from '@/redux/flow/interfaces/flowStateInterfaces';
 
-export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') => {
+export const createNode = (state: FlowState, type: CommonNode) => {
   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-  switch (type) {
+  switch (type.data.nodeType) {
     case 'stringNode': {
       const id = v1();
       currentPage.nodes.push({
         id: id,
-        type: 'stringNode',
-        data: { value: '', id: id, color: 'black' },
+        type: 'customNode',
+        data: { value: '', id: id, color: 'black', nodeType: 'stringNode' },
         position: { x: 300, y: 50 },
       });
       break;
@@ -18,13 +18,14 @@ export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') =>
       const id = v1();
       currentPage.nodes.push({
         id: id,
-        type: 'codeNode',
+        type: 'customNode',
         data: {
           value: '',
           id: id,
           color: 'black',
+          nodeType: 'codeNode',
           isWrapped: false,
-        } as ICodeNode,
+        },
         position: { x: 300, y: 50 },
       });
     }

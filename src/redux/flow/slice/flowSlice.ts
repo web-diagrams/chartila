@@ -9,7 +9,7 @@ import {
   addEdge,
   getConnectedEdges,
 } from 'reactflow';
-import { FlowState, ICodeNode, Page } from '../interfaces/flowStateInterfaces';
+import { CommonNode, FlowState, Page } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
 import { v1 } from 'uuid';
@@ -52,7 +52,7 @@ export const flowSlice = createSlice({
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.edges = addEdge(action.payload, currentPage.edges);
     },
-    onAddNode: (state, action: PayloadAction<{ type: 'stringNode' | 'codeNode' }>) => {
+    onAddNode: (state, action: PayloadAction<{ type: CommonNode }>) => {
       const { type } = action.payload;
       createNode(state, type);
     },
@@ -76,11 +76,11 @@ export const flowSlice = createSlice({
       const { id, value } = action.payload;
       currentPage.nodes.find((node) => node.id === id).data.value = value;
     },
-    onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof ICodeNode; value: any }>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      const { id, value, key } = action.payload;
-      // currentPage.nodes.find((node) => node.id === id).data[key] = value;
-    },
+    // onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof ICodeNode; value: any }>) => {
+    //   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
+    //   const { id, value, key } = action.payload;
+    // currentPage.nodes.find((node) => node.id === id).data[key] = value;
+    // },
 
     onChangePage: (state, action: PayloadAction<string>) => {
       state.currentPageId = action.payload;

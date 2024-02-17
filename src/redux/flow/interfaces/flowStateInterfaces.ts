@@ -8,17 +8,29 @@ export interface FlowState {
 export interface Page {
   id: string;
   pageName: string;
-  nodes: Node<SelfNode>[];
+  nodes: CommonNode[];
   edges: Edge[];
 }
 
-interface SelfNode extends Omit<Node, 'position' | 'data'> {
+export interface customData {
+  id: string;
   value: string;
   color: string;
 }
 
-export interface IStringNode extends SelfNode { }
-
-export interface ICodeNode extends SelfNode {
-  isWrapped: boolean;
+export interface StringNode extends Omit<Node<customData>, 'data'> {
+  data: StringNodeData;
 }
+export interface CodeNode extends Omit<Node<customData>, 'data'> {
+  data: CodeNodeData;
+}
+
+export type CommonNode = StringNode | CodeNode;
+
+export type StringNodeData = {
+  nodeType: 'stringNode';
+} & customData;
+export type CodeNodeData = {
+  nodeType: 'codeNode';
+  isWrapped: boolean;
+} & customData;
