@@ -9,13 +9,12 @@ import { NodeMenu } from './NodeMenu/NodeMenu';
 
 type NodeWrapperProps = {
   isDoubleClick: boolean;
-  setIsDoubleClick: (value: boolean) => void;
   id: string;
   children?: React.ReactNode;
   onDoubleClick?: () => void;
 };
 
-const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDoubleClick, setIsDoubleClick, id }) => {
+const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDoubleClick, id }) => {
   const [isModal, setIsModal] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const ref = useRef(null);
@@ -30,11 +29,22 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
     [id],
   );
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(e);
+    switch (e.detail) {
+      case 1:
+        break;
+      case 2:
+        console.log('double click');
+        onDoubleClick();
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target)) {
         if (isDoubleClick) {
-          // setIsDoubleClick(false);
+          onDoubleClick();
         }
         if (isFocused) {
           setIsFocused(false);
@@ -52,7 +62,15 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
   };
 
   return (
-    <div ref={ref} onFocus={onFocus} tabIndex={0} onKeyDown={onKeyDown}>
+    <div
+      ref={ref}
+      onFocus={onFocus}
+      onClick={handleClick}
+      onMouseDown={(e) => console.log('down')}
+      className={styles.node_wrapper}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+    >
       {isModal && <ModalWrapper />}
       <div className={classNames(styles.node_wrapper_container, { [styles.focused]: isFocused }, [])}>
         {isFocused && <NodeMenu nodeId={id} />}

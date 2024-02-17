@@ -26,7 +26,7 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
   );
 
   const handleDoubleClick = () => {
-    setIsDoubleClick(true);
+    setIsDoubleClick(!isDoubleClick);
   };
 
   useEffect(() => {
@@ -35,17 +35,22 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
     }
   }, [data.value]);
 
+  const a = 'for(let i = 0; i < 10; i++){\n' + '    console.log(i)\n' + '  }';
+
   const getNode = () => {
     if (data.nodeType === 'codeNode') {
       return (
         <>
           <div className={classNames('', { [styles.inputWrapper]: data.isWrapped }, [])}>
-            <textarea
-              rows={data.isWrapped ? 1 : text.split('\n').length}
-              className={classNames(styles.codeInput)}
-              value={text}
-              onChange={onChange}
-            />
+            {/*<textarea*/}
+            {/*  rows={data.isWrapped ? 1 : text.split('\n').length}*/}
+            {/*  className={classNames(styles.codeInput)}*/}
+            {/*  value={text}*/}
+            {/*  onChange={onChange}*/}
+            {/*/>*/}
+            <pre>
+              <code>{a}</code>
+            </pre>
           </div>
           <button className={styles.wrapButton}>{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
         </>
@@ -66,12 +71,7 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
   };
 
   return (
-    <NodeWrapper
-      id={data.id}
-      onDoubleClick={handleDoubleClick}
-      isDoubleClick={isDoubleClick}
-      setIsDoubleClick={setIsDoubleClick}
-    >
+    <NodeWrapper id={data.id} onDoubleClick={handleDoubleClick} isDoubleClick={isDoubleClick}>
       <Handle type="target" position={Position.Left} onConnect={(params) => console.log('handle onConnect', params)} />
       <div className={classNames(styles.container)}>{isDoubleClick ? getNode() : <div>{text}</div>}</div>
       <Handle type="source" position={Position.Right} id="a" />
