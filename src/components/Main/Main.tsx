@@ -11,7 +11,7 @@ import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { NodeData } from '@/redux/flow/constants/constants';
 
 function Main() {
-  const { pages, currentPageId } = useAppSelector((state) => state.flow);
+  const { pages, currentPageId, selectedNodes } = useAppSelector((state) => state.flow);
   const dispatch = useAppDispatch();
 
   const currentPage = useCurrentPage(pages, currentPageId);
@@ -35,11 +35,14 @@ function Main() {
 
   const divRef = useRef(null);
 
-  const onClickOutSide = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (divRef.current && divRef.current.contains(e.target)) {
-      dispatch(flowActions.onReleaseNodes());
-    }
-  }, []);
+  const onClickOutSide = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (divRef.current && divRef.current.contains(e.target) && selectedNodes.length) {
+        dispatch(flowActions.onReleaseNodes());
+      }
+    },
+    [selectedNodes],
+  );
 
   return (
     <div ref={divRef} style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
