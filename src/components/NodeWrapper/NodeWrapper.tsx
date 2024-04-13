@@ -9,13 +9,12 @@ import { NodeMenu } from './NodeMenu/NodeMenu';
 import { useAppSelector } from '@/app/hooks';
 
 type NodeWrapperProps = {
-  isDoubleClick: boolean;
   id: string;
   children?: React.ReactNode;
-  onDoubleClick?: () => void;
+  onHoveredChange: (isHovered: boolean) => void
 };
 
-const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDoubleClick, id }) => {
+const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange }) => {
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
   const { selectedNodes } = useAppSelector((state) => state.flow);
@@ -41,14 +40,18 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
         else dispatch(flowActions.onSelectNode(id));
         break;
       }
-
-      case 2:
-        onDoubleClick();
     }
   };
 
   return (
-    <div onClick={handleClick} className={styles.node_wrapper} tabIndex={0} onKeyDown={onKeyDown}>
+    <div
+      onClick={handleClick}
+      className={styles.node_wrapper}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      onMouseEnter={() => onHoveredChange(true)}
+      onMouseLeave={() => onHoveredChange(false)}
+    >
       {isModal && <ModalWrapper />}
       <div className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}>
         {isSelected && <NodeMenu nodeId={id} />}

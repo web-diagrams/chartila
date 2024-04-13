@@ -20,9 +20,11 @@ export interface customData {
 }
 
 export type CommonNodeDataType = StringNodeData | CodeNodeData;
+
 export type StringNodeData = {
   nodeType: 'stringNode';
 } & customData;
+
 export type CodeNodeData = {
   nodeType: 'codeNode';
   isWrapped: boolean;
