@@ -9,14 +9,16 @@ import {
   addEdge,
   getConnectedEdges,
 } from 'reactflow';
-import { FlowState, ICodeNode, Page } from '../interfaces/flowStateInterfaces';
+import { FlowState, Page } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
 import { v1 } from 'uuid';
+import { NodeData } from '../constants/constants';
 
 const initialState: FlowState = {
   pages: null,
   currentPageId: null,
+  selectedNodes: [],
 };
 
 export const flowSlice = createSlice({
@@ -52,7 +54,7 @@ export const flowSlice = createSlice({
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.edges = addEdge(action.payload, currentPage.edges);
     },
-    onAddNode: (state, action: PayloadAction<{ type: 'stringNode' | 'codeNode' }>) => {
+    onAddNode: (state, action: PayloadAction<{ type: NodeData }>) => {
       const { type } = action.payload;
       createNode(state, type);
     },
@@ -76,14 +78,23 @@ export const flowSlice = createSlice({
       const { id, value } = action.payload;
       currentPage.nodes.find((node) => node.id === id).data.value = value;
     },
-    onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof ICodeNode; value: any }>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      const { id, value, key } = action.payload;
-      // currentPage.nodes.find((node) => node.id === id).data[key] = value;
-    },
+    // onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof ICodeNode; value: any }>) => {
+    //   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
+    //   const { id, value, key } = action.payload;
+    // currentPage.nodes.find((node) => node.id === id).data[key] = value;
+    // },
 
     onChangePage: (state, action: PayloadAction<string>) => {
       state.currentPageId = action.payload;
+    },
+    onSelectNode: (state, action: PayloadAction<string>) => {
+      state.selectedNodes = [action.payload];
+    },
+    onReleaseNode: (state, action: PayloadAction<string>) => {
+      state.selectedNodes = state.selectedNodes.filter((nodeId) => nodeId !== action.payload);
+    },
+    onReleaseNodes: (state) => {
+      state.selectedNodes = [];
     },
   },
   extraReducers: (builder) => {

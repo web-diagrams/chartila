@@ -1,7 +1,5 @@
-import CodeNode from '../CodeNode/CodeNode';
-import StringNode from '../StringNode/StringNode';
+import { CustomNode } from '../CustomNode/CustomNode';
 
 export const NodeTypes = {
-  stringNode: StringNode,
-  codeNode: CodeNode,
+  customNode: CustomNode,
 };

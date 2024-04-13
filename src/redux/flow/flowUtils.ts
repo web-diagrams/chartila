@@ -1,30 +1,32 @@
 import { v1 } from 'uuid';
-import { FlowState, ICodeNode } from './interfaces/flowStateInterfaces';
+import { NodeData } from './constants/constants';
+import { FlowState } from './interfaces/flowStateInterfaces';
 
-export const createNode = (state: FlowState, type: 'stringNode' | 'codeNode') => {
+export const createNode = (state: FlowState, type: NodeData) => {
   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
   switch (type) {
-    case 'stringNode': {
+    case NodeData.STRING_NODE: {
       const id = v1();
       currentPage.nodes.push({
         id: id,
-        type: 'stringNode',
-        data: { value: '', id: id, color: 'black' },
+        type: 'customNode',
+        data: { value: '', id: id, color: 'black', nodeType: 'stringNode' },
         position: { x: 300, y: 50 },
       });
       break;
     }
-    case 'codeNode': {
+    case NodeData.CODE_NODE: {
       const id = v1();
       currentPage.nodes.push({
         id: id,
-        type: 'codeNode',
+        type: 'customNode',
         data: {
           value: '',
           id: id,
           color: 'black',
+          nodeType: 'codeNode',
           isWrapped: false,
-        } as ICodeNode,
+        },
         position: { x: 300, y: 50 },
       });
     }

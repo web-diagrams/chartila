@@ -3,22 +3,27 @@ import { Edge, Node } from 'reactflow';
 export interface FlowState {
   pages: Page[];
   currentPageId: string;
+  selectedNodes: string[];
 }
 
 export interface Page {
   id: string;
   pageName: string;
-  nodes: Node<SelfNode>[];
+  nodes: Node<CommonNodeDataType>[];
   edges: Edge[];
 }
 
-interface SelfNode extends Omit<Node, 'position' | 'data'> {
+export interface customData {
+  id: string;
   value: string;
   color: string;
 }
 
-export interface IStringNode extends SelfNode { }
-
-export interface ICodeNode extends SelfNode {
+export type CommonNodeDataType = StringNodeData | CodeNodeData;
+export type StringNodeData = {
+  nodeType: 'stringNode';
+} & customData;
+export type CodeNodeData = {
+  nodeType: 'codeNode';
   isWrapped: boolean;
-}
+} & customData;

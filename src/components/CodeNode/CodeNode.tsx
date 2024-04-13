@@ -1,81 +1,32 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import { Handle, Position } from 'reactflow';
-import NodeWrapper from '../NodeWrapper/NodeWrapper';
-import { useAppDispatch } from '@/app/hooks';
-import s from './CodeNode.module.scss';
+import React, { FC, memo } from 'react';
 import { classNames } from '@/utils';
+import { CodeNodeData } from '@/redux/flow/interfaces/flowStateInterfaces';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { ICodeNode } from '@/redux/flow/interfaces/flowStateInterfaces';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import styles from '../CustomNode/CustomeNode.module.scss';
+import CodeComponent from './CodeComponent';
 
 type CodeNodeProps = {
-  data: ICodeNode;
+  data: CodeNodeData;
 };
 
+const a = 'for(let i = 0; i < 10; i++){\n' + '    console.log(i)\n' + '  }';
+
 const CodeNode: FC<CodeNodeProps> = memo(({ data }) => {
-  const dispatch = useAppDispatch();
-  const [isDoubleClick, setIsDoubleClick] = useState(false);
-  const [v, setV] = useState<string>('');
-
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.currentTarget.value;
-      setV(() => value);
-    },
-    [v],
-  );
-
-  const handleDoubleClick = () => {
-    setIsDoubleClick(true);
-  };
-
-  useEffect(() => {
-    if (data?.value) {
-      setV(() => data.value);
-    }
-  }, [data.value]);
-
-  console.log('1');
-
   return (
-    <NodeWrapper
-      id={data.id}
-      onDoubleClick={handleDoubleClick}
-      isDoubleClick={isDoubleClick}
-      setIsDoubleClick={setIsDoubleClick}
-    >
-      <Handle type="target" position={Position.Left} onConnect={(params) => console.log('handle onConnect', params)} />
-      <div className={classNames(s.container)}>
-        {isDoubleClick ? (
-          <>
-            <div className={classNames('', { [s.inputWrapper]: data.isWrapped }, [])}>
-              <textarea
-                rows={data.isWrapped ? 1 : v.split('\n').length}
-                className={classNames(s.codeInput)}
-                value={v}
-                onBlur={(e) =>
-                  dispatch(flowActions.onChangeCodeNode({ id: data.id, key: 'value', value: e.currentTarget.value }))
-                }
-                onChange={onChange}
-              />
-            </div>
-            <button
-              className={s.wrapButton}
-              onClick={() =>
-                dispatch(flowActions.onChangeCodeNode({ id: data.id, key: 'isWrapped', value: !data.isWrapped }))
-              }
-            >
-              {data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}
-            </button>
-          </>
-        ) : (
-          <div>{v}</div>
-        )}
+    <>
+      <div className={classNames('', { [styles.inputWrapper]: data.isWrapped }, [])}>
+        {/*<textarea*/}
+        {/*  rows={data.isWrapped ? 1 : text.split('\n').length}*/}
+        {/*  className={classNames(styles.codeInput)}*/}
+        {/*  value={text}*/}
+        {/*  onChange={onChange}*/}
+        {/*/>*/}
+        {/* P */}
+        <CodeComponent code={a} />
       </div>
-      <Handle type="source" position={Position.Right} id="a" />
-    </NodeWrapper>
+      <button className={styles.wrapButton}>{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
+    </>
   );
 });
 CodeNode.displayName = 'CodeNode';
-
 export default CodeNode;
