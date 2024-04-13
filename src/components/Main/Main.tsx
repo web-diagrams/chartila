@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
 import { NodeTypes } from './interface';
 import StartWindow from '../StartWindow/StartWindow';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { NodeData } from '@/redux/flow/constants/constants';
@@ -33,19 +33,14 @@ function Main() {
     URL.revokeObjectURL(href);
   }, [pages, currentPageId]);
 
-  const divRef = useRef(null);
-
-  const onClickOutSide = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (divRef.current && divRef.current.contains(e.target) && selectedNodes.length) {
-        dispatch(flowActions.onReleaseNodes());
-      }
-    },
-    [selectedNodes],
-  );
+  const onClickOutSide = () => {
+    if (selectedNodes.length) {
+      dispatch(flowActions.onReleaseNodes());
+    }
+  };
 
   return (
-    <div ref={divRef} style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
+    <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
       {currentPage ? (
         <>
           <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import ModalWrapper from '@/components/ModalWrapper/ModalWrapper';
 import styles from './styles.module.scss';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -17,7 +17,6 @@ type NodeWrapperProps = {
 
 const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDoubleClick, id }) => {
   const [isModal, setIsModal] = useState(false);
-  const ref = useRef(null);
   const dispatch = useDispatch();
   const { selectedNodes } = useAppSelector((state) => state.flow);
 
@@ -49,7 +48,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, onDoubleClick, isDou
   };
 
   return (
-    <div ref={ref} onClick={handleClick} className={styles.node_wrapper} tabIndex={0} onKeyDown={onKeyDown}>
+    <div onClick={handleClick} className={styles.node_wrapper} tabIndex={0} onKeyDown={onKeyDown}>
       {isModal && <ModalWrapper />}
       <div className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}>
         {isSelected && <NodeMenu nodeId={id} />}
