@@ -47,7 +47,7 @@ module.exports = {
         'prettier/prettier': [
             'warn',
             {
-                endOfLine: 'auto',
+                endOfLine: 'off',
             },
         ],
     },

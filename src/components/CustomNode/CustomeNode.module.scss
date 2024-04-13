@@ -57,7 +57,13 @@
 }
 
 .stringInput {
-  width: 120px;
   resize: none;
-  overflow-y: hidden;
+  font-size: 12px;
+  text-align: center;
+  border: none;
+  overflow: hidden;
+
+  &:focus-visible {
+    outline: none
+  }
 }
