@@ -22,11 +22,10 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
     setIsHovered(() => isHovered);
   }, [setIsHovered])
 
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.currentTarget.value;
-      setText(value);
-    }, [text]);
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.currentTarget.value;
+    setText(value);
+  };
 
   const textWidth = useMemo(() => {
     let number = 0;
