@@ -11,7 +11,7 @@ import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { NodeData } from '@/redux/flow/constants/constants';
 
 function Main() {
-  const { pages, currentPageId } = useAppSelector((state) => state.flow);
+  const { pages, currentPageId, selectedNodes } = useAppSelector((state) => state.flow);
   const dispatch = useAppDispatch();
 
   const currentPage = useCurrentPage(pages, currentPageId);
@@ -33,8 +33,14 @@ function Main() {
     URL.revokeObjectURL(href);
   }, [pages, currentPageId]);
 
+  const onClickOutSide = () => {
+    if (selectedNodes.length) {
+      dispatch(flowActions.onReleaseNodes());
+    }
+  };
+
   return (
-    <div style={{ height: '100vh', width: '100vw' }}>
+    <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
       {currentPage ? (
         <>
           <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
