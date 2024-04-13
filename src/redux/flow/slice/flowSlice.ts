@@ -96,6 +96,20 @@ export const flowSlice = createSlice({
     onReleaseNodes: (state) => {
       state.selectedNodes = [];
     },
+    onAddPage: (state) => {
+      const pageId = v1();
+      state.pages.push({
+        id: pageId,
+        nodes: [],
+        edges: [],
+        pageName: 'New page',
+      });
+      state.currentPageId = pageId;
+    },
+    onChangeNamePage: (state, action: PayloadAction<{ id: string; name: string }>) => {
+      const { id, name } = action.payload;
+      state.pages = state.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
+    },
   },
   extraReducers: (builder) => {
     builder

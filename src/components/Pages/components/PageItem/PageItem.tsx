@@ -1,31 +1,36 @@
-// eslint-disable-next-line prettier/prettier
-import { useCallback } from 'react';
+import { useState } from 'react';
 import styles from './styles.module.scss';
-import { FaCheck } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
 
 interface PageItemProps {
-  itemId: string;
-  name: string;
-  setIsOpen: (e: boolean) => void;
+  page: Page;
 }
-const PageItem = ({ itemId, name, setIsOpen }: PageItemProps) => {
+const PageItem = ({ page }: PageItemProps) => {
   const dispatch = useAppDispatch();
-  const { currentPageId } = useAppSelector((state) => state.flow);
-
-  const onClick = useCallback(() => {
-    dispatch(flowActions.onChangePage(itemId));
-    setIsOpen(false);
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
+  const [pageName, setPageName] = useState(page.pageName);
 
   return (
-    <div onClick={onClick} className={styles.list_item}>
-      <div>{name}</div>
-      {itemId === currentPageId && <FaCheck style={{ marginLeft: '5px' }} fill={'green'} />}
+    <div className={styles.page_element} onDoubleClick={() => setIsOpen(true)}>
+      {isOpen ? (
+        <input
+          className={styles.input}
+          type="text"
+          value={pageName}
+          onChange={(e) => setPageName(e.target.value)}
+          onBlur={() => {
+            setIsOpen(false);
+            dispatch(flowActions.onChangeNamePage({ id: page.id, name: pageName }));
+          }}
+          autoFocus
+        />
+      ) : (
+        <div>{page.pageName}</div>
+      )}
     </div>
   );
 };
-PageItem.displayName = 'PageItem';
 
 export default PageItem;

@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { NodeData } from '@/redux/flow/constants/constants';
+import Button from '@/shared/Button';
 
 function Main() {
   const { pages, currentPageId, selectedNodes } = useAppSelector((state) => state.flow);
@@ -43,14 +44,14 @@ function Main() {
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
       {currentPage ? (
         <>
-          <div style={{ position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
-            <button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.STRING_NODE }))}>
+          <div style={{ display: 'flex', position: 'fixed', top: '15px', left: '15px', zIndex: '111' }}>
+            <Button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.STRING_NODE }))}>
               Добавить текстовый инпут
-            </button>
-            <button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.CODE_NODE }))}>
+            </Button>
+            <Button onClick={() => dispatch(flowActions.onAddNode({ type: NodeData.CODE_NODE }))}>
               Добавить инпут под код
-            </button>
-            <button onClick={saveToFile}>Сохранить страницу</button>
+            </Button>
+            <Button onClick={saveToFile}>Сохранить страницу</Button>
           </div>
           <ReactFlow
             nodes={currentPage.nodes}
