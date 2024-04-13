@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css';
 
-import ReactFlow, { Controls, Background, NodeChange, EdgeChange, Connection } from 'reactflow';
+import ReactFlow, { Controls, Background, NodeChange, EdgeChange, Connection, BackgroundVariant } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
 import { NodeTypes } from './interface';
@@ -63,7 +63,7 @@ function Main() {
             fitView
             nodeTypes={NodeTypes}
           >
-            <Background />
+            <Background variant={BackgroundVariant.Cross} />
             <Controls />
           </ReactFlow>
           <Pages />
