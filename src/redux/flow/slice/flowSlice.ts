@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Edge } from 'reactflow';
-import { CodeNodeData, FlowState, Page } from '../interfaces/flowStateInterfaces';
+import { CommonNodeDataType, FlowState, Page } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
 import { v1 } from 'uuid';
@@ -59,21 +59,11 @@ export const flowSlice = createSlice({
       currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge));
     },
 
-    onChangeNodeColor: (state, action: PayloadAction<{ id: string; color: string }>) => {
-      const { id, color } = action.payload;
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      currentPage.nodes.find((node) => node.id === id).data.color = color;
-    },
-
-    onChangeTextNode: (state, action: PayloadAction<{ id: string; value: string }>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      const { id, value } = action.payload;
-      currentPage.nodes.find((node) => node.id === id).data.text = value;
-    },
-    onChangeCodeNode: (state, action: PayloadAction<{ id: string; key: keyof CodeNodeData; value: unknown }>) => {
+    onChangeNode: (state, action: PayloadAction<{ id: string; key: keyof CommonNodeDataType; value: unknown }>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       const { id, value, key } = action.payload;
-      if (typeof value === 'string' && key === 'text') {
+
+      if ((key === 'text' || key === 'color') && typeof value === 'string') {
         currentPage.nodes.find((node) => node.id === id).data[key] = value;
       }
     },

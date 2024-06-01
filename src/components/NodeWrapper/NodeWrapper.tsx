@@ -7,6 +7,7 @@ import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { classNames } from '@/utils';
 import { NodeMenu } from './NodeMenu/NodeMenu';
 import { useAppSelector } from '@/app/hooks';
+import { useCurrentNode } from '@/hooks/useCurrentNode';
 
 type NodeWrapperProps = {
   id: string;
@@ -19,6 +20,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
   const { selectedNodes } = useAppSelector((state) => state.flow);
+  const node = useCurrentNode(id);
 
   const isSelected = useMemo<boolean>(() => {
     return selectedNodes.includes(id);
@@ -56,6 +58,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
     >
       {isModal && <ModalWrapper />}
       <div
+        style={{ backgroundColor: node?.data?.color ?? 'white' }}
         onDoubleClick={() => setIsDoubleClicked(true)}
         className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}
       >
