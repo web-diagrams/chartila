@@ -6,6 +6,14 @@ body {
 
     * {
         font-family: var(--font-family-main);
-        font-size: 15px;
+        font-size: 12px;
+    }
+
+    pre {
+        margin: 0;
+    }
+
+    textarea {
+        padding: 0;
     }
 }

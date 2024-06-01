@@ -15,13 +15,13 @@ export interface Page {
 
 export interface customData {
   id: string;
-  value: string;
+  text: string;
   color: string;
 }
 
-export type CommonNodeDataType = StringNodeData | CodeNodeData;
+export type CommonNodeDataType = TextNodeData | CodeNodeData;
 
-export type StringNodeData = {
+export type TextNodeData = {
   nodeType: 'stringNode';
 } & customData;
 
