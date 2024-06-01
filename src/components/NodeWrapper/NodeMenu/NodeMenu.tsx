@@ -21,7 +21,7 @@ export const NodeMenu: FC<NodeMenuProps> = (props) => {
 
   return (
     <div className={styles.menu}>
-      <input type="color" value={node.data.color} onChange={onNodeColorChange} />
+      <input type="color" value={node?.data?.color} onChange={onNodeColorChange} />
     </div>
   );
 };

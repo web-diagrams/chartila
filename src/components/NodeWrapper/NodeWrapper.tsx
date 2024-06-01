@@ -58,7 +58,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
     >
       {isModal && <ModalWrapper />}
       <div
-        style={{ backgroundColor: node.data.color }}
+        style={{ backgroundColor: node?.data?.color ?? 'white' }}
         onDoubleClick={() => setIsDoubleClicked(true)}
         className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}
       >
