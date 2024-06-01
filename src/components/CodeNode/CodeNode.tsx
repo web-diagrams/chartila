@@ -1,30 +1,44 @@
-import React, { FC, memo } from 'react';
+import React, { Dispatch, FC, SetStateAction, memo } from 'react';
 import { classNames } from '@/utils';
 import { CodeNodeData } from '@/redux/flow/interfaces/flowStateInterfaces';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import styles from '../CustomNode/CustomeNode.module.scss';
 import CodeComponent from './CodeComponent';
+import { useAppDispatch } from '@/app/hooks';
+import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { useText } from '@/hooks/useText';
 
 type CodeNodeProps = {
   data: CodeNodeData;
+  isDoubleClicked: boolean;
+  setIsDoubleClicked: Dispatch<SetStateAction<boolean>>;
 };
 
-const a = 'for(let i = 0; i < 10; i++){\n' + '    console.log(i)\n' + '  }';
+const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleClicked }) => {
+  const dispatch = useAppDispatch();
+  const { text, onChange, textWidth } = useText(data.text);
 
-const CodeNode: FC<CodeNodeProps> = memo(({ data }) => {
+  const onBlur = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
+    dispatch(flowActions.onChangeCodeNode({ id: data.id, key: 'text', value: e.currentTarget.value }));
+    setIsDoubleClicked(false);
+  };
+
   return (
     <>
       <div className={classNames('', { [styles.inputWrapper]: data.isWrapped }, [])}>
-        {/*<textarea*/}
-        {/*  rows={data.isWrapped ? 1 : text.split('\n').length}*/}
-        {/*  className={classNames(styles.codeInput)}*/}
-        {/*  value={text}*/}
-        {/*  onChange={onChange}*/}
-        {/*/>*/}
-        {/* P */}
-        <CodeComponent code={a} />
+        {isDoubleClicked ? (
+          <textarea
+            style={{ width: `${textWidth}px` }}
+            rows={text.split('\n').length}
+            className={classNames(styles.customNode, {}, ['nodrag'])}
+            value={text}
+            onChange={onChange}
+            onBlur={onBlur}
+            autoFocus
+          />
+        ) : (
+          <CodeComponent code={text} />
+        )}
       </div>
-      <button className={styles.wrapButton}>{data.isWrapped ? <IoIosArrowDown /> : <IoIosArrowUp />}</button>
     </>
   );
 });

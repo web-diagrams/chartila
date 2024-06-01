@@ -20,16 +20,13 @@
   }
 }
 
-.codeInput {
+.customNode {
   position: relative;
-  width: 120px;
-  padding: 10px;
   resize: none;
   overflow-y: hidden;
 
-  background-color: #F7F6F3;
+  background-color: transparent;
   border: none;
-  border-radius: 3px;
 
   transition: height 0.3s ease;
 
@@ -53,17 +50,5 @@
   &:hover {
     cursor: pointer;
     opacity: 0.6;
-  }
-}
-
-.stringInput {
-  resize: none;
-  font-size: 12px;
-  text-align: center;
-  border: none;
-  overflow: hidden;
-
-  &:focus-visible {
-    outline: none
   }
 }

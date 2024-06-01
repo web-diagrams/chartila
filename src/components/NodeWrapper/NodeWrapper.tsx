@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, memo, useCallback, useMemo, useState } from 'react';
 import ModalWrapper from '@/components/ModalWrapper/ModalWrapper';
 import styles from './styles.module.scss';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -11,10 +11,11 @@ import { useAppSelector } from '@/app/hooks';
 type NodeWrapperProps = {
   id: string;
   children?: React.ReactNode;
-  onHoveredChange: (isHovered: boolean) => void
+  onHoveredChange: (isHovered: boolean) => void;
+  setIsDoubleClicked: Dispatch<SetStateAction<boolean>>;
 };
 
-const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange }) => {
+const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked }) => {
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
   const { selectedNodes } = useAppSelector((state) => state.flow);
@@ -36,8 +37,9 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange 
     e.stopPropagation();
     switch (e.detail) {
       case 1: {
-        if (isSelected) dispatch(flowActions.onReleaseNode(id));
-        else dispatch(flowActions.onSelectNode(id));
+        if (!isSelected) {
+          dispatch(flowActions.onSelectNode(id));
+        }
         break;
       }
     }
@@ -53,10 +55,14 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange 
       onMouseLeave={() => onHoveredChange(false)}
     >
       {isModal && <ModalWrapper />}
-      <div className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}>
+      <div
+        onDoubleClick={() => setIsDoubleClicked(true)}
+        className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}
+      >
         {isSelected && <NodeMenu nodeId={id} />}
         <div className={styles.node_wrapper_children_container}>{children}</div>
-        <BsThreeDotsVertical onClick={() => setIsModal(!isModal)} />
+        {/* Будем использовать в будущем */}
+        {/* <BsThreeDotsVertical onClick={() => setIsModal(!isModal)} /> */}
       </div>
     </div>
   );

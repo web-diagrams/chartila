@@ -1,14 +1,13 @@
-import { FC, memo } from "react"
-import { Handle, HandleProps, Position } from "reactflow"
-import styles from './CustomeHandle.module.scss'
-import { classNames } from "@/utils"
+import { FC, memo } from 'react';
+import { Handle, HandleProps } from 'reactflow';
+import styles from './CustomeHandle.module.scss';
+import { classNames } from '@/utils';
 
 interface CustomHandleProps extends HandleProps {
-    isVisible: boolean
+  isVisible: boolean;
 }
 
 export const CustomHandle: FC<CustomHandleProps> = memo(({ isVisible, ...props }) => {
-    return (
-        <Handle className={classNames('', { [styles.unVisible]: !isVisible })} {...props} />
-    )
-})
+  return <Handle className={classNames('', { [styles.unVisible]: !isVisible })} {...props} />;
+});
+CustomHandle.displayName = 'CustomHandle';

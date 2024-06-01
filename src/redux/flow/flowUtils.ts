@@ -10,7 +10,7 @@ export const createNode = (state: FlowState, type: NodeData) => {
       currentPage.nodes.push({
         id: id,
         type: 'customNode',
-        data: { value: '', id: id, color: 'black', nodeType: 'stringNode' },
+        data: { text: '', id: id, color: 'black', nodeType: 'stringNode' },
         position: { x: 300, y: 50 },
       });
       break;
@@ -21,7 +21,7 @@ export const createNode = (state: FlowState, type: NodeData) => {
         id: id,
         type: 'customNode',
         data: {
-          value: '',
+          text: '',
           id: id,
           color: 'black',
           nodeType: 'codeNode',
