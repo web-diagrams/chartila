@@ -1,14 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import {
-  Connection,
-  EdgeChange,
-  NodeChange,
-  applyEdgeChanges,
-  applyNodeChanges,
-  addEdge,
-  getConnectedEdges,
-} from 'reactflow';
+import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Edge } from 'reactflow';
 import { CodeNodeData, FlowState, Page } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { createNode } from '../flowUtils';
@@ -46,9 +38,9 @@ export const flowSlice = createSlice({
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.nodes = applyNodeChanges(action.payload, currentPage.nodes);
     },
-    onChangeEdges: (state, action: PayloadAction<EdgeChange[]>) => {
+    onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      currentPage.edges = applyEdgeChanges(action.payload, currentPage.edges);
+      if (currentPage) currentPage.edges = action.payload;
     },
     onConnect: (state, action: PayloadAction<Connection>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
