@@ -12,15 +12,15 @@ import ReactFlow, {
 } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
-import { NodeTypes } from './interface';
-import StartWindow from '../StartWindow/StartWindow';
+import StartWindow from '../../../components/StartWindow/StartWindow';
 import { useCallback, useEffect, useRef } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { Edge } from '@reactflow/core/dist/esm/types/edges';
 import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
+import { NodeTypes } from '../model/interface';
 
-function Main() {
+export const MainPage = () => {
   const { pages, currentPageId, selectedNodes } = useAppSelector((state) => state.flow);
   const dispatch = useAppDispatch();
 
@@ -95,6 +95,4 @@ function Main() {
       )}
     </div>
   );
-}
-
-export default Main;
+};
