@@ -1,0 +1,12 @@
+.saveIcon {
+  box-sizing: border-box;
+
+  position: fixed;
+  top: 25px;
+  right: 35px;
+  z-index: 1;
+
+  &:hover {
+    cursor: default;
+  }
+}

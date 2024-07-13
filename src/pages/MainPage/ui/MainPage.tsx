@@ -1,4 +1,5 @@
 import 'reactflow/dist/style.css';
+import styles from './MainPage.module.scss';
 
 import ReactFlow, {
   applyEdgeChanges,
@@ -19,9 +20,11 @@ import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { Edge } from '@reactflow/core/dist/esm/types/edges';
 import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
 import { NodeTypes } from '../model/interface';
+import { CiCircleInfo } from 'react-icons/ci';
+import { commonTexts } from '@/shared/consts/texts';
 
 export const MainPage = () => {
-  const { pages, currentPageId, selectedNodes } = useAppSelector((state) => state.flow);
+  const { pages, currentPageId, selectedNodes, isUpdated } = useAppSelector((state) => state.flow);
   const dispatch = useAppDispatch();
 
   const edgeUpdateSuccessful = useRef(true);
@@ -68,6 +71,7 @@ export const MainPage = () => {
       {currentPage ? (
         <>
           <ContextMenu state={contextMenuProps} />
+          {isUpdated && <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />}
           <ReactFlow
             nodes={currentPage.nodes}
             edges={currentPage.edges}

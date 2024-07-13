@@ -30,7 +30,7 @@ const PageItem = ({ page }: PageItemProps) => {
           onChange={(e) => setPageName(e.target.value)}
           onBlur={() => {
             setIsOpen(false);
-            dispatch(flowActions.onChangeNamePage({ id: page.id, name: pageName }));
+            dispatch(flowActions.onChangePageName({ id: page.id, name: pageName }));
           }}
           autoFocus
         />

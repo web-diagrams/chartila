@@ -11,6 +11,7 @@ const initialState: FlowState = {
   pages: null,
   currentPageId: null,
   selectedNodes: [],
+  isUpdated: false,
 };
 
 export const flowSlice = createSlice({
@@ -37,18 +38,22 @@ export const flowSlice = createSlice({
     onChangeNodes: (state, action: PayloadAction<NodeChange[]>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.nodes = applyNodeChanges(action.payload, currentPage.nodes);
+      state.isUpdated = true;
     },
     onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       if (currentPage) currentPage.edges = action.payload;
+      state.isUpdated = true;
     },
     onConnect: (state, action: PayloadAction<Connection>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
       currentPage.edges = addEdge(action.payload, currentPage.edges);
+      state.isUpdated = true;
     },
     onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position?: XYPosition }>) => {
       const { type, position } = payload;
       createNode({ state, type, position });
+      state.isUpdated = true;
     },
     onDeleteNode: (state, action: PayloadAction<string>) => {
       const currentPage = state.pages.find((page) => page.id === state.currentPageId);
@@ -57,6 +62,7 @@ export const flowSlice = createSlice({
       const connectedEdges = getConnectedEdges([nodeToDelete], currentPage.edges);
       currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete);
       currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge));
+      state.isUpdated = true;
     },
 
     onChangeNode: (state, action: PayloadAction<{ id: string; key: keyof CommonNodeDataType; value: unknown }>) => {
@@ -65,6 +71,7 @@ export const flowSlice = createSlice({
 
       if ((key === 'text' || key === 'color') && typeof value === 'string') {
         currentPage.nodes.find((node) => node.id === id).data[key] = value;
+        state.isUpdated = true;
       }
     },
 
@@ -89,10 +96,16 @@ export const flowSlice = createSlice({
         pageName: 'New page',
       });
       state.currentPageId = pageId;
+      state.isUpdated = true;
     },
-    onChangeNamePage: (state, action: PayloadAction<{ id: string; name: string }>) => {
+    onChangePageName: (state, action: PayloadAction<{ id: string; name: string }>) => {
       const { id, name } = action.payload;
       state.pages = state.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
+      state.isUpdated = true;
+    },
+
+    onSave: (state) => {
+      state.isUpdated = false;
     },
   },
   extraReducers: (builder) => {
