@@ -1,9 +1,10 @@
 import { createRoot } from 'react-dom/client';
-import Main from './components/Main/Main';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import './app/styles/index.scss';
 import { ReactFlowProvider } from 'reactflow';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { routeConfig } from './shared/config/routeConfig';
 
 const root = document.getElementById('root');
 
@@ -16,7 +17,17 @@ const container = createRoot(root);
 container.render(
   <Provider store={store}>
     <ReactFlowProvider>
-      <Main />
+      <BrowserRouter>
+        <Routes>
+          {Object.values(routeConfig).map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.authOnly ? <div>{route.element}</div> : route.element}
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
     </ReactFlowProvider>
   </Provider>,
 );

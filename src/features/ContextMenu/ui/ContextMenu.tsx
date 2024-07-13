@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { StateType } from '../model/contexMenuTypes';
 import styles from './ContextMenu.module.scss';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import Button from '@/shared/Button';
+import Button from '@/shared/ui/Button';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { NodeData } from '@/redux/flow/constants/constants';
 
