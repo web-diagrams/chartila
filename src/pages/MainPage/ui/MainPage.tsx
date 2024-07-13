@@ -22,10 +22,24 @@ import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
 import { NodeTypes } from '../model/interface';
 import { CiCircleInfo } from 'react-icons/ci';
 import { commonTexts } from '@/shared/consts/texts';
+import { useKey } from '@/shared/hooks/useKey';
+import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 
 export const MainPage = () => {
-  const { pages, currentPageId, selectedNodes, isUpdated } = useAppSelector((state) => state.flow);
+  const { onSave: saveToFile } = useSaveToFile();
+
+  /** Save logic */
+  useKey((event) => {
+    event.preventDefault();
+
+    if (event.ctrlKey && event.key === 's') {
+      saveToFile();
+      dispatch(flowActions.onSave());
+    }
+  });
+
   const dispatch = useAppDispatch();
+  const { pages, currentPageId, selectedNodes, isUpdated } = useAppSelector((state) => state.flow);
 
   const edgeUpdateSuccessful = useRef(true);
   const currentPage = useCurrentPage(pages, currentPageId);
@@ -70,8 +84,8 @@ export const MainPage = () => {
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
       {currentPage ? (
         <>
-          <ContextMenu state={contextMenuProps} />
           {isUpdated && <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />}
+          <ContextMenu state={contextMenuProps} />
           <ReactFlow
             nodes={currentPage.nodes}
             edges={currentPage.edges}
