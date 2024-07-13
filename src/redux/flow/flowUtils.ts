@@ -1,8 +1,15 @@
 import { v1 } from 'uuid';
 import { NodeData } from './constants/constants';
 import { FlowState } from './interfaces/flowStateInterfaces';
+import { XYPosition } from 'reactflow';
 
-export const createNode = (state: FlowState, type: NodeData) => {
+type CreateNode = {
+  state: FlowState;
+  type: NodeData;
+  position?: XYPosition;
+};
+
+export const createNode = ({ state, type, position = { x: 300, y: 50 } }: CreateNode) => {
   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
   switch (type) {
     case NodeData.STRING_NODE: {
@@ -11,7 +18,7 @@ export const createNode = (state: FlowState, type: NodeData) => {
         id: id,
         type: 'customNode',
         data: { text: '', id: id, color: 'white', nodeType: 'stringNode' },
-        position: { x: 300, y: 50 },
+        position,
       });
       break;
     }
@@ -27,7 +34,7 @@ export const createNode = (state: FlowState, type: NodeData) => {
           nodeType: 'codeNode',
           isWrapped: false,
         },
-        position: { x: 300, y: 50 },
+        position,
       });
     }
   }
