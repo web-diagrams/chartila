@@ -1,0 +1,17 @@
+.container {
+  overflow: hidden;
+
+  background-color: white;
+
+  border-radius: 5px;
+  border: 1px solid black;
+
+  position: fixed;
+  z-index: 1;
+
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+  padding: var(--padding-s);
+}

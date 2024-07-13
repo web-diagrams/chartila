@@ -3,6 +3,7 @@ import Main from './components/Main/Main';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import './app/styles/index.scss';
+import { ReactFlowProvider } from 'reactflow';
 
 const root = document.getElementById('root');
 
@@ -14,6 +15,8 @@ const container = createRoot(root);
 
 container.render(
   <Provider store={store}>
-    <Main />
+    <ReactFlowProvider>
+      <Main />
+    </ReactFlowProvider>
   </Provider>,
 );
