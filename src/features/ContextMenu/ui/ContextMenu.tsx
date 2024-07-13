@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
 import { StateType } from '../model/contexMenuTypes';
 import styles from './ContextMenu.module.scss';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import Button from '@/shared/ui/Button';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { NodeData } from '@/redux/flow/constants/constants';
+import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 
 type ContextMenuProps = {
   state: StateType;
@@ -13,24 +13,7 @@ type ContextMenuProps = {
 export const ContextMenu = ({ state }: ContextMenuProps) => {
   const dispatch = useAppDispatch();
 
-  const { pages, currentPageId } = useAppSelector((state) => state.flow);
-
-  const saveToFile = useCallback(() => {
-    const fileName = 'random';
-
-    const json = JSON.stringify({ pages: pages }, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const href = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = fileName + '.json';
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
-  }, [pages, currentPageId]);
+  const { onSave: saveToFile } = useSaveToFile();
 
   if (state.isOpen) {
     return (

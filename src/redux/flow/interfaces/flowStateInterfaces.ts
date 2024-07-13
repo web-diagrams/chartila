@@ -4,6 +4,7 @@ export interface FlowState {
   pages: Page[];
   currentPageId: string;
   selectedNodes: string[];
+  isUpdated: boolean;
 }
 
 export interface Page {
