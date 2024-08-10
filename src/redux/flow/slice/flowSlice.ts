@@ -50,7 +50,7 @@ export const flowSlice = createSlice({
       currentPage.edges = addEdge(action.payload, currentPage.edges);
       state.isUpdated = true;
     },
-    onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position?: XYPosition }>) => {
+    onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position: XYPosition }>) => {
       const { type, position } = payload;
       createNode({ state, type, position });
       state.isUpdated = true;
@@ -75,9 +75,6 @@ export const flowSlice = createSlice({
       }
     },
 
-    onChangePage: (state, action: PayloadAction<string>) => {
-      state.currentPageId = action.payload;
-    },
     onSelectNode: (state, action: PayloadAction<string>) => {
       state.selectedNodes = [action.payload];
     },
@@ -86,6 +83,10 @@ export const flowSlice = createSlice({
     },
     onReleaseNodes: (state) => {
       state.selectedNodes = [];
+    },
+
+    onChangePage: (state, action: PayloadAction<string>) => {
+      state.currentPageId = action.payload;
     },
     onAddPage: (state) => {
       const pageId = v1();
