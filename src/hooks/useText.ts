@@ -19,7 +19,7 @@ export const useText = (textValue: string) => {
     tempElement.style.fontSize = '12px';
     document.body.appendChild(tempElement);
 
-    number = tempElement.offsetWidth + 2;
+    number = tempElement.offsetWidth ? tempElement.offsetWidth + 2 : 10;
     tempElement.remove();
     return number;
   }, [text]);

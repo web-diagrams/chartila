@@ -6,10 +6,10 @@ import { XYPosition } from 'reactflow';
 type CreateNode = {
   state: FlowState;
   type: NodeData;
-  position?: XYPosition;
+  position: XYPosition;
 };
 
-export const createNode = ({ state, type, position = { x: 300, y: 50 } }: CreateNode) => {
+export const createNode = ({ state, type, position }: CreateNode) => {
   const currentPage = state.pages.find((page) => page.id === state.currentPageId);
   switch (type) {
     case NodeData.STRING_NODE: {
