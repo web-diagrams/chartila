@@ -1,5 +1,8 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
+const DEFAULT_NODE_WIDTH = 10;
+const DEFAULT_NODE_GAP = 2;
+
 export const useText = (textValue: string) => {
   const [text, setText] = useState<string>(textValue);
 
@@ -19,7 +22,7 @@ export const useText = (textValue: string) => {
     tempElement.style.fontSize = '12px';
     document.body.appendChild(tempElement);
 
-    number = tempElement.offsetWidth ? tempElement.offsetWidth + 2 : 10;
+    number = tempElement.offsetWidth ? tempElement.offsetWidth + DEFAULT_NODE_GAP : DEFAULT_NODE_WIDTH;
     tempElement.remove();
     return number;
   }, [text]);
