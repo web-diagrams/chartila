@@ -30,8 +30,6 @@ export const MainPage = () => {
 
   /** Save logic */
   useKey((event) => {
-    event.preventDefault();
-
     if (event.ctrlKey && event.key === 's') {
       saveToFile();
       dispatch(flowActions.onSave());
