@@ -125,9 +125,11 @@ export const flowSlice = createSlice({
     },
 
     // Работа со страницами
-    onChangePage: (state, action: PayloadAction<string>) => {
-      state.currentState.currentPageId = action.payload;
-      // addStep(state);
+    onSelectPage: (state, action: PayloadAction<string>) => {
+      if (state.currentState.currentPageId !== action.payload) {
+        state.currentState.currentPageId = action.payload;
+        stateToHistory(state);
+      }
     },
     onAddPage: (state) => {
       const currentState = state.currentState;
@@ -140,14 +142,14 @@ export const flowSlice = createSlice({
       });
       currentState.currentPageId = pageId;
       currentState.isUpdated = true;
-      // addStep(state);
+      stateToHistory(state);
     },
     onChangePageName: (state, action: PayloadAction<{ id: string; name: string }>) => {
       const currentState = state.currentState;
       const { id, name } = action.payload;
       currentState.pages = currentState.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
       currentState.isUpdated = true;
-      // addStep(state);
+      stateToHistory(state);
     },
 
     // работа с инфраструктурой

@@ -19,7 +19,7 @@ const PageItem = ({ page }: PageItemProps) => {
   return (
     <div
       className={styles.page_element}
-      onClick={() => dispatch(flowActions.onChangePage(page.id))}
+      onClick={() => dispatch(flowActions.onSelectPage(page.id))}
       onDoubleClick={() => setIsOpen(true)}
       style={{ background: isCurrentPageId ? 'lightgray' : '' }}
     >
