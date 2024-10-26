@@ -13,7 +13,7 @@ type ContextMenuProps = {
 export const ContextMenu = ({ state }: ContextMenuProps) => {
   const dispatch = useAppDispatch();
 
-  const { onSave: saveToFile } = useSaveToFile();
+  // const { onSave: saveToFile } = useSaveToFile();
 
   if (state.isOpen) {
     return (
@@ -28,7 +28,7 @@ export const ContextMenu = ({ state }: ContextMenuProps) => {
         >
           Добавить инпут под код
         </Button>
-        <Button onClick={saveToFile}>Сохранить страницу</Button>
+        {/* <Button onClick={saveToFile}>Сохранить страницу</Button> */}
       </div>
     );
   }

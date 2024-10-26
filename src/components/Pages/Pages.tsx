@@ -1,12 +1,13 @@
 import styles from './styles.module.scss';
 import PageItem from './components/PageItem/PageItem';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { FaPlus } from 'react-icons/fa6';
 import Button from '@/shared/ui/Button';
+import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 
 const Pages = () => {
-  const { pages } = useAppSelector((state) => state.flow);
+  const { pages } = useGetFlowState();
   const dispatch = useAppDispatch();
 
   return (

@@ -9,6 +9,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:prettier/recommended',
         'prettier',
+        "plugin:react-hooks/recommended",
     ],
     overrides: [
         {
