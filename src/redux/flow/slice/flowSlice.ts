@@ -106,18 +106,22 @@ export const flowSlice = createSlice({
       state.currentState.selectedNodes = [];
     },
 
-    // Работа с связями
+    // Работа со связями
     onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
+      let isCountOfEdgesWereChagned = false;
       const currentPage = getCurrentPage(state);
+      if (currentPage && currentPage.edges.length !== action.payload.length) {
+        isCountOfEdgesWereChagned = true;
+      }
       if (currentPage) currentPage.edges = action.payload;
       state.currentState.isUpdated = true;
-      // addStep(state);
+      if (isCountOfEdgesWereChagned) stateToHistory(state);
     },
     onConnect: (state, action: PayloadAction<Connection>) => {
       const currentPage = getCurrentPage(state);
       currentPage.edges = addEdge(action.payload, currentPage.edges);
       state.currentState.isUpdated = true;
-      // addStep(state);
+      stateToHistory(state);
     },
 
     // Работа со страницами
