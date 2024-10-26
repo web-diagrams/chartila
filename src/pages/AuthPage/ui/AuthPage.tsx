@@ -1,3 +1,3 @@
 export const AuthPage = () => {
-  return <div></div>;
+  return <div>Страница авторизации</div>;
 };

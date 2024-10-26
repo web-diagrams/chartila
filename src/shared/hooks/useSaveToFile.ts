@@ -1,8 +1,8 @@
-import { useAppSelector } from '@/app/hooks';
+import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 import { useCallback } from 'react';
 
 export const useSaveToFile = () => {
-  const { pages, currentPageId } = useAppSelector((state) => state.flow);
+  const { pages, currentPageId } = useGetFlowState();
 
   return {
     onSave: useCallback(() => {
@@ -20,6 +20,6 @@ export const useSaveToFile = () => {
 
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
-    }, [pages, currentPageId]),
+    }, [pages]),
   };
 };

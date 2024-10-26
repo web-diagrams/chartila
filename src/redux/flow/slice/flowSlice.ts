@@ -1,17 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Edge, XYPosition } from 'reactflow';
-import { CommonNodeDataType, FlowState, Page } from '../interfaces/flowStateInterfaces';
+import { CommonNodeDataType, FlowState, HistoryState } from '../interfaces/flowStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
-import { createNode } from '../flowUtils';
+import { stateToHistory, getNewNode, getCurrentPage } from '../flowUtils';
 import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
+import { cloneDeep } from 'lodash';
 
-const initialState: FlowState = {
+const getDefaultState = (): FlowState => ({
   pages: null,
   currentPageId: null,
   selectedNodes: [],
   isUpdated: false,
+});
+
+const initialState: HistoryState = {
+  history: [getDefaultState()],
+  currentState: getDefaultState(),
+  step: 0,
 };
 
 export const flowSlice = createSlice({
@@ -19,8 +26,9 @@ export const flowSlice = createSlice({
   initialState,
   reducers: {
     onInitState: (state) => {
+      const currentState = state.currentState;
       const pageId = v1();
-      state.pages = [
+      currentState.pages = [
         {
           id: pageId,
           nodes: [],
@@ -28,92 +36,144 @@ export const flowSlice = createSlice({
           pageName: 'New page',
         },
       ];
-      state.currentPageId = pageId;
+      currentState.currentPageId = pageId;
+      state.history[0] = cloneDeep(state.currentState);
     },
-    onUpdateState: (state, action: PayloadAction<Page>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      currentPage.nodes = action.payload.nodes;
-      currentPage.edges = action.payload.edges;
+    onSetState: (state, { payload }: PayloadAction<FlowState>) => {
+      state.currentState = payload;
     },
-    onChangeNodes: (state, action: PayloadAction<NodeChange[]>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      currentPage.nodes = applyNodeChanges(action.payload, currentPage.nodes);
-      state.isUpdated = true;
-    },
-    onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      if (currentPage) currentPage.edges = action.payload;
-      state.isUpdated = true;
-    },
-    onConnect: (state, action: PayloadAction<Connection>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      currentPage.edges = addEdge(action.payload, currentPage.edges);
-      state.isUpdated = true;
-    },
+
+    // Работа с нодами
     onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position: XYPosition }>) => {
       const { type, position } = payload;
-      createNode({ state, type, position });
-      state.isUpdated = true;
+
+      const currentPage = getCurrentPage(state);
+      const newNode = getNewNode({ type, position });
+      currentPage.nodes.push(newNode);
+
+      state.currentState.isUpdated = true;
+      stateToHistory(state); // запоминаем состояние в истории
     },
     onDeleteNode: (state, action: PayloadAction<string>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
+      const currentPage = getCurrentPage(state);
       const id = action.payload;
       const nodeToDelete = currentPage.nodes.find((node) => node.id === id);
-      const connectedEdges = getConnectedEdges([nodeToDelete], currentPage.edges);
-      currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete);
-      currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge));
-      state.isUpdated = true;
-    },
 
-    onChangeNode: (state, action: PayloadAction<{ id: string; key: keyof CommonNodeDataType; value: unknown }>) => {
-      const currentPage = state.pages.find((page) => page.id === state.currentPageId);
-      const { id, value, key } = action.payload;
+      currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete); // удялем ноуду
+
+      const connectedEdges = getConnectedEdges([nodeToDelete], currentPage.edges);
+      currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge)); // удялем связи
+
+      state.currentState.isUpdated = true;
+      stateToHistory(state); // запоминаем состояние в истории
+    },
+    onChangeNodes: (state, { ['payload']: { changes } }: PayloadAction<{ changes: NodeChange[] }>) => {
+      const currentPage = getCurrentPage(state);
+      currentPage.nodes = applyNodeChanges(changes, currentPage.nodes);
+
+      state.currentState.isUpdated = true;
+    },
+    onChangeNode: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof CommonNodeDataType;
+        value: unknown;
+        saveToHistory: boolean;
+      }>,
+    ) => {
+      const currentPage = getCurrentPage(state);
+      const { id, value, key, saveToHistory } = action.payload;
 
       if ((key === 'text' || key === 'color') && typeof value === 'string') {
-        currentPage.nodes.find((node) => node.id === id).data[key] = value;
-        state.isUpdated = true;
+        const currentNode = currentPage.nodes.find((node) => node.id === id);
+        if (currentNode.data[key] !== value) {
+          currentNode.data[key] = value;
+          state.currentState.isUpdated = true;
+        }
+        if (saveToHistory) {
+          stateToHistory(state); // запоминаем состояние в истории
+        }
       }
     },
-
     onSelectNode: (state, action: PayloadAction<string>) => {
-      state.selectedNodes = [action.payload];
+      state.currentState.selectedNodes = [action.payload];
     },
     onReleaseNode: (state, action: PayloadAction<string>) => {
-      state.selectedNodes = state.selectedNodes.filter((nodeId) => nodeId !== action.payload);
+      state.currentState.selectedNodes = state.currentState.selectedNodes.filter((nodeId) => nodeId !== action.payload);
     },
     onReleaseNodes: (state) => {
-      state.selectedNodes = [];
+      state.currentState.selectedNodes = [];
     },
 
-    onChangePage: (state, action: PayloadAction<string>) => {
-      state.currentPageId = action.payload;
+    // Работа со связями
+    onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
+      let isCountOfEdgesWereChagned = false;
+      const currentPage = getCurrentPage(state);
+      if (currentPage && currentPage.edges.length !== action.payload.length) {
+        isCountOfEdgesWereChagned = true;
+      }
+      if (currentPage) currentPage.edges = action.payload;
+      state.currentState.isUpdated = true;
+      if (isCountOfEdgesWereChagned) stateToHistory(state);
+    },
+    onConnect: (state, action: PayloadAction<Connection>) => {
+      const currentPage = getCurrentPage(state);
+      currentPage.edges = addEdge(action.payload, currentPage.edges);
+      state.currentState.isUpdated = true;
+      stateToHistory(state);
+    },
+
+    // Работа со страницами
+    onSelectPage: (state, action: PayloadAction<string>) => {
+      if (state.currentState.currentPageId !== action.payload) {
+        state.currentState.currentPageId = action.payload;
+        stateToHistory(state);
+      }
     },
     onAddPage: (state) => {
+      const currentState = state.currentState;
       const pageId = v1();
-      state.pages.push({
+      currentState.pages.push({
         id: pageId,
         nodes: [],
         edges: [],
         pageName: 'New page',
       });
-      state.currentPageId = pageId;
-      state.isUpdated = true;
+      currentState.currentPageId = pageId;
+      currentState.isUpdated = true;
+      stateToHistory(state);
     },
     onChangePageName: (state, action: PayloadAction<{ id: string; name: string }>) => {
+      const currentState = state.currentState;
       const { id, name } = action.payload;
-      state.pages = state.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
-      state.isUpdated = true;
+      currentState.pages = currentState.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
+      currentState.isUpdated = true;
+      stateToHistory(state);
     },
 
+    // работа с инфраструктурой
     onSave: (state) => {
-      state.isUpdated = false;
+      state.currentState.isUpdated = false;
+    },
+    undo: (state) => {
+      state.step -= 1;
+      state.currentState = state.history[state.step];
+    },
+    redo: (state) => {
+      state.step += 1;
+      state.currentState = state.history[state.step];
+    },
+    onStateToHistory: (state) => {
+      stateToHistory(state); // запоминаем состояние в истории
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(uploadFile.fulfilled, (state, action) => {
-        state.pages = action.payload;
-        state.currentPageId = action.payload[0].id;
+        const currentState = state.currentState;
+        currentState.pages = action.payload;
+        currentState.currentPageId = action.payload[0].id;
       })
       .addCase(uploadFile.rejected, (state, action) => {
         console.log(action.payload);

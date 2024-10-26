@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch } from '@/app/hooks';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 
 interface PageItemProps {
   page: Page;
 }
 const PageItem = ({ page }: PageItemProps) => {
-  const { currentPageId } = useAppSelector((state) => state.flow);
+  const { currentPageId } = useGetFlowState();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [pageName, setPageName] = useState(page.pageName);
@@ -18,7 +19,7 @@ const PageItem = ({ page }: PageItemProps) => {
   return (
     <div
       className={styles.page_element}
-      onClick={() => dispatch(flowActions.onChangePage(page.id))}
+      onClick={() => dispatch(flowActions.onSelectPage(page.id))}
       onDoubleClick={() => setIsOpen(true)}
       style={{ background: isCurrentPageId ? 'lightgray' : '' }}
     >

@@ -1,13 +1,12 @@
 import React, { Dispatch, FC, SetStateAction, memo, useCallback, useMemo, useState } from 'react';
 import ModalWrapper from '@/components/ModalWrapper/ModalWrapper';
 import styles from './styles.module.scss';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { classNames } from '@/utils';
 import { NodeMenu } from './NodeMenu/NodeMenu';
-import { useAppSelector } from '@/app/hooks';
 import { useCurrentNode } from '@/hooks/useCurrentNode';
+import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 
 type NodeWrapperProps = {
   id: string;
@@ -19,12 +18,12 @@ type NodeWrapperProps = {
 const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked }) => {
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
-  const { selectedNodes } = useAppSelector((state) => state.flow);
+  const { selectedNodes } = useGetFlowState();
   const node = useCurrentNode(id);
 
   const isSelected = useMemo<boolean>(() => {
     return selectedNodes.includes(id);
-  }, [selectedNodes]);
+  }, [id, selectedNodes]);
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -32,7 +31,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
         dispatch(flowActions.onDeleteNode(id));
       }
     },
-    [id],
+    [dispatch, id],
   );
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
