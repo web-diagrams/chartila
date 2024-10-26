@@ -36,7 +36,7 @@ export const MainPage = () => {
 
   const { contextMenuProps, onShowContextMenu, onCloseContextMenu } = useContextMenu();
 
-  const flowCallbacks = useGetFlowCallbacks(currentPage);
+  const flowCallbacks = useGetFlowCallbacks(history, step, currentPage);
 
   const onClickOutSide = () => {
     onCloseContextMenu();
@@ -63,13 +63,13 @@ export const MainPage = () => {
             nodes={currentPage.nodes}
             edges={currentPage.edges}
             onNodesChange={flowCallbacks.onNodeChange}
+            onNodesDelete={(e) => console.log(e)}
+            onNodeDragStop={flowCallbacks.onNodeDragStop}
             onEdgesChange={flowCallbacks.onEdgesChange}
             onConnect={(changes: Connection) => dispatch(flowActions.onConnect(changes))}
-            onNodesDelete={(e) => console.log(e)}
             onEdgeUpdateStart={flowCallbacks.onEdgeUpdateStart}
             onEdgeUpdate={flowCallbacks.onEdgeUpdate}
             onEdgeUpdateEnd={flowCallbacks.onEdgeUpdateEnd}
-            onNodeDragStop={flowCallbacks.onNodeDragStop}
             fitView
             nodeTypes={NodeTypes}
             proOptions={{ hideAttribution: true }}

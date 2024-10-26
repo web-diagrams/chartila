@@ -28,7 +28,7 @@ export const useText = (textValue: string) => {
   }, [text]);
 
   useEffect(() => {
-    if (text) {
+    if (typeof textValue === 'string') {
       setText(textValue);
     }
   }, [textValue]);

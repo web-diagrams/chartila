@@ -16,12 +16,16 @@ export const NodeMenu: FC<NodeMenuProps> = (props) => {
 
   const onNodeColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.currentTarget.value;
-    dispatch(flowActions.onChangeNode({ id: nodeId, key: 'color', value: color }));
+    dispatch(flowActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: false }));
+  };
+  const onNodeColorBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const color = e.currentTarget.value;
+    dispatch(flowActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: true }));
   };
 
   return (
     <div className={styles.menu}>
-      <input type="color" value={node?.data?.color} onChange={onNodeColorChange} />
+      <input type="color" value={node?.data?.color} onChange={onNodeColorChange} onBlur={onNodeColorBlur} />
     </div>
   );
 };

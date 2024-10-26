@@ -18,7 +18,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
   const { text, onChange, textWidth } = useText(data.text);
 
   const onBlur = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
-    dispatch(flowActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value }));
+    dispatch(flowActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value, saveToHistory: true }));
     setIsDoubleClicked(false);
   };
 

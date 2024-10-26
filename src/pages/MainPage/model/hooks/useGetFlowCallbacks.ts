@@ -1,10 +1,11 @@
 import { useAppDispatch } from '@/app/hooks';
-import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { FlowState, Page } from '@/redux/flow/interfaces/flowStateInterfaces';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCallback, useRef } from 'react';
 import { applyEdgeChanges, Connection, Edge, EdgeChange, NodeChange, updateEdge } from 'reactflow';
+import { type Node } from 'reactflow';
 
-export const useGetFlowCallbacks = (currentPage: Page) => {
+export const useGetFlowCallbacks = (history: FlowState[], step: number, currentPage: Page) => {
   const dispatch = useAppDispatch();
   const edgeUpdateSuccessful = useRef(true);
 
@@ -14,6 +15,15 @@ export const useGetFlowCallbacks = (currentPage: Page) => {
     },
     [dispatch],
   );
+
+  const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node) => {
+    const prevNode = history[step].pages
+      .find((page) => page.id === currentPage.id).nodes
+      .find((nodeItem) => nodeItem.id === node.id)
+    if (prevNode.position.x !== node.position.x || prevNode.position.y !== node.position.y) {
+      dispatch(flowActions.onStateToHistory());
+    }
+  }, [currentPage?.id, dispatch, history, step]);
 
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
@@ -50,10 +60,6 @@ export const useGetFlowCallbacks = (currentPage: Page) => {
     (changes: EdgeChange[]) => dispatch(flowActions.onChangeEdges(applyEdgeChanges(changes, currentPage?.edges))),
     [currentPage?.edges, dispatch],
   );
-
-  const onNodeDragStop = useCallback(() => {
-    dispatch(flowActions.onSaveStateToHistory());
-  }, [dispatch]);
 
   return {
     onNodeChange,

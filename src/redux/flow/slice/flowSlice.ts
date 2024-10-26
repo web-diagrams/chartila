@@ -42,33 +42,8 @@ export const flowSlice = createSlice({
     onSetState: (state, { payload }: PayloadAction<FlowState>) => {
       state.currentState = payload;
     },
-    onChangeNodes: (state, { ['payload']: { changes } }: PayloadAction<{ changes: NodeChange[] }>) => {
-      const currentPage = getCurrentPage(state);
-      currentPage.nodes = applyNodeChanges(changes, currentPage.nodes);
 
-      state.currentState.isUpdated = true;
-    },
-    onSaveChangeNodes: (state) => {
-      // const newNodes = applyNodeChanges(changes, currentPage?.nodes).map((node) => getNodeInfo(node));
-      // const newHash = JSON.stringify(newNodes);
-      // const currentHash = JSON.stringify(currentPage.nodes.map((node) => getNodeInfo(node)));
-      // if (newHash !== currentHash) {
-      //   currentState = getNewState(state);
-      //   currentPage = currentState.pages.find((page) => page.id === currentState.currentPageId);
-      // }
-    },
-    onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
-      const currentPage = getCurrentPage(state);
-      if (currentPage) currentPage.edges = action.payload;
-      state.currentState.isUpdated = true;
-      // addStep(state);
-    },
-    onConnect: (state, action: PayloadAction<Connection>) => {
-      const currentPage = getCurrentPage(state);
-      currentPage.edges = addEdge(action.payload, currentPage.edges);
-      state.currentState.isUpdated = true;
-      // addStep(state);
-    },
+    // Работа с нодами
     onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position: XYPosition }>) => {
       const { type, position } = payload;
 
@@ -92,18 +67,35 @@ export const flowSlice = createSlice({
       state.currentState.isUpdated = true;
       stateToHistory(state); // запоминаем состояние в истории
     },
-
-    onChangeNode: (state, action: PayloadAction<{ id: string; key: keyof CommonNodeDataType; value: unknown }>) => {
+    onChangeNodes: (state, { ['payload']: { changes } }: PayloadAction<{ changes: NodeChange[] }>) => {
       const currentPage = getCurrentPage(state);
-      const { id, value, key } = action.payload;
+      currentPage.nodes = applyNodeChanges(changes, currentPage.nodes);
+
+      state.currentState.isUpdated = true;
+    },
+    onChangeNode: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof CommonNodeDataType;
+        value: unknown;
+        saveToHistory: boolean;
+      }>,
+    ) => {
+      const currentPage = getCurrentPage(state);
+      const { id, value, key, saveToHistory } = action.payload;
 
       if ((key === 'text' || key === 'color') && typeof value === 'string') {
-        currentPage.nodes.find((node) => node.id === id).data[key] = value;
-        state.currentState.isUpdated = true;
+        const currentNode = currentPage.nodes.find((node) => node.id === id);
+        if (currentNode.data[key] !== value) {
+          currentNode.data[key] = value;
+          state.currentState.isUpdated = true;
+        }
+        if (saveToHistory) {
+          stateToHistory(state); // запоминаем состояние в истории
+        }
       }
-      // addStep(state);
     },
-
     onSelectNode: (state, action: PayloadAction<string>) => {
       state.currentState.selectedNodes = [action.payload];
     },
@@ -114,6 +106,21 @@ export const flowSlice = createSlice({
       state.currentState.selectedNodes = [];
     },
 
+    // Работа с связями
+    onChangeEdges: (state, action: PayloadAction<Edge[]>) => {
+      const currentPage = getCurrentPage(state);
+      if (currentPage) currentPage.edges = action.payload;
+      state.currentState.isUpdated = true;
+      // addStep(state);
+    },
+    onConnect: (state, action: PayloadAction<Connection>) => {
+      const currentPage = getCurrentPage(state);
+      currentPage.edges = addEdge(action.payload, currentPage.edges);
+      state.currentState.isUpdated = true;
+      // addStep(state);
+    },
+
+    // Работа со страницами
     onChangePage: (state, action: PayloadAction<string>) => {
       state.currentState.currentPageId = action.payload;
       // addStep(state);
@@ -139,10 +146,10 @@ export const flowSlice = createSlice({
       // addStep(state);
     },
 
+    // работа с инфраструктурой
     onSave: (state) => {
       state.currentState.isUpdated = false;
     },
-
     undo: (state) => {
       state.step -= 1;
       state.currentState = state.history[state.step];
@@ -151,7 +158,7 @@ export const flowSlice = createSlice({
       state.step += 1;
       state.currentState = state.history[state.step];
     },
-    onSaveStateToHistory: (state) => {
+    onStateToHistory: (state) => {
       stateToHistory(state); // запоминаем состояние в истории
     },
   },
