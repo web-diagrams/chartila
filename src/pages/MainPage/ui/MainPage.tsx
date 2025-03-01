@@ -1,7 +1,7 @@
 import 'reactflow/dist/style.css';
 import styles from './MainPage.module.scss';
 
-import ReactFlow, { Background, BackgroundVariant, Connection, Controls } from 'reactflow';
+import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
 import StartWindow from '../../../components/StartWindow/StartWindow';
@@ -17,6 +17,8 @@ import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 import { FaUndo, FaRedo } from 'react-icons/fa';
 import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
+
+const panOnDrag = [1, 2];
 
 export const MainPage = () => {
   // const { onSave: saveToFile } = useSaveToFile();
@@ -74,6 +76,10 @@ export const MainPage = () => {
             nodeTypes={NodeTypes}
             proOptions={{ hideAttribution: true }}
             onContextMenu={onShowContextMenu}
+            panOnScroll
+            selectionOnDrag
+            panOnDrag={panOnDrag}
+            selectionMode={SelectionMode.Partial}
           >
             <Background variant={BackgroundVariant.Cross} />
             <Controls position="top-left">
