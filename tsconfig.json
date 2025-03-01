@@ -1,35 +1,39 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "ESNext",
-    "target": "es5",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "moduleResolution": "node",
-    // esModuleInterop позволяет работать с пакетами, которые используют
-    // common js как с обычными пакета с помощью import (require() module.export) = common js
-    // import Moment from 'moment';
-    // без флага esModuleInterop результат undefined
-    // console.log(Moment);
-    // c флагом результат [object Object]
-    // console.log(Moment);
-    "esModuleInterop": true,
-    // Если какая-либо библиотека не имеет default import,
-    // лоадеры вроде ts-loader или babel-loader автоматически создают их
-    // вместо такого импорта
-    // import * as React from 'react';
-    // можно писать такой
-    // import React from 'react';
-    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
     }
-  }
+  ]
 }
