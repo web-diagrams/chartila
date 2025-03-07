@@ -1,11 +1,14 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext<{ isAuth: boolean | null }>({ isAuth: null });
+const AuthContext = createContext<{
+  isAuth: boolean | null;
+  onAuth?: () => void;
+  onLogout?: () => void;
+}>({ isAuth: null });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
-  // const [login, { data, isLoading, isError }] = useLoginMutation();
   useEffect(() => {
     const getCookie = (name: string) => {
       const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
@@ -15,8 +18,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setIsAuth(!!userToken)
   }, [])
 
+  const onAuth = () => setIsAuth(true);
+  const onLogout = () => setIsAuth(false);
+
   return (
-    <AuthContext.Provider value={{ isAuth }}>
+    <AuthContext.Provider value={{ isAuth, onAuth, onLogout }}>
       {isAuth === null
         ? 'Запрос данных авторизации'
         : children

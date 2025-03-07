@@ -11,7 +11,7 @@ import { getLoginPath } from '@/shared/config/routePaths';
 
 const StartWindow: FC = memo(() => {
   const navigate = useNavigate();
-  const { isAuth } = useAuth();
+  const { isAuth, onLogout: onResetAuth } = useAuth();
   const dispatch = useAppDispatch();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +27,13 @@ const StartWindow: FC = memo(() => {
   const onAuthClick = () => {
     const path = getLoginPath()
     navigate(path);
+  }
+
+  const onLogout = () => {
+    if (isAuth) {
+      document.cookie = "user-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      onResetAuth && onResetAuth();
+    }
   }
 
   return (
@@ -46,9 +53,14 @@ const StartWindow: FC = memo(() => {
         <li className={s.listItem}>
           {isAuth
             ? (
-              <button onClick={onStartNewProject} className={classNames(s.button, {}, [s.button_type_label])}>
-                Выбрать график
-              </button>
+              <>
+                <button onClick={onStartNewProject} className={classNames(s.button, {}, [s.button_type_label])}>
+                  Выбрать график
+                </button>
+                <button onClick={onLogout} className={classNames(s.button, {}, [s.button_type_label])}>
+                  Выйти
+                </button>
+              </>
             )
             : (
               <button onClick={onAuthClick} className={classNames(s.button, {}, [s.button_type_label])}>

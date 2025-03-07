@@ -1,8 +1,8 @@
 import { RouteProps } from 'react-router-dom';
 import { MainPage } from '@/pages/MainPage';
 import StartWindow from '@/components/StartWindow/StartWindow';
-import { LoginForm } from '@/components/AuthComponents/LoginForm/LoginForm';
-import { RegisterForm } from '@/components/AuthComponents/RegisterForm/RegisterForm';
+import { LoginForm } from '@/components/AuthComponents/ui/LoginForm/LoginForm';
+import { RegisterForm } from '@/components/AuthComponents/ui/RegisterForm/RegisterForm';
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
