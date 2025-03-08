@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { flowReducer } from '@/redux/flow/slice/flowSlice';
-import { StateSchema } from './StateSchema';
+import { rtkApi } from './api/rtkApi';
 
-export const store = configureStore<StateSchema>({
+export const store = configureStore({
   reducer: {
     flow: flowReducer,
+    [rtkApi.reducerPath]: rtkApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(rtkApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -4,7 +4,6 @@ import styles from './MainPage.module.scss';
 import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import Pages from '@/components/Pages/Pages';
-import StartWindow from '../../../components/StartWindow/StartWindow';
 import { useEffect } from 'react';
 import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
@@ -53,7 +52,7 @@ export const MainPage = () => {
 
   return (
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
-      {currentPage ? (
+      {currentPage && (
         <>
           <div>
             {isUpdated && (
@@ -100,8 +99,6 @@ export const MainPage = () => {
           </ReactFlow>
           <Pages />
         </>
-      ) : (
-        <StartWindow />
       )}
     </div>
   );
