@@ -5,6 +5,8 @@ import { useUserInfo } from "../../model/hooks/useUserInfo";
 import { useLoginMutation } from "@/app/api/authApi";
 import { useAuth } from "@/app/providers/AuthProvider";
 
+import style from '../Auth.module.scss';
+
 interface Props {
 }
 
@@ -13,7 +15,7 @@ export const LoginForm = ({
 }: Props) => {
   const { onAuth } = useAuth();
   const navigate = useNavigate();
-  const [login, { error }] = useLoginMutation();
+  const [login, { error, isLoading }] = useLoginMutation();
   const { userInfo, onChangeLogin, onChangePassword } = useUserInfo();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,11 +33,11 @@ export const LoginForm = ({
 
   return (
     <Modal title="Войти">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={style.form}>
         <input type="text" placeholder="Логин" value={userInfo.login} onChange={onChangeLogin} />
         <input type="password" placeholder="Пароль" value={userInfo.password} onChange={onChangePassword} />
         {error && 'data' in error && typeof error.data === 'string' && <p>{error.data}</p>}
-        <button type='submit'>Войти</button>
+        <button type='submit'>{isLoading ? 'Авторизация...' : 'Войти'}</button>
         <button onClick={onRegisterClick}>Зарегистрироваться</button>
       </form>
     </Modal>
