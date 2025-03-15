@@ -6,8 +6,12 @@ import { flowActions } from '@/redux/flow/slice/flowSlice';
 import { uploadFile } from '@/redux/flow/services/uploadFile';
 import { Modal } from '@/shared/ui/Modal/Modal';
 import { ServerButton } from './ServerButton';
+import { useNavigate } from 'react-router-dom';
+import { getDocPagePath } from '@/shared/config/routePaths';
+import { v1 } from 'uuid';
 
 const StartWindow: FC = memo(() => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +22,7 @@ const StartWindow: FC = memo(() => {
 
   const onStartNewProject = () => {
     dispatch(flowActions.onInitState());
+    navigate(getDocPagePath(v1()))
   }
 
   return (

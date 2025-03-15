@@ -1,5 +1,5 @@
 import 'reactflow/dist/style.css';
-import styles from './MainPage.module.scss';
+import styles from './DocPage.module.scss';
 
 import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -19,7 +19,7 @@ import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 
 const panOnDrag = [1, 2];
 
-export const MainPage = () => {
+export const DocPage = () => {
   // const { onSave: saveToFile } = useSaveToFile();
 
   /** Save logic */

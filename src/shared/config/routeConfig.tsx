@@ -1,8 +1,9 @@
 import { RouteProps } from 'react-router-dom';
-import { MainPage } from '@/pages/MainPage';
 import StartWindow from '@/components/StartWindow/StartWindow';
 import { LoginForm } from '@/components/AuthComponents/ui/LoginForm/LoginForm';
 import { RegisterForm } from '@/components/AuthComponents/ui/RegisterForm/RegisterForm';
+import { DocPage } from '@/pages/DocPage';
+import { getDocPagePath, getLoginPath, getRegisterPath, getStartPath } from './routePaths';
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -12,7 +13,7 @@ export enum AppRoutes {
     START = 'start',
     LOGIN = 'login',
     REGISTER = 'register',
-    MAIN = 'main',
+    DOC = 'doc',
     // last
     NOT_FOUND = 'not_found',
 }
@@ -21,27 +22,27 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.START]: '/',
     [AppRoutes.LOGIN]: '/login',
     [AppRoutes.REGISTER]: '/register',
-    [AppRoutes.MAIN]: '/main',
+    [AppRoutes.DOC]: '/doc',
     // последний
     [AppRoutes.NOT_FOUND]: '/*',
 };
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.START]: {
-        path: RoutePath.start,
+        path: getStartPath(),
         element: <StartWindow />,
     },
     [AppRoutes.LOGIN]: {
-        path: RoutePath.login,
+        path: getLoginPath(),
         element: <LoginForm />,
     },
     [AppRoutes.REGISTER]: {
-        path: RoutePath.register,
+        path: getRegisterPath(),
         element: <RegisterForm />,
     },
-    [AppRoutes.MAIN]: {
-        path: RoutePath.main,
-        element: <MainPage />,
+    [AppRoutes.DOC]: {
+        path: getDocPagePath(':id'),
+        element: <DocPage />,
     },
 
     // last
