@@ -9,8 +9,8 @@ import { NodeData } from '../constants/constants';
 import { cloneDeep } from 'lodash';
 
 const getDefaultState = (): FlowState => ({
-  pages: null,
-  currentPageId: null,
+  pages: [],
+  currentPageId: '',
   selectedNodes: [],
   isUpdated: false,
 });
@@ -39,15 +39,16 @@ export const flowSlice = createSlice({
       currentState.currentPageId = pageId;
       state.history[0] = cloneDeep(state.currentState);
     },
-    onSetState: (state, { payload }: PayloadAction<FlowState>) => {
-      state.currentState = payload;
+    onSetPages: (state, { payload }: PayloadAction<FlowState['pages']>) => {
+      state.currentState.pages = payload;
+      state.currentState.currentPageId = payload[0].id;
     },
 
     // Работа с нодами
     onAddNode: (state, { payload }: PayloadAction<{ type: NodeData; position: XYPosition }>) => {
       const { type, position } = payload;
 
-      const currentPage = getCurrentPage(state);
+      const currentPage = getCurrentPage(state)!;
       const newNode = getNewNode({ type, position });
       currentPage.nodes.push(newNode);
 
@@ -55,9 +56,9 @@ export const flowSlice = createSlice({
       stateToHistory(state); // запоминаем состояние в истории
     },
     onDeleteNode: (state, action: PayloadAction<string>) => {
-      const currentPage = getCurrentPage(state);
+      const currentPage = getCurrentPage(state)!;
       const id = action.payload;
-      const nodeToDelete = currentPage.nodes.find((node) => node.id === id);
+      const nodeToDelete = currentPage.nodes.find((node) => node.id === id)!;
 
       currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete); // удялем ноуду
 
@@ -68,7 +69,7 @@ export const flowSlice = createSlice({
       stateToHistory(state); // запоминаем состояние в истории
     },
     onChangeNodes: (state, { ['payload']: { changes } }: PayloadAction<{ changes: NodeChange[] }>) => {
-      const currentPage = getCurrentPage(state);
+      const currentPage = getCurrentPage(state)!;
       currentPage.nodes = applyNodeChanges(changes, currentPage.nodes);
 
       state.currentState.isUpdated = true;
@@ -82,11 +83,11 @@ export const flowSlice = createSlice({
         saveToHistory: boolean;
       }>,
     ) => {
-      const currentPage = getCurrentPage(state);
+      const currentPage = getCurrentPage(state)!;
       const { id, value, key, saveToHistory } = action.payload;
 
       if ((key === 'text' || key === 'color') && typeof value === 'string') {
-        const currentNode = currentPage.nodes.find((node) => node.id === id);
+        const currentNode = currentPage.nodes.find((node) => node.id === id)!;
         if (currentNode.data[key] !== value) {
           currentNode.data[key] = value;
           state.currentState.isUpdated = true;
@@ -118,7 +119,7 @@ export const flowSlice = createSlice({
       if (isCountOfEdgesWereChagned) stateToHistory(state);
     },
     onConnect: (state, action: PayloadAction<Connection>) => {
-      const currentPage = getCurrentPage(state);
+      const currentPage = getCurrentPage(state)!;
       currentPage.edges = addEdge(action.payload, currentPage.edges);
       state.currentState.isUpdated = true;
       stateToHistory(state);

@@ -17,12 +17,15 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
   );
 
   const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node) => {
-    const prevNode = history[step].pages
-      .find((page) => page.id === currentPage.id).nodes
-      .find((nodeItem) => nodeItem.id === node.id)
-    if (prevNode.position.x !== node.position.x || prevNode.position.y !== node.position.y) {
-      dispatch(flowActions.onStateToHistory());
-    }
+    if (history[step] && !history[step].pages) {
+      const prevNode = history[step].pages
+        .find((page) => page.id === currentPage.id).nodes
+        .find((nodeItem) => nodeItem.id === node.id)
+      if (prevNode.position.x !== node.position.x || prevNode.position.y !== node.position.y) {
+        dispatch(flowActions.onStateToHistory());
+      }
+    };
+
   }, [currentPage?.id, dispatch, history, step]);
 
   const onEdgeUpdateStart = useCallback(() => {

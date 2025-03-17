@@ -8,6 +8,7 @@ import { AuthProvider } from './app/providers/AuthProvider';
 import ReactDOM from 'react-dom/client'
 
 async function enableMocking() {
+  // return
   if (process.env.NODE_ENV !== 'development') {
     return
   }

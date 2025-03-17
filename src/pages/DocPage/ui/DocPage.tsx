@@ -16,10 +16,15 @@ import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 import { FaUndo, FaRedo } from 'react-icons/fa';
 import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
+import { useParams } from 'react-router-dom';
+import { useDocQuery } from '@/app/api/docsApi';
 
 const panOnDrag = [1, 2];
 
 export const DocPage = () => {
+  const { docId } = useParams();
+  const { data, isFetching } = useDocQuery({ id: docId ?? '' });
+
   // const { onSave: saveToFile } = useSaveToFile();
 
   /** Save logic */
@@ -49,6 +54,16 @@ export const DocPage = () => {
   useEffect(() => {
     document.title = pages?.find((page) => page.id === currentPageId)?.pageName ?? 'Web diagrams';
   }, [currentPageId, pages]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(flowActions.onSetPages(data.pages))
+    }
+  }, [data])
+
+  if (isFetching) {
+    return 'Загрузка графика ...'
+  }
 
   return (
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
