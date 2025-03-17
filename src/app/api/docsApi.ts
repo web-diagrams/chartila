@@ -9,7 +9,14 @@ export const docsApi = rtkApi.injectEndpoints({
     doc: build.query<DocDto, { id: string }>({
       query: ({ id }) => `doc/${id}`,
     }),
+    createDoc: build.mutation<undefined, { id: string }>({
+      query: ({ id }) => ({
+        url: `doc/${id}`,
+        method: 'POST',
+        body: undefined,
+      }),
+    }),
   }),
 });
 
-export const { useDocsQuery, useDocQuery } = docsApi;
+export const { useDocsQuery, useDocQuery, useCreateDocMutation } = docsApi;

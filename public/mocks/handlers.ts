@@ -16,6 +16,12 @@ export const handlers = [
     return HttpResponse.json(doc)
   }),
 
+  http.post('http://localhost:8080/doc/:docId', ({ params }) => {
+    const { docId } = params;
+    console.log('Requested docId:', docId);
+    return HttpResponse.json({})
+  }),
+
   http.post('http://localhost:5000/products', (req) => {
     // const info = req.body;
   }),

@@ -25,9 +25,9 @@ export const flowSlice = createSlice({
   name: 'flow',
   initialState,
   reducers: {
-    onInitState: (state) => {
+    onInitState: (state, { payload }: PayloadAction<{ id: string }>) => {
       const currentState = state.currentState;
-      const pageId = v1();
+      const pageId = payload.id;
       currentState.pages = [
         {
           id: pageId,
