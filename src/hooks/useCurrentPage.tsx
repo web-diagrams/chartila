@@ -1,4 +1,4 @@
-import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { Page } from '@/redux/doc/interfaces/docStateInterfaces';
 import { useMemo } from 'react';
 
 export const useCurrentPage = (pages: Page[], currentPageId: string) => {

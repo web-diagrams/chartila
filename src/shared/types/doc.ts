@@ -1,4 +1,4 @@
-import { Page } from "@/redux/flow/interfaces/flowStateInterfaces";
+import { Page } from "@/redux/doc/interfaces/docStateInterfaces";
 
 export interface DocInfoDto {
   id: string;

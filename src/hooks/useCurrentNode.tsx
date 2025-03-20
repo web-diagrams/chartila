@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useCurrentPage } from './useCurrentPage';
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
-import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
+import { Page } from '@/redux/doc/interfaces/docStateInterfaces';
 
 export const useCurrentNode = (nodeId: string) => {
-  const { pages, currentPageId } = useGetFlowState();
+  const { pages, currentPageId } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
   const currentNode = useMemo(() => {
     return getCurrentNode(currentPage, nodeId);

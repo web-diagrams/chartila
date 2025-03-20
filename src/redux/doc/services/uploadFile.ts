@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Page } from '../interfaces/flowStateInterfaces';
+import { Page } from '../interfaces/docStateInterfaces';
 
 export const uploadFile = createAsyncThunk<Page[], any, { rejectValue: string }>(
   'flow/uploadFile',

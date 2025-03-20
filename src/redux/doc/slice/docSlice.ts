@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Edge, XYPosition } from 'reactflow';
-import { CommonNodeDataType, FlowState, HistoryState } from '../interfaces/flowStateInterfaces';
+import { CommonNodeDataType, FlowState, DocState } from '../interfaces/docStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
-import { stateToHistory, getNewNode, getCurrentPage } from '../flowUtils';
+import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
 import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
 import { cloneDeep } from 'lodash';
+import { DocDto } from '@/shared/types/doc';
 
 const getDefaultState = (): FlowState => ({
   pages: [],
@@ -15,14 +16,16 @@ const getDefaultState = (): FlowState => ({
   isUpdated: false,
 });
 
-const initialState: HistoryState = {
+const initialState: DocState = {
   history: [getDefaultState()],
   currentState: getDefaultState(),
   step: 0,
+  isInited: false,
+  docName: 'Untitled',
 };
 
-export const flowSlice = createSlice({
-  name: 'flow',
+export const docSlice = createSlice({
+  name: 'doc',
   initialState,
   reducers: {
     onInitState: (state, { payload }: PayloadAction<{ id: string }>) => {
@@ -38,10 +41,15 @@ export const flowSlice = createSlice({
       ];
       currentState.currentPageId = pageId;
       state.history[0] = cloneDeep(state.currentState);
+      state.isInited = true;
     },
-    onSetPages: (state, { payload }: PayloadAction<FlowState['pages']>) => {
-      state.currentState.pages = payload;
-      state.currentState.currentPageId = payload[0].id;
+    onLoadDoc: (state, { payload }: PayloadAction<DocDto>) => {
+      state.docName = payload.name;
+      const pageId = payload.pages[0].id;
+      state.currentState.currentPageId = pageId;
+      state.currentState.pages = payload.pages;
+      state.history[0] = cloneDeep(state.currentState);
+      state.isInited = true;
     },
 
     // Работа с нодами
@@ -182,4 +190,4 @@ export const flowSlice = createSlice({
   },
 });
 
-export const { actions: flowActions, reducer: flowReducer } = flowSlice;
+export const { actions: docActions, reducer: docReducer } = docSlice;

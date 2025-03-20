@@ -1,8 +1,8 @@
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useCallback } from 'react';
 
 export const useSaveToFile = () => {
-  const { pages, currentPageId } = useGetFlowState();
+  const { pages, currentPageId } = useGetDocState();
 
   return {
     onSave: useCallback(() => {

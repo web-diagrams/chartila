@@ -1,5 +1,5 @@
-import { HistoryState } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { DocState } from '@/redux/doc/interfaces/docStateInterfaces';
 
 export interface StateSchema {
-  flow: HistoryState;
+  flow: DocState;
 }

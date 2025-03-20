@@ -2,13 +2,13 @@ import React, { FC, memo } from 'react';
 import s from './StartWindow.module.scss';
 import { useAppDispatch } from '@/app/hooks';
 import { classNames } from '@/utils';
-import { uploadFile } from '@/redux/flow/services/uploadFile';
+import { uploadFile } from '@/redux/doc/services/uploadFile';
 import { Modal } from '@/shared/ui/Modal/Modal';
 import { ServerButton } from './ServerButton';
 import { useStartNewDoc } from '@/hooks/useStartNewDoc';
 
 const StartWindow: FC = memo(() => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();  
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

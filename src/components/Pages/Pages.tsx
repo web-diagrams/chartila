@@ -1,13 +1,13 @@
 import styles from './styles.module.scss';
 import PageItem from './components/PageItem/PageItem';
 import { useAppDispatch } from '@/app/hooks';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { docActions } from '@/redux/doc/slice/docSlice';
 import { FaPlus } from 'react-icons/fa6';
 import Button from '@/shared/ui/Button';
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 const Pages = () => {
-  const { pages } = useGetFlowState();
+  const { pages } = useGetDocState();
   const dispatch = useAppDispatch();
 
   return (
@@ -15,7 +15,7 @@ const Pages = () => {
       {pages.map((page) => (
         <PageItem key={page.id} page={page} />
       ))}
-      <Button onClick={() => dispatch(flowActions.onAddPage())}>
+      <Button onClick={() => dispatch(docActions.onAddPage())}>
         <FaPlus />
       </Button>
     </div>

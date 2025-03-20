@@ -19,4 +19,4 @@ export const docsApi = rtkApi.injectEndpoints({
   }),
 });
 
-export const { useDocsQuery, useDocQuery, useCreateDocMutation } = docsApi;
+export const { useDocsQuery, useLazyDocQuery, useCreateDocMutation } = docsApi;

@@ -1,12 +1,12 @@
-import { usePingQuery } from "@/app/api/pingApi";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { getDocsPagePath, getLoginPath } from "@/shared/config/routePaths";
 import { classNames } from "@/utils";
 import { useNavigate } from "react-router-dom";
 import s from './StartWindow.module.scss';
+import { useServer } from "@/app/providers/ServerProvider/ServerProvider";
 
 export const ServerButton = () => {
-  const { isFetching, isError } = usePingQuery(undefined);
+  const { isServerEnabled } = useServer();
   const { isAuth, onLogout: onResetAuth } = useAuth();
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ export const ServerButton = () => {
     navigate(getDocsPagePath());
   }
 
-  return (!isFetching && !isError)
+  return (isServerEnabled)
     ? (<li className={s.listItem}>
       {isAuth
         ? (

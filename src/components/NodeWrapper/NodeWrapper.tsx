@@ -2,11 +2,11 @@ import React, { Dispatch, FC, SetStateAction, memo, useCallback, useMemo, useSta
 import ModalWrapper from '@/components/ModalWrapper/ModalWrapper';
 import styles from './styles.module.scss';
 import { useDispatch } from 'react-redux';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { docActions } from '@/redux/doc/slice/docSlice';
 import { classNames } from '@/utils';
 import { NodeMenu } from './NodeMenu/NodeMenu';
 import { useCurrentNode } from '@/hooks/useCurrentNode';
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 type NodeWrapperProps = {
   id: string;
@@ -18,7 +18,7 @@ type NodeWrapperProps = {
 const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked }) => {
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
-  const { selectedNodes } = useGetFlowState();
+  const { selectedNodes } = useGetDocState();
   const node = useCurrentNode(id);
 
   const isSelected = useMemo<boolean>(() => {
@@ -28,7 +28,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.code === 'Delete') {
-        dispatch(flowActions.onDeleteNode(id));
+        dispatch(docActions.onDeleteNode(id));
       }
     },
     [dispatch, id],
@@ -39,7 +39,7 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
     switch (e.detail) {
       case 1: {
         if (!isSelected) {
-          dispatch(flowActions.onSelectNode(id));
+          dispatch(docActions.onSelectNode(id));
         }
         break;
       }
