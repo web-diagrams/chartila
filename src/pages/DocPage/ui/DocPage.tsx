@@ -16,15 +16,9 @@ export const DocPage = () => {
   const [getDoc, {data: docInfo}] = useLazyDocQuery();
 
   useEffect(() => {
-
-    // Сервер работает
+    // Если сервер работает, запрашиваем док с сервера
     if (isServerEnabled) {
       getDoc({id: docId ?? ''});
-    }
-
-    // Сервер не работает
-    if (!isServerEnabled) {
-      
     }
   }, [isServerEnabled]);
 
@@ -33,6 +27,12 @@ export const DocPage = () => {
       dispatch(docActions.onLoadDoc(docInfo))
     }
   }, [isInited, docInfo])
+
+  useEffect(() => {
+    () => {
+      dispatch(docActions.onResetState());
+    }
+  }, [])
 
   if (!isInited) {
     return <p>'Загрузка и подготовка графика ...'</p>

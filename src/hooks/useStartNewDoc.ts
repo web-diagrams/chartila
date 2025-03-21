@@ -15,14 +15,16 @@ export const useStartNewDoc = () => {
 
   const onStartNewProject = useCallback(async () => {
     const id = v1();
-    if (!isServerEnabled) {
-      dispatch(docActions.onInitState({ id }));
-      navigate(getDocPagePath(id))
-    } else {
+    if (isServerEnabled) {
+      // Создаем документ на сервере
       const res = await createDoc({ id });
       if (!('error' in res)) {
         navigate(getDocPagePath(id))
       }
+    } else {
+      // Создаем документ локально
+      dispatch(docActions.onInitState({ id }));
+      navigate(getDocPagePath(id))
     }
 
   }, [createDoc, navigate, isServerEnabled]);

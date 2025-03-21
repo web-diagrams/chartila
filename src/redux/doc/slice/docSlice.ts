@@ -8,6 +8,7 @@ import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
 import { cloneDeep } from 'lodash';
 import { DocDto } from '@/shared/types/doc';
+import { initState } from '../lib/initState';
 
 const getDefaultState = (): FlowState => ({
   pages: [],
@@ -29,19 +30,7 @@ export const docSlice = createSlice({
   initialState,
   reducers: {
     onInitState: (state, { payload }: PayloadAction<{ id: string }>) => {
-      const currentState = state.currentState;
-      const pageId = payload.id;
-      currentState.pages = [
-        {
-          id: pageId,
-          nodes: [],
-          edges: [],
-          pageName: 'New page',
-        },
-      ];
-      currentState.currentPageId = pageId;
-      state.history[0] = cloneDeep(state.currentState);
-      state.isInited = true;
+      initState(state, payload.id)
     },
     onLoadDoc: (state, { payload }: PayloadAction<DocDto>) => {
       state.docName = payload.name;
@@ -176,13 +165,16 @@ export const docSlice = createSlice({
     onStateToHistory: (state) => {
       stateToHistory(state); // запоминаем состояние в истории
     },
+
+    onResetState: (state) => {
+      state = cloneDeep(initialState);
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(uploadFile.fulfilled, (state, action) => {
-        const currentState = state.currentState;
-        currentState.pages = action.payload;
-        currentState.currentPageId = action.payload[0].id;
+        const {pages, docName} = action.payload
+        initState(state, pages[0].id, docName, pages)
       })
       .addCase(uploadFile.rejected, (state, action) => {
         console.log(action.payload);

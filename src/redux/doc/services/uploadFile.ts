@@ -1,17 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Page } from '../interfaces/docStateInterfaces';
 
-export const uploadFile = createAsyncThunk<Page[], any, { rejectValue: string }>(
+export const uploadFile = createAsyncThunk<{ pages: Page[]; docName: string }, FileList, { rejectValue: string }>(
   'flow/uploadFile',
   async (fileList, thunkAPI) => {
     try {
-      const response = await new Response(fileList[0]).json();
+      // Получаем первый файл из FileList
+      const file = fileList[0];
 
+      // Получаем название файла
+      const fileName = file.name;
+
+      // Читаем содержимое файла и преобразуем его в JSON
+      const fileContent = await file.text();
+      const response = JSON.parse(fileContent);
+
+      // Проверяем, что ответ содержит pages
       if (!response.pages) {
-        throw new Error();
+        throw new Error('Invalid file format');
       }
 
-      return response.pages as Page[];
+      // Возвращаем данные, включая название файла
+      return {
+        pages: response.pages,
+        docName: fileName.split('.')[0], // Добавляем название файла в ответ
+      };
     } catch (e) {
       return thunkAPI.rejectWithValue('error');
     }

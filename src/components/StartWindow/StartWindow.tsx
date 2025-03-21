@@ -6,13 +6,19 @@ import { uploadFile } from '@/redux/doc/services/uploadFile';
 import { Modal } from '@/shared/ui/Modal/Modal';
 import { ServerButton } from './ServerButton';
 import { useStartNewDoc } from '@/hooks/useStartNewDoc';
+import { v1 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
+import { getDocPagePath } from '@/shared/config/routePaths';
 
 const StartWindow: FC = memo(() => {
   const dispatch = useAppDispatch();  
-
+  const navigate = useNavigate();
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       dispatch(uploadFile(e.target.files));
+      const id = v1();
+      navigate(getDocPagePath(id))
     }
   }
 
