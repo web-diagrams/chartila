@@ -14,6 +14,7 @@ export const ServerProvide = ({children}: PropsWithChildren) => {
     const { data, isLoading } = usePingQuery();
 
     useEffect(() => {
+        // Если сервер работает
         if (data) {
             setServerInfo((prev) => ({...prev, isServerEnabled: true})) 
         }

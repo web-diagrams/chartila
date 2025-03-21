@@ -14,10 +14,10 @@ const StartWindow: FC = memo(() => {
   const dispatch = useAppDispatch();  
   const navigate = useNavigate();
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      dispatch(uploadFile(e.target.files));
       const id = v1();
+      dispatch(uploadFile({fileList: e.target.files, id}));
       navigate(getDocPagePath(id))
     }
   }
@@ -29,7 +29,7 @@ const StartWindow: FC = memo(() => {
       <ul className={s.list}>
         <li className={s.listItem}>
           <label className={classNames(s.button, {}, [s.button_type_label])}>
-            <input onInput={handleFileChange} type="file" />
+            <input onInput={handleUploadFile} type="file" />
             Загрузить с компьютера
           </label>
         </li>

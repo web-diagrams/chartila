@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Page } from '../interfaces/docStateInterfaces';
 
-export const uploadFile = createAsyncThunk<{ pages: Page[]; docName: string }, FileList, { rejectValue: string }>(
+export const uploadFile = createAsyncThunk<{ pages: Page[]; docName: string, id: string }, {fileList: FileList, id: string}, { rejectValue: string }>(
   'flow/uploadFile',
-  async (fileList, thunkAPI) => {
+  async ({fileList, id}, thunkAPI) => {
     try {
       // Получаем первый файл из FileList
       const file = fileList[0];
@@ -24,6 +24,7 @@ export const uploadFile = createAsyncThunk<{ pages: Page[]; docName: string }, F
       return {
         pages: response.pages,
         docName: fileName.split('.')[0], // Добавляем название файла в ответ
+        id,
       };
     } catch (e) {
       return thunkAPI.rejectWithValue('error');
