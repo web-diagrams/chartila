@@ -7,4 +7,7 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },
+  define: {
+    'process.env.MOCK_ENV': JSON.stringify(process.env.MOCK_ENV),
+  },
 })

@@ -9,14 +9,14 @@ import ReactDOM from 'react-dom/client'
 import { ServerProvide } from './app/providers/ServerProvider/ServerProvider.tsx';
 
 async function enableMocking() {
-  // return
-  if (process.env.NODE_ENV !== 'development') {
-    return
+  // Проверяем, что мы в режиме разработки и включен режим моков
+  if (process.env.MOCK_ENV !== 'mock') {
+    return;
   }
 
-  const { worker } = await import('../public/mocks/browser.ts')
+  const { worker } = await import('../public/mocks/browser.ts');
 
-  return worker.start()
+  return worker.start();
 }
 
 enableMocking().then(() => {
