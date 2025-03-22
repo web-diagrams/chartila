@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction, memo } from 'react';
 import { classNames } from '@/utils';
-import { TextNodeData } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { TextNodeData } from '@/redux/doc/interfaces/docStateInterfaces';
 import styles from '../CustomNode/CustomeNode.module.scss';
 import style from './TextNode.module.scss';
 import { useAppDispatch } from '@/app/hooks';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { docActions } from '@/redux/doc/slice/docSlice';
 import { useText } from '@/hooks/useText';
 
 type TextNodeProps = {
@@ -18,7 +18,7 @@ const TextNode: FC<TextNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
   const { text, onChange, textWidth } = useText(data.text);
 
   const onBlur = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
-    dispatch(flowActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value, saveToHistory: true }));
+    dispatch(docActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value, saveToHistory: true }));
     setIsDoubleClicked(false);
   };
 

@@ -3,7 +3,7 @@ import { Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import styles from './CustomeNode.module.scss';
 import { classNames } from '@/utils';
-import { CommonNodeDataType } from '@/redux/flow/interfaces/flowStateInterfaces';
+import { CommonNodeDataType } from '@/redux/doc/interfaces/docStateInterfaces';
 import CodeNode from '../CodeNode/CodeNode';
 import { CustomHandle } from '../CustomHandle/CustomHandle';
 import TextNode from '../TextNode/TextNode';

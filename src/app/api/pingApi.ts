@@ -2,8 +2,9 @@ import { rtkApi } from './rtkApi';
 
 export const pingApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
-    ping: build.query<undefined, undefined>({
+    ping: build.query<undefined, void>({
       query: () => `ping`,
+      keepUnusedDataFor: 60,
     }),
   }),
 });

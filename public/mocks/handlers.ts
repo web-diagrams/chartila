@@ -1,7 +1,22 @@
+import { doc, docs } from './docs';
 import { http, HttpResponse } from 'msw';
 
 export const handlers = [
   http.get('http://localhost:8080/ping', () => {
+    return HttpResponse.json({})
+  }),
+
+  http.get('http://localhost:8080/docs', () => {
+    return HttpResponse.json(docs)
+  }),
+
+  http.get('http://localhost:8080/doc/:docId', ({ params }) => {
+    const { docId } = params;
+    return HttpResponse.json(doc)
+  }),
+
+  http.post('http://localhost:8080/doc/:docId', ({ params }) => {
+    const { docId } = params;
     return HttpResponse.json({})
   }),
 

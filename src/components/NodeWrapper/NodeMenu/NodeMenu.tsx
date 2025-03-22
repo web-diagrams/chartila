@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styles from './NodeMenu.module.scss';
 import { useAppDispatch } from '@/app/hooks';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCurrentNode } from '@/hooks/useCurrentNode';
 
 interface NodeMenuProps {
@@ -16,11 +16,11 @@ export const NodeMenu: FC<NodeMenuProps> = (props) => {
 
   const onNodeColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.currentTarget.value;
-    dispatch(flowActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: false }));
+    dispatch(docActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: false }));
   };
   const onNodeColorBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const color = e.currentTarget.value;
-    dispatch(flowActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: true }));
+    dispatch(docActions.onChangeNode({ id: nodeId, key: 'color', value: color, saveToHistory: true }));
   };
 
   return (

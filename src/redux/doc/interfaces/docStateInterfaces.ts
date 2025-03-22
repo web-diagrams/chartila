@@ -1,10 +1,12 @@
 import { Edge, Node } from 'reactflow';
 
-export type HistoryState = {
+export type DocState = {
   history: FlowState[];
   currentState: FlowState;
   /** index используемого элемента истории */
   step: number;
+  isInited: boolean;
+  docName: string;
 };
 
 export interface FlowState {

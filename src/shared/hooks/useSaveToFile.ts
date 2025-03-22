@@ -1,14 +1,15 @@
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
+import { useAppSelector } from '@/app/hooks';
 import { useCallback } from 'react';
 
 export const useSaveToFile = () => {
-  const { pages, currentPageId } = useGetFlowState();
+  const { docName  } = useAppSelector(state => state.doc);
+  const { pages  } = useAppSelector(state => state.doc.currentState);
 
   return {
     onSave: useCallback(() => {
-      const fileName = 'random';
+      const fileName = docName;
 
-      const json = JSON.stringify({ pages: pages }, null, 2);
+      const json = JSON.stringify({ pages: pages, docName }, null, 2);
       const blob = new Blob([json], { type: 'application/json' });
       const href = URL.createObjectURL(blob);
 

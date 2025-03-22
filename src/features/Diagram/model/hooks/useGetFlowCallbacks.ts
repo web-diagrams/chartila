@@ -1,8 +1,8 @@
 import { useAppDispatch } from '@/app/hooks';
-import { FlowState, Page } from '@/redux/flow/interfaces/flowStateInterfaces';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
+import { FlowState, Page } from '@/redux/doc/interfaces/docStateInterfaces';
+import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCallback, useRef } from 'react';
-import { applyEdgeChanges, Connection, Edge, EdgeChange, NodeChange, updateEdge } from 'reactflow';
+  import { applyEdgeChanges, Connection, Edge, EdgeChange, NodeChange, reconnectEdge } from 'reactflow';
 import { type Node } from 'reactflow';
 
 export const useGetFlowCallbacks = (history: FlowState[], step: number, currentPage: Page) => {
@@ -11,18 +11,21 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
 
   const onNodeChange = useCallback(
     (changes: NodeChange[]) => {
-      dispatch(flowActions.onChangeNodes({ changes }));
+      dispatch(docActions.onChangeNodes({ changes }));
     },
     [dispatch],
   );
 
   const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node) => {
-    const prevNode = history[step].pages
-      .find((page) => page.id === currentPage.id).nodes
-      .find((nodeItem) => nodeItem.id === node.id)
-    if (prevNode.position.x !== node.position.x || prevNode.position.y !== node.position.y) {
-      dispatch(flowActions.onStateToHistory());
-    }
+    if (history[step] && !history[step].pages) {
+      const prevNode = history[step].pages
+        .find((page) => page.id === currentPage.id).nodes
+        .find((nodeItem) => nodeItem.id === node.id)
+      if (prevNode.position.x !== node.position.x || prevNode.position.y !== node.position.y) {
+        dispatch(docActions.onStateToHistory());
+      }
+    };
+
   }, [currentPage?.id, dispatch, history, step]);
 
   const onEdgeUpdateStart = useCallback(() => {
@@ -32,7 +35,7 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) => {
       edgeUpdateSuccessful.current = true;
-      dispatch(flowActions.onChangeEdges(updateEdge(oldEdge, newConnection, currentPage?.edges)));
+      dispatch(docActions.onChangeEdges(reconnectEdge(oldEdge, newConnection, currentPage?.edges)));
     },
     [currentPage?.edges, dispatch],
   );
@@ -40,7 +43,7 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
   const onEdgeUpdateEnd = useCallback(
     (_: MouseEvent | TouchEvent, edge: Edge) => {
       if (!edgeUpdateSuccessful.current && currentPage?.edges) {
-        dispatch(flowActions.onChangeEdges(currentPage.edges.filter((e) => e.id !== edge.id)));
+        dispatch(docActions.onChangeEdges(currentPage.edges.filter((e) => e.id !== edge.id)));
       }
 
       edgeUpdateSuccessful.current = true;
@@ -49,15 +52,15 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
   );
 
   const onUndo = useCallback(() => {
-    dispatch(flowActions.undo());
+    dispatch(docActions.undo());
   }, [dispatch]);
 
   const onRedo = useCallback(() => {
-    dispatch(flowActions.redo());
+    dispatch(docActions.redo());
   }, [dispatch]);
 
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => dispatch(flowActions.onChangeEdges(applyEdgeChanges(changes, currentPage?.edges))),
+    (changes: EdgeChange[]) => dispatch(docActions.onChangeEdges(applyEdgeChanges(changes, currentPage?.edges))),
     [currentPage?.edges, dispatch],
   );
 

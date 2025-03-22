@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
 import { useAppDispatch } from '@/app/hooks';
-import { flowActions } from '@/redux/flow/slice/flowSlice';
-import { Page } from '@/redux/flow/interfaces/flowStateInterfaces';
-import { useGetFlowState } from '@/redux/flow/hooks/useGetFlowState';
+import { docActions } from '@/redux/doc/slice/docSlice';
+import { Page } from '@/redux/doc/interfaces/docStateInterfaces';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 interface PageItemProps {
   page: Page;
 }
 const PageItem = ({ page }: PageItemProps) => {
-  const { currentPageId } = useGetFlowState();
+  const { currentPageId } = useGetDocState();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [pageName, setPageName] = useState(page.pageName);
@@ -19,7 +19,7 @@ const PageItem = ({ page }: PageItemProps) => {
   return (
     <div
       className={styles.page_element}
-      onClick={() => dispatch(flowActions.onSelectPage(page.id))}
+      onClick={() => dispatch(docActions.onSelectPage(page.id))}
       onDoubleClick={() => setIsOpen(true)}
       style={{ background: isCurrentPageId ? 'lightgray' : '' }}
     >
@@ -31,7 +31,7 @@ const PageItem = ({ page }: PageItemProps) => {
           onChange={(e) => setPageName(e.target.value)}
           onBlur={() => {
             setIsOpen(false);
-            dispatch(flowActions.onChangePageName({ id: page.id, name: pageName }));
+            dispatch(docActions.onChangePageName({ id: page.id, name: pageName }));
           }}
           autoFocus
         />

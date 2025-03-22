@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { flowReducer } from '@/redux/flow/slice/flowSlice';
+import { docReducer } from '@/redux/doc/slice/docSlice';
 import { rtkApi } from './api/rtkApi';
 
 export const store = configureStore({
   reducer: {
-    flow: flowReducer,
+    doc: docReducer,
     [rtkApi.reducerPath]: rtkApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

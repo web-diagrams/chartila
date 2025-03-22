@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 import { NodeData } from './constants/constants';
-import { CommonNodeDataType, FlowState, HistoryState } from './interfaces/flowStateInterfaces';
+import { CommonNodeDataType, FlowState, DocState } from './interfaces/docStateInterfaces';
 import { XYPosition } from 'reactflow';
 import { Node } from 'reactflow';
 import { cloneDeep } from 'lodash';
@@ -12,7 +12,7 @@ type CreateNode = {
 
 const HISTORY_LIMIT = 10;
 
-export const stateToHistory = (state: HistoryState) => {
+export const stateToHistory = (state: DocState) => {
   /**Если внесены изменения, то очищаем шаги для redo  */
   if (state.history[state.step + 1]) {
     state.history = state.history.filter((_, index) => index <= state.step);
@@ -55,12 +55,12 @@ export const getNewNode = ({ type, position }: CreateNode): Node<CommonNodeDataT
   }
 };
 
-export const getCurrentPage = (state: HistoryState) => {
+export const getCurrentPage = (state: DocState) => {
   const currentState = state.currentState;
   return currentState.pages.find((page) => page.id === currentState.currentPageId);
 };
 
-function releaseNodes(state: HistoryState): FlowState {
+function releaseNodes(state: DocState): FlowState {
   return {
     ...state.currentState,
     selectedNodes: [],
