@@ -11,14 +11,14 @@ const ServerContext = createContext<ServerInfo>({
 
 export const ServerProvide = ({ children }: PropsWithChildren) => {
     const [serverInfo, setServerInfo] = useState<ServerInfo>({ isServerEnabled: false });
-    const { data, isLoading } = usePingQuery();
+    const { isError, isLoading } = usePingQuery();
 
     useEffect(() => {
         // Если сервер работает
-        if (data) {
+        if (!isError) {
             setServerInfo((prev) => ({ ...prev, isServerEnabled: true }))
         }
-    }, [data])
+    }, [isError]);
 
     if (isLoading) {
         return <p>Проверка работы сервера ...</p>
