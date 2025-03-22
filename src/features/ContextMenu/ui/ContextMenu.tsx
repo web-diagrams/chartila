@@ -4,7 +4,6 @@ import { useAppDispatch } from '@/app/hooks';
 import Button from '@/shared/ui/Button';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { NodeData } from '@/redux/doc/constants/constants';
-import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 
 type ContextMenuProps = {
   state: StateType;
@@ -12,8 +11,6 @@ type ContextMenuProps = {
 
 export const ContextMenu = ({ state }: ContextMenuProps) => {
   const dispatch = useAppDispatch();
-
-  // const { onSave: saveToFile } = useSaveToFile();
 
   if (state.isOpen) {
     return (
@@ -28,7 +25,6 @@ export const ContextMenu = ({ state }: ContextMenuProps) => {
         >
           Добавить инпут под код
         </Button>
-        {/* <Button onClick={saveToFile}>Сохранить страницу</Button> */}
       </div>
     );
   }

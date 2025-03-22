@@ -16,11 +16,12 @@ import { FaUndo, FaRedo } from 'react-icons/fa';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
+import { useParams } from 'react-router-dom';
 
 const panOnDrag = [1, 2];
 
 export const Diagram = () => {
-
+  const { docId = '' } = useParams();
   const { pages, currentPageId, selectedNodes, isUpdated } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
   const { history, step } = useAppSelector((state) => state.doc);
@@ -37,7 +38,7 @@ export const Diagram = () => {
     if (event.ctrlKey && event.key === 's') {
       event.preventDefault();
       saveToFile();
-      dispatch(docActions.onSave());
+      dispatch(docActions.onSave({ id: docId }));
     }
   });
 
@@ -58,50 +59,50 @@ export const Diagram = () => {
 
   return (
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
-          <div>
-            {isUpdated && (
-              <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />
-            )}
+      <div>
+        {isUpdated && (
+          <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />
+        )}
+      </div>
+      <ContextMenu state={contextMenuProps} />
+      <ReactFlow
+        nodes={currentPage.nodes}
+        edges={currentPage.edges}
+        onNodesChange={flowCallbacks.onNodeChange}
+        onNodesDelete={(e) => console.log(e)}
+        onNodeDragStop={flowCallbacks.onNodeDragStop}
+        onEdgesChange={flowCallbacks.onEdgesChange}
+        onConnect={(changes: Connection) => dispatch(docActions.onConnect(changes))}
+        onEdgeUpdateStart={flowCallbacks.onEdgeUpdateStart}
+        onEdgeUpdate={flowCallbacks.onEdgeUpdate}
+        onEdgeUpdateEnd={flowCallbacks.onEdgeUpdateEnd}
+        fitView
+        nodeTypes={NodeTypes}
+        proOptions={{ hideAttribution: true }}
+        onContextMenu={onShowContextMenu}
+        panOnScroll
+        selectionOnDrag
+        panOnDrag={panOnDrag}
+        selectionMode={SelectionMode.Partial}
+      >
+        <Background variant={BackgroundVariant.Cross} />
+        <Controls position="top-left">
+          <div className={styles.controlsContainer}>
+            <button onClick={flowCallbacks.onUndo} title="undo" className={styles.control} disabled={step === 0}>
+              <FaUndo size={12} />
+            </button>
+            <button
+              onClick={flowCallbacks.onRedo}
+              title="redo"
+              className={styles.control}
+              disabled={!(history?.length > step + 1)}
+            >
+              <FaRedo size={12} />
+            </button>
           </div>
-          <ContextMenu state={contextMenuProps} />
-          <ReactFlow
-            nodes={currentPage.nodes}
-            edges={currentPage.edges}
-            onNodesChange={flowCallbacks.onNodeChange}
-            onNodesDelete={(e) => console.log(e)}
-            onNodeDragStop={flowCallbacks.onNodeDragStop}
-            onEdgesChange={flowCallbacks.onEdgesChange}
-            onConnect={(changes: Connection) => dispatch(docActions.onConnect(changes))}
-            onEdgeUpdateStart={flowCallbacks.onEdgeUpdateStart}
-            onEdgeUpdate={flowCallbacks.onEdgeUpdate}
-            onEdgeUpdateEnd={flowCallbacks.onEdgeUpdateEnd}
-            fitView
-            nodeTypes={NodeTypes}
-            proOptions={{ hideAttribution: true }}
-            onContextMenu={onShowContextMenu}
-            panOnScroll
-            selectionOnDrag
-            panOnDrag={panOnDrag}
-            selectionMode={SelectionMode.Partial}
-          >
-            <Background variant={BackgroundVariant.Cross} />
-            <Controls position="top-left">
-              <div className={styles.controlsContainer}>
-                <button onClick={flowCallbacks.onUndo} title="undo" className={styles.control} disabled={step === 0}>
-                  <FaUndo size={12} />
-                </button>
-                <button
-                  onClick={flowCallbacks.onRedo}
-                  title="redo"
-                  className={styles.control}
-                  disabled={!(history?.length > step + 1)}
-                >
-                  <FaRedo size={12} />
-                </button>
-              </div>
-            </Controls>
-          </ReactFlow>
-          <Pages />
-        </div>
+        </Controls>
+      </ReactFlow>
+      <Pages />
+    </div>
   );
 };

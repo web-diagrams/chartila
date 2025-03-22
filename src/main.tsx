@@ -22,21 +22,21 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <ServerProvide>
-          <AuthProvider>
-            <ReactFlowProvider>
-                <BrowserRouter>
-                  <Routes>
-                    {Object.values(routeConfig).map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={route.authOnly ? <div>{route.element}</div> : route.element}
-                      />
-                    ))}
-                  </Routes>
-                </BrowserRouter>
-            </ReactFlowProvider>
-          </AuthProvider>
+        <AuthProvider>
+          <ReactFlowProvider>
+            <BrowserRouter>
+              <Routes>
+                {Object.values(routeConfig).map((route) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={route.authOnly ? <div>{route.element}</div> : route.element}
+                  />
+                ))}
+              </Routes>
+            </BrowserRouter>
+          </ReactFlowProvider>
+        </AuthProvider>
       </ServerProvide>
     </Provider>
   )

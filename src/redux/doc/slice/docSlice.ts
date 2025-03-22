@@ -9,7 +9,7 @@ import { NodeData } from '../constants/constants';
 import { cloneDeep } from 'lodash';
 import { DocDto } from '@/shared/types/doc';
 import { initState } from '../lib/initState';
-import { saveFileToDB } from '@/shared/lib/indexDb';
+import { saveFileToDB, updateFileInDB } from '@/shared/lib/indexDb';
 
 const getDefaultState = (): FlowState => ({
   pages: [],
@@ -152,8 +152,9 @@ export const docSlice = createSlice({
     },
 
     // работа с инфраструктурой
-    onSave: (state) => {
+    onSave: (state, action: PayloadAction<{ id: string }>) => {
       state.currentState.isUpdated = false;
+      updateFileInDB({ pages: state.currentState.pages, name: state.docName }, action.payload.id)
     },
     undo: (state) => {
       state.step -= 1;
@@ -174,9 +175,9 @@ export const docSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(uploadFile.fulfilled, (state, action) => {
-        const {pages, docName, id} = action.payload
+        const { pages, docName, id } = action.payload
         initState(state, pages[0].id, docName, pages)
-        saveFileToDB({pages, name: docName}, id)
+        saveFileToDB({ pages, name: docName }, id)
       })
       .addCase(uploadFile.rejected, (state, action) => {
         console.log(action.payload);
