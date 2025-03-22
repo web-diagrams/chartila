@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom/client'
 import { ServerProvide } from './app/providers/ServerProvider/ServerProvider.tsx';
 
 async function enableMocking() {
+  // return
   if (process.env.NODE_ENV !== 'development') {
     return
   }

@@ -11,34 +11,35 @@ import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
 import { CiCircleInfo } from 'react-icons/ci';
 import { commonTexts } from '@/shared/consts/texts';
 import { useKey } from '@/shared/hooks/useKey';
-import { useSaveToFile } from '@/shared/hooks/useSaveToFile';
 import { FaUndo, FaRedo } from 'react-icons/fa';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
-import { useParams } from 'react-router-dom';
 
 const panOnDrag = [1, 2];
 
-export const Diagram = () => {
-  const { docId = '' } = useParams();
+interface DiagramProps {
+  onSave: () => void;
+}
+
+export const Diagram = ({
+  onSave,
+}: DiagramProps) => {
   const { pages, currentPageId, selectedNodes, isUpdated } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
-  const { history, step } = useAppSelector((state) => state.doc);
+  const { history, step, docName } = useAppSelector((state) => state.doc);
 
   if (!currentPage) {
     return <p>Страница не подготовлена</p>
   }
 
   const dispatch = useAppDispatch();
-  const { onSave: saveToFile } = useSaveToFile();
 
   /** Save logic */
   useKey((event) => {
     if (event.ctrlKey && event.key === 's') {
       event.preventDefault();
-      saveToFile();
-      dispatch(docActions.onSave({ id: docId }));
+      onSave();
     }
   });
 
@@ -54,8 +55,14 @@ export const Diagram = () => {
   };
 
   useEffect(() => {
-    document.title = pages?.find((page) => page.id === currentPageId)?.pageName ?? 'Web diagrams';
-  }, [currentPageId, pages]);
+    document.title = docName ?? 'Web diagrams';
+  }, [docName]);
+
+  useEffect(() => {
+    () => {
+      dispatch(docActions.onResetState());
+    }
+  }, [])
 
   return (
     <div style={{ height: '100vh', width: '100vw' }} onClick={onClickOutSide}>
