@@ -18,10 +18,8 @@ export const useStartNewDoc = () => {
     const id = v1();
     if (isServerEnabled) {
       // Создаем документ на сервере
-      const res = await createDoc({ id, doc: { name: docName, pages: currentState.pages } });
-      if (!('error' in res)) {
-        navigate(getDocPagePath(id))
-      }
+      await createDoc({ id, doc: { name: docName, pages: currentState.pages } });
+      navigate(getDocPagePath(id))
     } else {
       // Создаем документ локально
       dispatch(docActions.onInitState({ id }));

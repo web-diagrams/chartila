@@ -12,7 +12,14 @@ import { initState } from '../lib/initState';
 import { saveFileToDB, updateFileInDB } from '@/shared/lib/indexDb';
 
 const getDefaultState = (): FlowState => ({
-  pages: [],
+  pages: [
+    {
+      id: v1(),
+      nodes: [],
+      edges: [],
+      pageName: "New page"
+    }
+  ],
   currentPageId: '',
   selectedNodes: [],
   isUpdated: false,
