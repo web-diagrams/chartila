@@ -37,8 +37,12 @@ export const docSlice = createSlice({
   name: 'doc',
   initialState,
   reducers: {
-    onInitState: (state, { payload }: PayloadAction<{ id: string }>) => {
-      initState(state, payload.id)
+    onInitState: (state, { payload }: PayloadAction<{ id: string, isLocalDoc?: boolean }>) => {
+      const { id, isLocalDoc } = payload;
+      initState(state, id)
+      if (isLocalDoc) {
+        saveFileToDB({ pages: state.currentState.pages, name: state.docName }, payload.id)
+      }
     },
     onLoadDoc: (state, { payload }: PayloadAction<DocDto>) => {
       state.docName = payload.name;

@@ -15,7 +15,7 @@ export const ServerProvide = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         // Если сервер работает
-        if (!isError) {
+        if (!isLoading && !isError) {
             setServerInfo((prev) => ({ ...prev, isServerEnabled: true }))
         }
     }, [isError]);

@@ -22,7 +22,7 @@ export const useStartNewDoc = () => {
       navigate(getDocPagePath(id))
     } else {
       // Создаем документ локально
-      dispatch(docActions.onInitState({ id }));
+      dispatch(docActions.onInitState({ id, isLocalDoc: true }));
       navigate(getDocPagePath(id))
     }
 
