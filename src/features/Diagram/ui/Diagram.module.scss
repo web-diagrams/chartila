@@ -10,24 +10,3 @@
     cursor: default;
   }
 }
-
-.controlsContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.control {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-
-  background: #fefefe;
-  border: transparent;
-  border-bottom: 1px solid #eee;
-}
-
-.control:hover {
-  cursor: pointer;
-  background: #f4f4f4;
-}

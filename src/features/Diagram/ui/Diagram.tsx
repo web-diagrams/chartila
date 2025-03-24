@@ -11,10 +11,10 @@ import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
 import { CiCircleInfo } from 'react-icons/ci';
 import { commonTexts } from '@/shared/consts/texts';
 import { useKey } from '@/shared/hooks/useKey';
-import { FaUndo, FaRedo } from 'react-icons/fa';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
+import { DiagramButtons } from '@/features/DiagramButtons/DiagramButtons';
 
 const panOnDrag = [1, 2];
 
@@ -94,19 +94,11 @@ export const Diagram = ({
       >
         <Background variant={BackgroundVariant.Cross} />
         <Controls position="top-left">
-          <div className={styles.controlsContainer}>
-            <button onClick={flowCallbacks.onUndo} title="undo" className={styles.control} disabled={step === 0}>
-              <FaUndo size={12} />
-            </button>
-            <button
-              onClick={flowCallbacks.onRedo}
-              title="redo"
-              className={styles.control}
-              disabled={!(history?.length > step + 1)}
-            >
-              <FaRedo size={12} />
-            </button>
-          </div>
+          <DiagramButtons
+            onUndo={flowCallbacks.onUndo}
+            onRedo={flowCallbacks.onRedo}
+            onSave={onSave}
+          />
         </Controls>
       </ReactFlow>
       <Pages />
