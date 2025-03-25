@@ -154,6 +154,15 @@ export const docSlice = createSlice({
       currentState.isUpdated = true;
       stateToHistory(state);
     },
+    onDeletePage: (state, action: PayloadAction<{ pageId: string }>) => {
+      const { pageId } = action.payload;
+      const currentState = state.currentState;
+      currentState.pages = currentState.pages.filter((page) => page.id !== pageId);
+      if (currentState.currentPageId = pageId) {
+        currentState.currentPageId = currentState.pages[0].id;
+      }
+      stateToHistory(state);
+    },
     onChangePageName: (state, action: PayloadAction<{ id: string; name: string }>) => {
       const currentState = state.currentState;
       const { id, name } = action.payload;

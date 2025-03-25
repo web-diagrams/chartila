@@ -3,11 +3,9 @@ import styles from './Diagram.module.scss';
 
 import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import Pages from '@/components/Pages/Pages';
 import { useEffect } from 'react';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
-import { ContextMenu, useContextMenu } from '@/features/ContextMenu';
 import { CiCircleInfo } from 'react-icons/ci';
 import { commonTexts } from '@/shared/consts/texts';
 import { useKey } from '@/shared/hooks/useKey';
@@ -15,6 +13,8 @@ import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
 import { DiagramButtons } from '@/features/DiagramButtons/DiagramButtons';
+import { useContextMenu } from '@/features/NodeContextMenu';
+import { NodeContextMenu } from '@/features/NodeContextMenu/ui/NodeContextMenu';
 
 const panOnDrag = [1, 2];
 
@@ -71,7 +71,7 @@ export const Diagram = ({
           <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />
         )}
       </div>
-      <ContextMenu state={contextMenuProps} />
+      <NodeContextMenu state={contextMenuProps} />
       <ReactFlow
         nodes={currentPage.nodes}
         edges={currentPage.edges}
@@ -101,7 +101,6 @@ export const Diagram = ({
           />
         </Controls>
       </ReactFlow>
-      <Pages />
     </div>
   );
 };

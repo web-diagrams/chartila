@@ -1,15 +1,15 @@
 import { StateType } from '../model/contexMenuTypes';
-import styles from './ContextMenu.module.scss';
+import styles from './NodeContextMenu.module.scss';
 import { useAppDispatch } from '@/app/hooks';
-import Button from '@/shared/ui/Button';
+import { Button } from '@/shared/ui/Button/Button';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { NodeData } from '@/redux/doc/constants/constants';
 
-type ContextMenuProps = {
+type NodeContextMenuProps = {
   state: StateType;
 };
 
-export const ContextMenu = ({ state }: ContextMenuProps) => {
+export const NodeContextMenu = ({ state }: NodeContextMenuProps) => {
   const dispatch = useAppDispatch();
 
   if (state.isOpen) {

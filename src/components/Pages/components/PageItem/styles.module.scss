@@ -1,5 +1,5 @@
-.page_element{
-    width: 100px;
+.page_element {
+    min-width: 100px;
     padding: 8px;
     display: flex;
     align-items: center;
@@ -13,6 +13,15 @@
 
 .page_element:hover {
     background-color: lightgray;
+}
+
+.pageContent {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
 }
 
 .input {

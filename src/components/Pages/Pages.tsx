@@ -3,7 +3,7 @@ import PageItem from './components/PageItem/PageItem';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { FaPlus } from 'react-icons/fa6';
-import Button from '@/shared/ui/Button';
+import { Button } from '@/shared/ui/Button/Button';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 const Pages = () => {
