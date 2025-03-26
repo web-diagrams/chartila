@@ -18,7 +18,7 @@ export const ServerProvide = ({ children }: PropsWithChildren) => {
         if (!isLoading && !isError) {
             setServerInfo((prev) => ({ ...prev, isServerEnabled: true }))
         }
-    }, [isError]);
+    }, [isError, isLoading]);
 
     if (isLoading) {
         return <p>Проверка работы сервера ...</p>

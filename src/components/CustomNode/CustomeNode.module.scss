@@ -5,6 +5,12 @@
   align-items: center;
 }
 
+.grabCursor {
+  & > textarea {
+    cursor: grab;
+  }
+}
+
 .inputWrapper {
   position: relative;
 

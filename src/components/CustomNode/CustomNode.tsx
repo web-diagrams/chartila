@@ -45,7 +45,15 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
       <CustomHandle isVisible={isHovered} type="target" position={Position.Bottom} id="bottom-target" />
       <CustomHandle isVisible={isHovered} type="source" position={Position.Bottom} id="bottom-source" />
 
-      <div className={classNames(styles.container)}>{getNode()}</div>
+      <div 
+        className={classNames(
+          styles.container, 
+          {
+            'nodrag': isDoubleClicked,
+            [styles.grabCursor]: !isDoubleClicked,
+          }
+        )}
+      >{getNode()}</div>
     </NodeWrapper>
   );
 });

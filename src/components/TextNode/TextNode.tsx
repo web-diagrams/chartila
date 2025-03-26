@@ -26,7 +26,7 @@ const TextNode: FC<TextNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
     <textarea
       style={{ width: `${textWidth}px` }}
       rows={text.split('\n').length}
-      className={classNames(styles.customNode, {}, [style.textNode, 'nodrag'])}
+      className={classNames(styles.customNode, {}, [style.textNode])}
       value={text}
       onBlur={onBlur}
       onChange={onChange}

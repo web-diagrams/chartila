@@ -29,7 +29,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
           <textarea
             style={{ width: `${textWidth}px` }}
             rows={text.split('\n').length}
-            className={classNames(styles.customNode, {}, ['nodrag'])}
+            className={classNames(styles.customNode)}
             value={text}
             onChange={onChange}
             onBlur={onBlur}
