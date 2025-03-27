@@ -81,6 +81,16 @@ export const docSlice = createSlice({
       const currentPage = getCurrentPage(state)!;
       currentPage.nodes = applyNodeChanges(changes, currentPage.nodes);
 
+      changes.forEach((change) => {
+        if ('selected' in change) {
+          if (change.selected) {
+            state.currentState.selectedNodes.push(change.id)
+          } else {
+            state.currentState.selectedNodes = state.currentState.selectedNodes.filter(nodeId => nodeId !== change.id)
+          }
+        }
+      })
+
       state.currentState.isUpdated = true;
     },
     onChangeNode: (

@@ -5,7 +5,7 @@ export const useKey = (cb: (event: KeyboardEvent) => void) => {
 
   useEffect(() => {
     callback.current = cb;
-  });
+  }, [cb]);
 
   useEffect(() => {
     function handle(event: KeyboardEvent) {
@@ -14,5 +14,5 @@ export const useKey = (cb: (event: KeyboardEvent) => void) => {
 
     document.addEventListener('keydown', handle, true);
     return () => document.removeEventListener('keydown', handle, true);
-  }, []);
+  }, [cb]);
 };
