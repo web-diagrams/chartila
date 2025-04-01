@@ -1,36 +1,41 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styles from './styles.module.scss';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { Page } from '@/redux/doc/interfaces/docStateInterfaces';
-import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from '@/shared/ui/Button/Button';
 
-interface PageItemProps {
-  page: Page;
+interface PageItemProps extends Page {
+  countOfPages: number;
+  isCurrentPageId: boolean;
+  onSelectPage: (id: string) => void;
+  onDeletePage: (pageId: string) => void;
 }
-const PageItem = ({ page }: PageItemProps) => {
-  const { currentPageId, pages } = useGetDocState();
+
+const PageItem = memo(({ id, pageName, countOfPages, isCurrentPageId, onSelectPage, onDeletePage }: PageItemProps) => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const [pageName, setPageName] = useState(page.pageName);
+  const [inputValue, setInputValue] = useState(pageName);
 
-  const isCurrentPageId = page.id === currentPageId;
-
-  const onSelectPage = () => {
-    dispatch(docActions.onSelectPage(page.id))
+  const onSelectPageCb = () => {
+    onSelectPage(id);
   }
 
-  const onDeletePage = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onDeletePageCb = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    dispatch(docActions.onDeletePage({ pageId: page.id }));
+    onDeletePage(id);
+  }
+
+  const onBlur = () => {
+    setIsOpen(false);
+    dispatch(docActions.onChangePageName({ id, name: pageName }));
   }
 
   return (
     <div
       className={styles.page_element}
-      onClick={onSelectPage}
+      onClick={onSelectPageCb}
       onDoubleClick={() => setIsOpen(true)}
       style={{ background: isCurrentPageId ? 'lightgray' : '' }}
     >
@@ -38,22 +43,19 @@ const PageItem = ({ page }: PageItemProps) => {
         <input
           className={styles.input}
           type="text"
-          value={pageName}
-          onChange={(e) => setPageName(e.target.value)}
-          onBlur={() => {
-            setIsOpen(false);
-            dispatch(docActions.onChangePageName({ id: page.id, name: pageName }));
-          }}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onBlur={onBlur}
           autoFocus
         />
       ) : (
         <div className={styles.pageContent}>
-          <div>{page.pageName}</div>
+          <div>{inputValue}</div>
           <Button
-            onClick={onDeletePage}
+            onClick={onDeletePageCb}
             withoutBG
             withoutPadding
-            disabled={pages.length === 1}
+            disabled={countOfPages === 1}
           >
             <FaRegTrashAlt size={12} />
           </Button>
@@ -61,6 +63,6 @@ const PageItem = ({ page }: PageItemProps) => {
       )}
     </div>
   );
-};
+});
 
 export default PageItem;
