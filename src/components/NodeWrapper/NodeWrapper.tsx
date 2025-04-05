@@ -6,24 +6,19 @@ import { docActions } from '@/redux/doc/slice/docSlice';
 import { classNames } from '@/utils';
 import { NodeMenu } from './NodeMenu/NodeMenu';
 import { useCurrentNode } from '@/hooks/useCurrentNode';
-import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 type NodeWrapperProps = {
   id: string;
   children?: React.ReactNode;
   onHoveredChange: (isHovered: boolean) => void;
   setIsDoubleClicked: Dispatch<SetStateAction<boolean>>;
+  isSelected: boolean;
 };
 
-const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked }) => {
+const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked, isSelected }) => {
   const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
-  const { selectedNodes } = useGetDocState();
   const node = useCurrentNode(id);
-
-  const isSelected = useMemo<boolean>(() => {
-    return selectedNodes.includes(id);
-  }, [id, selectedNodes]);
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {

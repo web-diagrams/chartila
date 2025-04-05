@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Position } from 'reactflow';
 import NodeWrapper from '../NodeWrapper/NodeWrapper';
 import styles from './CustomeNode.module.scss';
@@ -7,6 +7,7 @@ import { CommonNodeDataType } from '@/redux/doc/interfaces/docStateInterfaces';
 import CodeNode from '../CodeNode/CodeNode';
 import { CustomHandle } from '../CustomHandle/CustomHandle';
 import TextNode from '../TextNode/TextNode';
+import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 type CustomNodeProps = {
   data: CommonNodeDataType;
@@ -15,6 +16,11 @@ type CustomNodeProps = {
 export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
+  const { selectedNodes } = useGetDocState();
+
+  const isSelected = useMemo<boolean>(() => {
+    return selectedNodes.includes(data.id);
+  }, [data.id, selectedNodes]);
 
   const onHoveredChange = useCallback(
     (isHovered: boolean) => {
@@ -23,16 +29,21 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
     [setIsHovered],
   );
 
-  const getNode = () => {
+  const node = useMemo(() => {
     if (data.nodeType === 'codeNode') {
       return <CodeNode setIsDoubleClicked={setIsDoubleClicked} isDoubleClicked={isDoubleClicked} data={data} />;
     } else {
       return <TextNode setIsDoubleClicked={setIsDoubleClicked} isDoubleClicked={isDoubleClicked} data={data} />;
     }
-  };
+  }, [data, isDoubleClicked, setIsDoubleClicked]);
 
   return (
-    <NodeWrapper setIsDoubleClicked={setIsDoubleClicked} id={data.id} onHoveredChange={onHoveredChange}>
+    <NodeWrapper
+      setIsDoubleClicked={setIsDoubleClicked}
+      id={data.id}
+      onHoveredChange={onHoveredChange}
+      isSelected={isSelected}
+    >
       <CustomHandle isVisible={isHovered} type="target" position={Position.Top} id="top-target" />
       <CustomHandle isVisible={isHovered} type="source" position={Position.Top} id="top-source" />
 
@@ -45,15 +56,15 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
       <CustomHandle isVisible={isHovered} type="target" position={Position.Bottom} id="bottom-target" />
       <CustomHandle isVisible={isHovered} type="source" position={Position.Bottom} id="bottom-source" />
 
-      <div 
+      <div
         className={classNames(
-          styles.container, 
+          styles.container,
           {
             'nodrag': isDoubleClicked,
             [styles.grabCursor]: !isDoubleClicked,
           }
         )}
-      >{getNode()}</div>
+      >{node}</div>
     </NodeWrapper>
   );
 });

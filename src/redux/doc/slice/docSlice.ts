@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Edge, XYPosition } from 'reactflow';
+import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Node, Edge, XYPosition } from 'reactflow';
 import { CommonNodeDataType, FlowState, DocState } from '../interfaces/docStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
@@ -178,6 +178,15 @@ export const docSlice = createSlice({
       const { id, name } = action.payload;
       currentState.pages = currentState.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
       currentState.isUpdated = true;
+      stateToHistory(state);
+    },
+
+    onPasteChanges: (state, action: PayloadAction<{ nodes: Node<CommonNodeDataType>[]; edges: Edge[] }>) => {
+      const { nodes, edges } = action.payload;
+      const currentPage = getCurrentPage(state)!;
+      currentPage.nodes.push(...nodes);
+      currentPage.edges.push(...edges);
+      state.currentState.isUpdated = true;
       stateToHistory(state);
     },
 
