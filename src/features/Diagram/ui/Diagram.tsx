@@ -8,13 +8,13 @@ import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { CiCircleInfo } from 'react-icons/ci';
 import { commonTexts } from '@/shared/consts/texts';
-import { useKey } from '@/shared/hooks/useKey';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
 import { DiagramButtons } from '@/features/DiagramButtons/DiagramButtons';
 import { useContextMenu } from '@/features/NodeContextMenu';
 import { NodeContextMenu } from '@/features/NodeContextMenu/ui/NodeContextMenu';
+import { useKeyboard } from '../model/hooks/useKeyboard';
 
 const panOnDrag = [1, 2];
 
@@ -35,13 +35,7 @@ export const Diagram = ({
 
   const dispatch = useAppDispatch();
 
-  /** Save logic */
-  useKey((event) => {
-    if (event.ctrlKey && event.key === 's') {
-      event.preventDefault();
-      onSave();
-    }
-  });
+  useKeyboard({ onSave });
 
   const { contextMenuProps, onShowContextMenu, onCloseContextMenu } = useContextMenu();
 
