@@ -184,8 +184,15 @@ export const docSlice = createSlice({
     onPasteChanges: (state, action: PayloadAction<{ nodes: Node<CommonNodeDataType>[]; edges: Edge[] }>) => {
       const { nodes, edges } = action.payload;
       const currentPage = getCurrentPage(state)!;
+      currentPage.nodes.forEach((node) => {
+        node.selected = false; // снимаем выделение со всех нод
+      })
+      currentPage.edges.forEach((edge) => {
+        edge.selected = false; // снимаем выделение со всех нод
+      })
       currentPage.nodes.push(...nodes);
       currentPage.edges.push(...edges);
+      state.currentState.selectedNodes = [...nodes.map(node => node.id)]; // выделяем вставленные ноды
       state.currentState.isUpdated = true;
       stateToHistory(state);
     },
