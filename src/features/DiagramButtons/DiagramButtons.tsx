@@ -1,6 +1,7 @@
 import { FaRedo, FaUndo, FaRegSave } from "react-icons/fa"
 import styles from './DiagramButtons.module.scss';
 import { useAppSelector } from "@/app/hooks";
+import { SaveToImage } from "./SaveToImage/SaveToImage";
 
 interface DiagramButtonsProps {
   onUndo: () => void;
@@ -37,6 +38,7 @@ export const DiagramButtons = ({
       >
         <FaRegSave size={15} />
       </button>
+      <SaveToImage />
     </div>
   )
 }

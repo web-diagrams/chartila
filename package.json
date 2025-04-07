@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^2.6.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "highlight.js": "^11.9.0",
+    "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "msw": "^2.6.8",
     "react": "^18.2.0",
