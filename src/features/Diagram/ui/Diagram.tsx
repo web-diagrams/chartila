@@ -27,7 +27,7 @@ export const Diagram = ({
 }: DiagramProps) => {
   const { pages, currentPageId, selectedNodes, isUpdated } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
-  const { history, step, docName } = useAppSelector((state) => state.doc);
+  const { history, step } = useAppSelector((state) => state.doc);
 
   if (!currentPage) {
     return <p>Страница не подготовлена</p>
@@ -47,10 +47,6 @@ export const Diagram = ({
       dispatch(docActions.onReleaseNodes());
     }
   };
-
-  useEffect(() => {
-    document.title = docName ?? 'Web diagrams';
-  }, [docName]);
 
   useEffect(() => {
     () => {

@@ -23,6 +23,7 @@ const getDefaultState = (): FlowState => ({
   currentPageId: '',
   selectedNodes: [],
   isUpdated: false,
+  docName: 'Untitled',
 });
 
 const initialState: DocState = {
@@ -30,7 +31,6 @@ const initialState: DocState = {
   currentState: getDefaultState(),
   step: 0,
   isInited: false,
-  docName: 'Untitled',
 };
 
 export const docSlice = createSlice({
@@ -41,11 +41,11 @@ export const docSlice = createSlice({
       const { id, isLocalDoc } = payload;
       initState(state, id)
       if (isLocalDoc) {
-        saveFileToDB({ pages: state.currentState.pages, name: state.docName }, payload.id)
+        saveFileToDB({ pages: state.currentState.pages, name: state.currentState.docName }, payload.id)
       }
     },
     onLoadDoc: (state, { payload }: PayloadAction<DocDto>) => {
-      state.docName = payload.name;
+      state.currentState.docName = payload.name;
       const pageId = payload.pages[0].id;
       state.currentState.currentPageId = pageId;
       state.currentState.pages = payload.pages;
@@ -197,10 +197,17 @@ export const docSlice = createSlice({
       stateToHistory(state);
     },
 
+    // работа с документом
+    onChangeDocName: (state, action: PayloadAction<string>) => {
+      state.currentState.docName = action.payload;
+      state.currentState.isUpdated = true;
+      stateToHistory(state);
+    },
+
     // работа с инфраструктурой
     onSave: (state, action: PayloadAction<{ id: string }>) => {
       state.currentState.isUpdated = false;
-      updateFileInDB({ pages: state.currentState.pages, name: state.docName }, action.payload.id)
+      updateFileInDB({ pages: state.currentState.pages, name: state.currentState.docName }, action.payload.id)
     },
     undo: (state) => {
       state.step -= 1;
