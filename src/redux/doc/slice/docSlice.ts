@@ -197,6 +197,12 @@ export const docSlice = createSlice({
       stateToHistory(state);
     },
 
+    // работа с документом
+    onChangeDocName: (state, action: PayloadAction<string>) => {
+      state.docName = action.payload;
+      // state.currentState.isUpdated = true;
+    },
+
     // работа с инфраструктурой
     onSave: (state, action: PayloadAction<{ id: string }>) => {
       state.currentState.isUpdated = false;
