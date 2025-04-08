@@ -11,14 +11,14 @@ export const useStartNewDoc = () => {
   const { isServerEnabled } = useServer();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { docName, currentState } = useAppSelector(state => state.doc);
+  const { currentState } = useAppSelector(state => state.doc);
   const [createDoc] = useCreateDocMutation();
 
   const onStartNewProject = useCallback(async () => {
     const id = v1();
     if (isServerEnabled) {
       // Создаем документ на сервере
-      await createDoc({ id, doc: { name: docName, pages: currentState.pages } });
+      await createDoc({ id, doc: { name: currentState.docName, pages: currentState.pages } });
       navigate(getDocPagePath(id))
     } else {
       // Создаем документ локально
@@ -26,7 +26,7 @@ export const useStartNewDoc = () => {
       navigate(getDocPagePath(id))
     }
 
-  }, [createDoc, navigate, isServerEnabled]);
+  }, [createDoc, navigate, isServerEnabled, currentState.docName, currentState.pages, dispatch]);
 
   return {
     onStartNewProject

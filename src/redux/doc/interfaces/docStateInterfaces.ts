@@ -6,7 +6,6 @@ export type DocState = {
   /** index используемого элемента истории */
   step: number;
   isInited: boolean;
-  docName: string;
 };
 
 export interface FlowState {
@@ -14,6 +13,7 @@ export interface FlowState {
   currentPageId: string;
   selectedNodes: string[];
   isUpdated: boolean;
+  docName: string;
 }
 
 export interface Page {

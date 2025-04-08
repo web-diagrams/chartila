@@ -2,8 +2,7 @@ import { useAppSelector } from '@/app/hooks';
 import { useCallback } from 'react';
 
 export const useSaveToFile = () => {
-  const { docName } = useAppSelector(state => state.doc);
-  const { pages } = useAppSelector(state => state.doc.currentState);
+  const { pages, docName } = useAppSelector(state => state.doc.currentState);
 
   return {
     onSave: useCallback(() => {
