@@ -6,6 +6,9 @@ import { Page } from '@/redux/doc/interfaces/docStateInterfaces';
 export const useCurrentNode = (nodeId: string) => {
   const { pages, currentPageId } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
+  if (!currentPage) {
+    return
+  }
   const currentNode = useMemo(() => {
     return getCurrentNode(currentPage, nodeId);
   }, [currentPage, nodeId]);

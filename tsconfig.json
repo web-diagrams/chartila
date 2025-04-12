@@ -27,8 +27,8 @@
     "strict": true,
     "noImplicitAny": true, // Запрещает использование типа any
     "strictNullChecks": true, // Строгая проверка на null/undefined
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": [

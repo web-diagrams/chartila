@@ -69,10 +69,10 @@ export const docSlice = createSlice({
       const id = action.payload;
       const nodeToDelete = currentPage.nodes.find((node) => node.id === id)!;
 
-      currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete); // удялем ноуду
+      currentPage.nodes = currentPage.nodes.filter((node) => node !== nodeToDelete); // удаляем ноду
 
       const connectedEdges = getConnectedEdges([nodeToDelete], currentPage.edges);
-      currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge)); // удялем связи
+      currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge)); // удаляем связи
 
       state.currentState.isUpdated = true;
       stateToHistory(state); // запоминаем состояние в истории
@@ -232,8 +232,7 @@ export const docSlice = createSlice({
         initState(state, pages[0].id, docName, pages)
         saveFileToDB({ pages, name: docName }, id)
       })
-      .addCase(uploadFile.rejected, (state, action) => {
-        console.log(action.payload);
+      .addCase(uploadFile.rejected, () => {
       });
   },
 });

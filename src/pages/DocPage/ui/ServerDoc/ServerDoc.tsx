@@ -8,14 +8,14 @@ import { useParams } from "react-router-dom";
 export const ServerDoc = () => {
   const { docId = '' } = useParams();
   const dispatch = useAppDispatch();
-  const { docName, currentState } = useAppSelector(state => state.doc);
+  const { currentState } = useAppSelector(state => state.doc);
   const isInited = useAppSelector(state => state.doc.isInited);
   const [updateDoc] = useUpdateDocMutation();
   const { data: docInfo } = useDocQuery({ id: docId });
 
   const onSave = () => {
     dispatch(docActions.onSave({ id: docId }));
-    updateDoc({ id: docId, doc: { name: docName, pages: currentState.pages } })
+    updateDoc({ id: docId, doc: { name: currentState.docName, pages: currentState.pages } })
   }
 
   // Кладем в slice док с сервера
