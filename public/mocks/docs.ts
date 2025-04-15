@@ -1,4 +1,5 @@
 import { DocDto, DocInfoDto } from "@/shared/types/doc";
+import { v1 } from "uuid";
 
 export const docs: DocInfoDto[] = [
   {
@@ -19,5 +20,6 @@ export const doc: DocDto = {
       nodes: [],
       edges: [],
     }
-  ]
+  ],
+  id: v1(),
 }

@@ -2,7 +2,7 @@ import { useAuth } from "@/app/providers/AuthProvider";
 import { getDocsPagePath, getLoginPath } from "@/shared/config/routePaths";
 import { classNames } from "@/utils";
 import { useNavigate } from "react-router-dom";
-import s from './StartWindow.module.scss';
+import s from '../StartWindow/StartWindow.module.scss';
 import { useServer } from "@/app/providers/ServerProvider/ServerProvider";
 
 export const ServerButton = () => {

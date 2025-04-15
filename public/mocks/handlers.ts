@@ -10,17 +10,15 @@ export const handlers = [
     return HttpResponse.json(docs)
   }),
 
-  http.get('http://localhost:8080/doc/:docId', ({ params }) => {
-    const { docId } = params;
+  http.get('http://localhost:8080/doc/:docId', () => {
     return HttpResponse.json(doc)
   }),
 
-  http.post('http://localhost:8080/doc/:docId', ({ params }) => {
-    const { docId } = params;
+  http.post('http://localhost:8080/doc/:docId', () => {
     return HttpResponse.json({})
   }),
 
-  http.post('http://localhost:5000/products', (req) => {
+  http.post('http://localhost:5000/products', () => {
     // const info = req.body;
   }),
 ]

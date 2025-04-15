@@ -23,9 +23,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     /* Linting */
+    "noEmitOnError": true, // Не генерировать файлы, если есть ошибки компиляции
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noImplicitAny": true, // Запрещает использование типа any
+    "strictNullChecks": true, // Строгая проверка на null/undefined
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": [

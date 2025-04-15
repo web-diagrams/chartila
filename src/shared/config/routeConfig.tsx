@@ -1,5 +1,5 @@
 import { RouteProps } from 'react-router-dom';
-import StartWindow from '@/components/StartWindow/StartWindow';
+import StartWindow from '@/components/StartWindow/ui/StartWindow/StartWindow';
 import { LoginForm } from '@/components/AuthComponents/ui/LoginForm/LoginForm';
 import { RegisterForm } from '@/components/AuthComponents/ui/RegisterForm/RegisterForm';
 import { DocPage } from '@/pages/DocPage';

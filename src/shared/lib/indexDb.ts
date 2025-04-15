@@ -21,11 +21,11 @@ const openDB = () => {
 };
 
 // Сохранение файла в IndexedDB
-export const saveFileToDB = async (fileData: DocDto, id: string) => {
+export const saveFileToDB = async (fileData: DocDto) => {
   const db = await openDB();
   const transaction = db.transaction(STORE_NAME, 'readwrite');
   const store = transaction.objectStore(STORE_NAME);
-  store.put({ id, ...fileData });
+  store.put({ ...fileData });
 };
 
 // Получение файла из IndexedDB
@@ -42,14 +42,14 @@ export const getFileFromDB = async (id: string) => {
 };
 
 // Обновление файла в IndexedDB
-export const updateFileInDB = async (fileData: DocDto, id: string) => {
+export const updateFileInDB = async (fileData: DocDto) => {
   try {
     if (!fileData || typeof fileData !== "object") {
       console.error("Invalid fileData:", fileData);
       return;
     }
-    if (!id) {
-      console.error("Invalid id:", id);
+    if (!fileData.id) {
+      console.error("Invalid id:", fileData.id);
       return;
     }
 
@@ -65,9 +65,9 @@ export const updateFileInDB = async (fileData: DocDto, id: string) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
-    store.put({ id, ...cleanFileData });
+    store.put({ ...cleanFileData });
 
-    console.log(`File with id ${id} updated in IndexedDB`);
+    console.log(`File with id ${cleanFileData.id} updated in IndexedDB`);
   } catch (error) {
     console.error("Error updating file in IndexedDB:", error);
   }
