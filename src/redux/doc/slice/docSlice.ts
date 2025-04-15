@@ -41,7 +41,7 @@ export const docSlice = createSlice({
       const { id, isLocalDoc } = payload;
       initState(state, id)
       if (isLocalDoc) {
-        saveFileToDB({ pages: state.currentState.pages, name: state.currentState.docName }, payload.id)
+        saveFileToDB({ pages: state.currentState.pages, name: state.currentState.docName, id })
       }
     },
     onLoadDoc: (state, { payload }: PayloadAction<DocDto>) => {
@@ -206,8 +206,10 @@ export const docSlice = createSlice({
 
     // работа с инфраструктурой
     onSave: (state, action: PayloadAction<{ id: string }>) => {
-      state.currentState.isUpdated = false;
-      updateFileInDB({ pages: state.currentState.pages, name: state.currentState.docName }, action.payload.id)
+      const { id } = action.payload;
+      const currentState = state.currentState;
+      currentState.isUpdated = false;
+      updateFileInDB({ pages: currentState.pages, name: currentState.docName, id })
     },
     undo: (state) => {
       state.step -= 1;
@@ -230,7 +232,7 @@ export const docSlice = createSlice({
       .addCase(uploadFile.fulfilled, (state, action) => {
         const { pages, docName, id } = action.payload
         initState(state, pages[0].id, docName, pages)
-        saveFileToDB({ pages, name: docName }, id)
+        saveFileToDB({ pages, name: docName, id })
       })
       .addCase(uploadFile.rejected, () => {
       });

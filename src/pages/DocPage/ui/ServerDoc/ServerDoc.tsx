@@ -15,7 +15,7 @@ export const ServerDoc = () => {
 
   const onSave = () => {
     dispatch(docActions.onSave({ id: docId }));
-    updateDoc({ id: docId, doc: { name: currentState.docName, pages: currentState.pages } })
+    updateDoc({ name: currentState.docName, pages: currentState.pages, id: docId })
   }
 
   // Кладем в slice док с сервера

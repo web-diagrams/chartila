@@ -9,16 +9,16 @@ export const docsApi = rtkApi.injectEndpoints({
     doc: build.query<DocDto, { id: string }>({
       query: ({ id }) => `doc/${id}`,
     }),
-    createDoc: build.mutation<undefined, { id: string, doc: DocDto }>({
-      query: ({ id, doc }) => ({
-        url: `doc/${id}`,
+    createDoc: build.mutation<undefined, DocDto>({
+      query: (doc) => ({
+        url: `doc/${doc.id}`,
         method: 'POST',
         body: doc,
       }),
     }),
-    updateDoc: build.mutation<undefined, { id: string, doc: DocDto }>({
-      query: ({ id, doc }) => ({
-        url: `doc/${id}`,
+    updateDoc: build.mutation<undefined, DocDto>({
+      query: (doc) => ({
+        url: `doc/${doc.id}`,
         method: 'POST',
         body: doc,
       }),
