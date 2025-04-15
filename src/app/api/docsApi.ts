@@ -5,6 +5,7 @@ export const docsApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
     docs: build.query<DocInfoDto[], undefined>({
       query: () => `docs`,
+      providesTags: ['Docs'],
     }),
     doc: build.query<DocDto, { id: string }>({
       query: ({ id }) => `doc/${id}`,
@@ -23,7 +24,14 @@ export const docsApi = rtkApi.injectEndpoints({
         body: doc,
       }),
     }),
+    deleteDoc: build.mutation<undefined, { id: string }>({
+      query: ({ id }) => ({
+        url: `doc/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Docs'],
+    }),
   }),
 });
 
-export const { useDocsQuery, useDocQuery, useCreateDocMutation, useUpdateDocMutation } = docsApi;
+export const { useDocsQuery, useDocQuery, useCreateDocMutation, useUpdateDocMutation, useDeleteDocMutation } = docsApi;

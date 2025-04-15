@@ -35,7 +35,7 @@ export const ServerButton = () => {
               className={classNames(s.button, {}, [s.button_type_label])}
               onClick={openDocsPage}
             >
-              Выбрать график
+              Список документов
             </button>
             <button onClick={onLogout} className={classNames(s.button, {}, [s.button_type_label])}>
               Выйти
