@@ -20,8 +20,6 @@ const elkOptions = {
   'elk.layered.spacing.nodeNodeBetweenLayers': '100',
   'elk.spacing.nodeNode': '80',
 };
- 
-
 
 const getLayoutedElements = (nodes: Node[], edges: Edge[], options: LayoutOptions = {}) => {
   const isHorizontal = options?.['elk.direction'] === 'RIGHT';
@@ -39,13 +37,17 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], options: LayoutOption
       width: 150,
       height: 50,
     })),
-    edges: edges,
+    edges: edges.map((edge) => ({
+      ...edge,
+      sources: [edge.source],
+      targets: [edge.target],
+    })),
   };
  
   return elk
   .layout(graph)
   .then((layoutedGraph) => ({
-    nodes: layoutedGraph.children.map((node) => ({
+    nodes: (layoutedGraph.children ?? []).map((node) => ({
       ...node,
       position: { x: node.x, y: node.y },
       targetPosition: isHorizontal ? 'left' : 'top',
@@ -60,36 +62,49 @@ export const NodeAlignment = () => {
     const dispatch = useAppDispatch();
     const { pages, currentPageId } = useGetDocState();
     const currentPage = useCurrentPage(pages, currentPageId);
-    const { fitView } = useReactFlow();
     
     const onLayout = useCallback(
         ({ direction }: {direction: string}) => {
             if (!currentPage?.nodes || !currentPage?.edges) {
-                return;
+              return;
             }
 
             const opts = { 'elk.direction': direction, ...elkOptions };
             const { nodes, edges } = currentPage;
 
-            getLayoutedElements(cloneDeep(nodes), cloneDeep(edges), opts).then((data) => {
+            getLayoutedElements(
+              cloneDeep(nodes.filter((node) => node.selected)), 
+              cloneDeep(edges), 
+              opts
+            )
+            .then((data) => {
                 if (!data) {
                   return;
-                } 
+                }
                 const { 
                   nodes: layoutedNodes, 
                   edges: layoutedEdges 
                 } = data;
-                dispatch(docActions.onSetNodes({ nodes: layoutedNodes as Node[] }));
+                dispatch(docActions.onSetNodes({ nodes: nodes.map((node) => {
+                  const updatedNode = layoutedNodes.find((lNode) => lNode.id === node.id) 
+                  if (updatedNode) {
+                    return updatedNode as Node;
+                  } else {
+                    return node;
+                  }
+                }) }));
                 if (layoutedEdges) {
-                  const convertedEdges: Edge[] = layoutedEdges.map((elkEdge) => ({
-                    source: elkEdge.sources?.[0] ?? '',
-                    target: elkEdge.targets?.[0] ?? '',
-                    ...elkEdge,
-                    // добавь type, label, style и другие поля, если нужно
-                  }));
+                  const convertedEdges: Edge[] = layoutedEdges.map((elkEdge) => {
+                    const { sources, targets, source, target, ...rest } = elkEdge;
+                    return {
+                        source: sources?.[0] ?? source ?? '',
+                        target: targets?.[0] ?? target ?? '',
+                        ...rest,
+                        // добавь type, label, style и другие поля, если нужно
+                    };
+                  });
                   dispatch(docActions.onChangeEdges((convertedEdges)));
                 }
-                fitView();
             });
         },
         [currentPage],
