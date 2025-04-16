@@ -12,7 +12,7 @@ type CodeComponentProps = {
 const CodeComponent: FC<CodeComponentProps> = memo(({ code }) => {
   const codeBlockRef = useRef(null);
   useEffect(() => {
-    hljs.highlightBlock(codeBlockRef.current);
+    hljs.highlightBlock(codeBlockRef.current ?? document.createElement('code'));
   }, [codeBlockRef]);
 
   return (

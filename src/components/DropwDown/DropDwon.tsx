@@ -29,7 +29,7 @@ const DropDown: FC<DropDownProps> = ({
   return (
     <div
       className={classNames(styles.container, { [styles.containerTableSection]: type === DropDownType.TABLESECTION }, [
-        className,
+        className ?? '',
       ])}
     >
       <div onClick={() => setIsOpen((prev) => !prev)} className={classNames(styles.titleWithButtons)}>

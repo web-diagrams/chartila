@@ -9,5 +9,6 @@ export interface DocInfoDto {
 
 export interface DocDto {
   name: string;
+  id: string;
   pages: Page[]
 }
