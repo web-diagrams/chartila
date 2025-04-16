@@ -45,15 +45,15 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
       isSelected={isSelected}
     >
       <CustomHandle isVisible={isHovered} type="target" position={Position.Top} id="top-target" />
-      <CustomHandle isVisible={isHovered} type="source" position={Position.Top} id="top-source" />
+      {/* <CustomHandle isVisible={isHovered} type="source" position={Position.Top} id="top-source" /> */}
 
       <CustomHandle isVisible={isHovered} type="target" position={Position.Left} id="left-target" />
-      <CustomHandle isVisible={isHovered} type="source" position={Position.Left} id="left-source" />
+      {/* <CustomHandle isVisible={isHovered} type="source" position={Position.Left} id="left-source" /> */}
 
-      <CustomHandle isVisible={isHovered} type="target" position={Position.Right} id="right-target" />
+      {/* <CustomHandle isVisible={isHovered} type="target" position={Position.Right} id="right-target" /> */}
       <CustomHandle isVisible={isHovered} type="source" position={Position.Right} id="right-source" />
 
-      <CustomHandle isVisible={isHovered} type="target" position={Position.Bottom} id="bottom-target" />
+      {/* <CustomHandle isVisible={isHovered} type="target" position={Position.Bottom} id="bottom-target" /> */}
       <CustomHandle isVisible={isHovered} type="source" position={Position.Bottom} id="bottom-source" />
 
       <div

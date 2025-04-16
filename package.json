@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
+    "elkjs": "^0.10.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "highlight.js": "^11.9.0",
     "html-to-image": "^1.11.13",
