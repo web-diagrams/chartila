@@ -69,21 +69,34 @@ export const NodeAlignment = () => {
 
             const { nodes, edges } = currentPage;
 
+            const selectedNodes = nodes.filter((node) => node.selected);
+            const selectedEdges = edges.filter((edge) => {
+              const intersectedNode = selectedNodes.find((node) => node.id === edge.source || node.id === edge.target);
+              return !!intersectedNode;
+            });
+
             const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-              cloneDeep(nodes.filter((node) => node.selected)),
-              cloneDeep(edges), 
+              cloneDeep(selectedNodes),
+              cloneDeep(selectedEdges), 
               direction
             );
 
             dispatch(docActions.onSetNodes({ nodes: nodes.map((node) => {
               const updatedNode = layoutedNodes.find((lNode) => lNode.id === node.id) 
               if (updatedNode) {
-                return updatedNode as Node;
+                return updatedNode;
               } else {
                 return node;
               }
             }) }));
-            dispatch(docActions.onChangeEdges((layoutedEdges)));
+            dispatch(docActions.onChangeEdges((edges.map((edge) => {
+              const updatedEdge = layoutedEdges.find((lEdge) => lEdge.id === edge.id) 
+              if (updatedEdge) {
+                return updatedEdge;
+              } else {
+                return edge;
+              }
+            }))));
         },
         [currentPage],
       );
