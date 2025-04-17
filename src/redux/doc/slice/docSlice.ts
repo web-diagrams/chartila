@@ -116,6 +116,10 @@ export const docSlice = createSlice({
         }
       }
     },
+    onSetNodes: (state, action: PayloadAction<{nodes: Node[]}>) => {
+      const currentPage = getCurrentPage(state)!;
+      currentPage.nodes = action.payload.nodes;
+    },
     onSelectNode: (state, action: PayloadAction<string>) => {
       state.currentState.selectedNodes = [action.payload];
     },
