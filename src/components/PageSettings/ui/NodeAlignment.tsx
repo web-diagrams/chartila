@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Node, Edge, Position } from "reactflow";
+import { Node, Edge } from "reactflow";
 
 import { useGetDocState } from "@/redux/doc/hooks/useGetDocState";
 import { useCurrentPage } from "@/hooks/useCurrentPage";
@@ -37,8 +37,6 @@ export function getLayoutedElements(
 
   const layoutedNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id)
-    node.targetPosition = isHorizontal ? Position.Left : Position.Top
-    node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom
 
     return {
       ...node,
@@ -49,7 +47,13 @@ export function getLayoutedElements(
     }
   })
 
-  return { nodes: layoutedNodes, edges }
+  const layoutedEdges = edges.map((edge) => ({
+    ...edge,
+    sourceHandle: isHorizontal ? 'right-source' : 'bottom-source',
+    targetHandle: isHorizontal ? 'left-target' : 'top-target',
+  }))
+
+  return { nodes: layoutedNodes, edges: layoutedEdges }
 }
 
 export const NodeAlignment = () => {
@@ -79,17 +83,7 @@ export const NodeAlignment = () => {
                 return node;
               }
             }) }));
-            // if (layoutedEdges) {
-            //   const convertedEdges: Edge[] = layoutedEdges.map((elkEdge) => {
-            //     return {
-            //         source: sources?.[0] ?? source ?? '',
-            //         target: targets?.[0] ?? target ?? '',
-            //         ...rest,
-            //         // добавь type, label, style и другие поля, если нужно
-            //     };
-            //   });
-            //   dispatch(docActions.onChangeEdges((convertedEdges)));
-            // }
+            dispatch(docActions.onChangeEdges((layoutedEdges)));
         },
         [currentPage],
       );
