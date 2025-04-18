@@ -26,17 +26,13 @@ interface DiagramProps {
 export const Diagram = ({
   onSave,
 }: DiagramProps) => {
-  const { pages, currentPageId, isUpdated } = useGetDocState();
+  const { pages, currentPageId, isUpdated, selectedNodes } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
   const { history, step } = useAppSelector((state) => state.doc);
 
   if (!currentPage) {
     return <p>Страница не подготовлена</p>
   }
-
-  const selectedNodes = useMemo(() => {
-    return currentPage.nodes.filter((node) => node.selected);
-  }, [currentPage.nodes]);
 
   const dispatch = useAppDispatch();
 
@@ -96,7 +92,7 @@ export const Diagram = ({
           />
         </Controls>
       </ReactFlow>
-      <FloatingToolbar selectedNodes={selectedNodes} />
+      <FloatingToolbar selectedNodesLength={selectedNodes.length} />
     </div>
   );
 };
