@@ -1,7 +1,9 @@
 import { FaRedo, FaUndo, FaRegSave } from "react-icons/fa"
 import styles from './DiagramButtons.module.scss';
 import { useAppSelector } from "@/app/hooks";
-import { SaveToImage } from "./SaveToImage/SaveToImage";
+import { SaveToImage } from "./Buttons/SaveToImage";
+import { SaveDoc } from "./Buttons/SaveDoc";
+import { UndoRedo } from "./Buttons/UndoRedo";
 
 interface DiagramButtonsProps {
   onUndo: () => void;
@@ -9,35 +11,25 @@ interface DiagramButtonsProps {
   onSave: () => void;
 }
 
+/**
+ * Компонент для отображения кнопок управления диаграммой
+ * @param onUndo - функция для отмены последнего действия
+ * @param onRedo - функция для повторения последнего действия
+ * @param onSave - функция для сохранения диаграммы 
+ */
 export const DiagramButtons = ({
   onUndo, onRedo, onSave,
 }: DiagramButtonsProps) => {
-  const { step } = useAppSelector((state) => state.doc);
+  const { step, history } = useAppSelector((state) => state.doc);
   return (
     <div className={styles.controlsContainer}>
-      <button
-        onClick={onUndo}
-        title="undo"
-        className={styles.control}
-        disabled={step === 0}
-      >
-        <FaUndo size={12} />
-      </button>
-      <button
-        onClick={onRedo}
-        title="redo"
-        className={styles.control}
-        disabled={!(history?.length > step + 1)}
-      >
-        <FaRedo size={12} />
-      </button>
-      <button
-        onClick={onSave}
-        title="save"
-        className={styles.control}
-      >
-        <FaRegSave size={15} />
-      </button>
+      <UndoRedo
+        onUndo={onUndo}
+        onRedo={onRedo}
+        step={step}
+        historyLength={history?.length ?? 0}
+      />
+      <SaveDoc onSave={onSave} />
       <SaveToImage />
     </div>
   )

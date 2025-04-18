@@ -18,6 +18,9 @@ function downloadImage(dataUrl: string) {
 const imageWidth = 1024;
 const imageHeight = 768;
 
+/**
+ * Кнопка для сохранения диаграммы в png
+ */
 export const SaveToImage = () => {
   const { getNodes } = useReactFlow();
   const onClick = () => {
