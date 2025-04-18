@@ -4,6 +4,7 @@ import { useAppSelector } from "@/app/hooks";
 import { SaveToImage } from "./Buttons/SaveToImage";
 import { SaveDoc } from "./Buttons/SaveDoc";
 import { UndoRedo } from "./Buttons/UndoRedo";
+import { BackToStartPage } from "./Buttons/BackToStartPage";
 
 interface DiagramButtonsProps {
   onUndo: () => void;
@@ -31,6 +32,7 @@ export const DiagramButtons = ({
       />
       <SaveDoc onSave={onSave} />
       <SaveToImage />
+      <BackToStartPage />
     </div>
   )
 }
