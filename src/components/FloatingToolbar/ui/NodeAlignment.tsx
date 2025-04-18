@@ -6,6 +6,8 @@ import { useCurrentPage } from "@/hooks/useCurrentPage";
 import { useAppDispatch } from "@/app/hooks";
 import { docActions } from "@/redux/doc/slice/docSlice";
 
+import styles from "../FloatingToolbar.module.scss";
+
 import dagre from "dagre";
 
 const nodeWidth = 172;
@@ -60,36 +62,36 @@ export const NodeAlignment = () => {
   const onLayout = useCallback(
     ({ direction }: { direction: "TB" | "LR" }) => {
       if (!currentPage?.nodes?.length || !currentPage?.edges?.length) return;
-  
+
       const { nodes, edges } = currentPage;
-  
+
       const selectedNodes = nodes.filter((node) => node.selected);
       if (!selectedNodes.length) return;
-  
+
       const selectedNodeIds = new Set(selectedNodes.map((n) => n.id));
       const selectedEdges = edges.filter(
         (edge) =>
           selectedNodeIds.has(edge.source) && selectedNodeIds.has(edge.target)
       );
-  
+
       // 1. Определяем минимальные координаты среди выбранных нод
       const minXBefore = Math.min(...selectedNodes.map((n) => n.position.x));
       const minYBefore = Math.min(...selectedNodes.map((n) => n.position.y));
-  
+
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         [...selectedNodes],
         [...selectedEdges],
         direction
       );
-  
+
       // 2. Минимальные координаты после layout'а
       const minXAfter = Math.min(...layoutedNodes.map((n) => n.position.x));
       const minYAfter = Math.min(...layoutedNodes.map((n) => n.position.y));
-  
+
       // 3. Смещение, которое нужно применить
       const offsetX = minXBefore - minXAfter;
       const offsetY = minYBefore - minYAfter;
-  
+
       // 4. Обновляем позиции layouted нод с учётом смещения
       const shiftedLayoutedNodes = layoutedNodes.map((n) => ({
         ...n,
@@ -98,16 +100,16 @@ export const NodeAlignment = () => {
           y: n.position.y + offsetY,
         },
       }));
-  
+
       const layoutedNodeMap = new Map(shiftedLayoutedNodes.map((n) => [n.id, n]));
       const layoutedEdgeMap = new Map(layoutedEdges.map((e) => [e.id, e]));
-  
+
       dispatch(
         docActions.onSetNodes({
           nodes: nodes.map((node) => layoutedNodeMap.get(node.id) || node),
         })
       );
-  
+
       dispatch(
         docActions.onChangeEdges(
           edges.map((edge) => layoutedEdgeMap.get(edge.id) || edge)
@@ -125,17 +127,13 @@ export const NodeAlignment = () => {
     onLayout({ direction: "LR" });
   }, [onLayout]);
 
-  const nothingSelected = useMemo(() => {
-    return !currentPage?.nodes?.some((n) => n.selected);
-  }, [currentPage]);
-
   return (
     <>
-      <button onClick={onVertical} disabled={nothingSelected}>
-        Вертикальное
+      <button onClick={onVertical} className={styles.button}>
+        ↕ Вертикально
       </button>
-      <button onClick={onHorizontal} disabled={nothingSelected}>
-        Горизонтальное
+      <button onClick={onHorizontal} className={styles.button}>
+        ↔ Горизонтально
       </button>
     </>
   );

@@ -3,7 +3,7 @@ import styles from './Diagram.module.scss';
 
 import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { CiCircleInfo } from 'react-icons/ci';
@@ -15,6 +15,7 @@ import { DiagramButtons } from '@/features/DiagramButtons/DiagramButtons';
 import { useContextMenu } from '@/features/NodeContextMenu';
 import { NodeContextMenu } from '@/features/NodeContextMenu/ui/NodeContextMenu';
 import { useKeyboard } from '../model/hooks/useKeyboard';
+import { FloatingToolbar } from '@/components/FloatingToolbar/FloatingToolbar';
 
 const panOnDrag = [1, 2];
 
@@ -25,13 +26,17 @@ interface DiagramProps {
 export const Diagram = ({
   onSave,
 }: DiagramProps) => {
-  const { pages, currentPageId, selectedNodes, isUpdated } = useGetDocState();
+  const { pages, currentPageId, isUpdated } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
   const { history, step } = useAppSelector((state) => state.doc);
 
   if (!currentPage) {
     return <p>Страница не подготовлена</p>
   }
+
+  const selectedNodes = useMemo(() => {
+    return currentPage.nodes.filter((node) => node.selected);
+  }, [currentPage.nodes]);
 
   const dispatch = useAppDispatch();
 
@@ -91,6 +96,7 @@ export const Diagram = ({
           />
         </Controls>
       </ReactFlow>
+      <FloatingToolbar selectedNodes={selectedNodes} />
     </div>
   );
 };
