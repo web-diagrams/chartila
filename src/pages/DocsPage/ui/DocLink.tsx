@@ -2,8 +2,7 @@ import { getDocPagePath } from "@/shared/config/routePaths";
 import { DocInfoDto } from "@/shared/types/doc"
 import { useNavigate } from "react-router-dom";
 import styles from './Doc.module.scss';
-import { FaRegTrashAlt } from "react-icons/fa";
-
+import { FaRegTrashAlt, FaRegFolderOpen } from "react-icons/fa";
 interface DocProps {
   doc: DocInfoDto;
   onDeleteDoc: (id: string) => void;
@@ -23,16 +22,25 @@ export const DocLink = ({
   }
 
   return (
-    <li className={styles.linkContainer}>
-      <p className={styles.docLink} onClick={onLinkClick}>{doc.name}</p>
-      <button
-        onClick={onDeleteDocCb}
-        title="undo"
-        className={styles.control}
-        disabled={isLoading}
-      >
-        <FaRegTrashAlt size={12} />
-      </button>
+    <li className={styles.docCard}>
+      <div className={styles.label}>{doc.name}</div>
+      <div className={styles.buttons}>
+        <button
+          className={styles.openBtn}
+          onClick={onLinkClick}
+          title="Открыть диаграмму"
+        >
+          <FaRegFolderOpen size={15} />
+        </button>
+        <button
+          className={styles.deleteBtn}
+          onClick={onDeleteDocCb}
+          disabled={isLoading}
+          title="Удалить диаграмму"
+        >
+          <FaRegTrashAlt size={15} />
+        </button>
+      </div>
     </li>
-  )
+  );
 }
