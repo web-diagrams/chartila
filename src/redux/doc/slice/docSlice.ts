@@ -187,7 +187,7 @@ export const docSlice = createSlice({
         node.selected = false; // снимаем выделение со всех нод
       })
       currentPage.edges.forEach((edge) => {
-        edge.selected = false; // снимаем выделение со всех нод
+        edge.selected = false; // снимаем выделение со всех связей
       })
       currentPage.nodes.push(...nodes);
       currentPage.edges.push(...edges);

@@ -119,11 +119,13 @@ export const NodeAlignment = () => {
     [currentPage, dispatch]
   );
 
-  const onVertical = useCallback(() => {
+  const onVertical = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     onLayout({ direction: "TB" });
   }, [onLayout]);
 
-  const onHorizontal = useCallback(() => {
+  const onHorizontal = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     onLayout({ direction: "LR" });
   }, [onLayout]);
 
