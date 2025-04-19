@@ -11,7 +11,6 @@ export const DocPage = () => {
 
   return (
     <>
-      <PageSettings />
       {isServerEnabled
         ? <ServerDoc />
         : <LocalDoc />
