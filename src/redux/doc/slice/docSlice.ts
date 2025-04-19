@@ -61,7 +61,6 @@ export const docSlice = createSlice({
       const newNode = getNewNode({ type, position });
       currentPage.nodes.push(newNode);
 
-      state.currentState.isUpdated = true;
       stateToHistory(state); // запоминаем состояние в истории
     },
     onDeleteNode: (state, action: PayloadAction<string>) => {
@@ -74,7 +73,6 @@ export const docSlice = createSlice({
       const connectedEdges = getConnectedEdges([nodeToDelete], currentPage.edges);
       currentPage.edges = currentPage.edges.filter((edge) => !connectedEdges.includes(edge)); // удаляем связи
 
-      state.currentState.isUpdated = true;
       stateToHistory(state); // запоминаем состояние в истории
     },
     onChangeNodes: (state, { ['payload']: { changes } }: PayloadAction<{ changes: NodeChange[] }>) => {
@@ -90,8 +88,6 @@ export const docSlice = createSlice({
           }
         }
       })
-
-      state.currentState.isUpdated = true;
     },
     onChangeNode: (
       state,
@@ -109,14 +105,13 @@ export const docSlice = createSlice({
         const currentNode = currentPage.nodes.find((node) => node.id === id)!;
         if (currentNode.data[key] !== value) {
           currentNode.data[key] = value;
-          state.currentState.isUpdated = true;
         }
         if (saveToHistory) {
           stateToHistory(state); // запоминаем состояние в истории
         }
       }
     },
-    onSetNodes: (state, action: PayloadAction<{nodes: Node[]}>) => {
+    onSetNodes: (state, action: PayloadAction<{ nodes: Node[] }>) => {
       const currentPage = getCurrentPage(state)!;
       currentPage.nodes = action.payload.nodes;
     },
@@ -138,13 +133,11 @@ export const docSlice = createSlice({
         isCountOfEdgesWereChagned = true;
       }
       if (currentPage) currentPage.edges = action.payload;
-      state.currentState.isUpdated = true;
       if (isCountOfEdgesWereChagned) stateToHistory(state);
     },
     onConnect: (state, action: PayloadAction<Connection>) => {
       const currentPage = getCurrentPage(state)!;
       currentPage.edges = addEdge(action.payload, currentPage.edges);
-      state.currentState.isUpdated = true;
       stateToHistory(state);
     },
 
@@ -165,7 +158,6 @@ export const docSlice = createSlice({
         pageName: 'New page',
       });
       currentState.currentPageId = pageId;
-      currentState.isUpdated = true;
       stateToHistory(state);
     },
     onDeletePage: (state, action: PayloadAction<{ pageId: string }>) => {
@@ -181,7 +173,6 @@ export const docSlice = createSlice({
       const currentState = state.currentState;
       const { id, name } = action.payload;
       currentState.pages = currentState.pages.map((page) => (page.id === id ? { ...page, pageName: name } : page));
-      currentState.isUpdated = true;
       stateToHistory(state);
     },
 
@@ -197,14 +188,12 @@ export const docSlice = createSlice({
       currentPage.nodes.push(...nodes);
       currentPage.edges.push(...edges);
       state.currentState.selectedNodes = [...nodes.map(node => node.id)]; // выделяем вставленные ноды
-      state.currentState.isUpdated = true;
       stateToHistory(state);
     },
 
     // работа с документом
     onChangeDocName: (state, action: PayloadAction<string>) => {
       state.currentState.docName = action.payload;
-      state.currentState.isUpdated = true;
       stateToHistory(state);
     },
 
@@ -212,7 +201,6 @@ export const docSlice = createSlice({
     onSave: (state, action: PayloadAction<{ id: string }>) => {
       const { id } = action.payload;
       const currentState = state.currentState;
-      currentState.isUpdated = false;
       updateFileInDB({ pages: currentState.pages, name: currentState.docName, id })
     },
     undo: (state) => {
