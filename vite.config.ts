@@ -15,5 +15,6 @@ export default defineConfig({
   },
   define: {
     'process.env.MOCK_ENV': JSON.stringify(process.env.MOCK_ENV),
+    base: '/web-diagrams/',
   },
 })
