@@ -32,18 +32,18 @@ export const ServerButton = () => {
         ? (
           <>
             <button
-              className={classNames(s.button, {}, [s.button_type_label])}
+              className={classNames(s.secondary, {}, [])}
               onClick={openDocsPage}
             >
               Список документов
             </button>
-            <button onClick={onLogout} className={classNames(s.button, {}, [s.button_type_label])}>
+            <button onClick={onLogout} className={classNames(s.secondary, {}, [])}>
               Выйти
             </button>
           </>
         )
         : (
-          <button onClick={onAuthClick} className={classNames(s.button, {}, [s.button_type_label])}>
+          <button onClick={onAuthClick} className={classNames(s.secondary, {}, [])}>
             Авторизоваться
           </button>
         )

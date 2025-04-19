@@ -12,12 +12,12 @@ const StartWindow: FC = memo(() => {
     <Modal title='Начало работы'>
       <ul className={s.list}>
         <li className={s.listItem}>
-          <UploadButton />
+          <button onClick={onStartNewProject} className={s.primary}>
+            Создать новый документ
+          </button>
         </li>
         <li className={s.listItem}>
-          <button onClick={onStartNewProject} className={s.button}>
-            Создать новый
-          </button>
+          <UploadButton />
         </li>
         <ServerButton />
       </ul>

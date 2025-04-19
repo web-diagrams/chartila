@@ -24,7 +24,7 @@ export const UploadButton = () => {
   };
 
   return (
-    <label className={classNames(s.button, {}, [s.button_type_label])}>
+    <label className={classNames(s.secondary, {}, [])}>
       <input onInput={handleUploadFile} type="file" />
       Загрузить с компьютера
     </label>
