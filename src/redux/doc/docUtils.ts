@@ -13,6 +13,8 @@ type CreateNode = {
 const HISTORY_LIMIT = 10;
 
 export const stateToHistory = (state: DocState) => {
+  state.currentState.isUpdated = true;
+
   /**Если внесены изменения, то очищаем шаги для redo  */
   if (state.history[state.step + 1]) {
     state.history = state.history.filter((_, index) => index <= state.step);

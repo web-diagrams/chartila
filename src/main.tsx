@@ -7,6 +7,7 @@ import { routeConfig } from './shared/config/routeConfig';
 import { AuthProvider } from './app/providers/AuthProvider';
 import ReactDOM from 'react-dom/client'
 import { ServerProvide } from './app/providers/ServerProvider/ServerProvider.tsx';
+import { ToastContainer } from 'react-toastify';
 
 async function enableMocking() {
   // Проверяем, что мы в режиме разработки и включен режим моков
@@ -22,6 +23,7 @@ async function enableMocking() {
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
+      <ToastContainer position="top-right" autoClose={3000} />
       <ServerProvide>
         <AuthProvider>
           <ReactFlowProvider>

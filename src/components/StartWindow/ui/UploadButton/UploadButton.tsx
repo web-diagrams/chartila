@@ -17,7 +17,10 @@ export const UploadButton = () => {
     try {
       const doc = await parseDocFile(file);
       dispatch(uploadFile({ doc, fileName: file.name }));
-      navigate(getDocPagePath(doc.id));
+      navigate({
+        pathname: getDocPagePath(doc.id),
+        search: `?local=true`,
+      });
     } catch (err) {
       console.error("Ошибка при чтении файла", err);
     }

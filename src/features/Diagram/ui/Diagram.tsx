@@ -16,6 +16,7 @@ import { useContextMenu } from '@/features/NodeContextMenu';
 import { NodeContextMenu } from '@/features/NodeContextMenu/ui/NodeContextMenu';
 import { useKeyboard } from '../model/hooks/useKeyboard';
 import { FloatingToolbar } from '@/components/FloatingToolbar/FloatingToolbar';
+import { PageSettings } from '@/components/PageSettings/PageSettings';
 
 const panOnDrag = [1, 2];
 
@@ -62,6 +63,7 @@ export const Diagram = ({
           <CiCircleInfo title={commonTexts.unsaved} className={styles.saveIcon} size={35} color="red" />
         )}
       </div>
+      <PageSettings />
       <NodeContextMenu state={contextMenuProps} />
       <ReactFlow
         nodes={currentPage.nodes}
