@@ -21,7 +21,7 @@ jobs:
           node-version: 16
           cache: 'npm'
       - run: npm ci
-      - run: npm run build:prod
+      - run: npm run build
 
       - name: 'Upload'
         uses: actions/upload-pages-artifact@v3.0.0
