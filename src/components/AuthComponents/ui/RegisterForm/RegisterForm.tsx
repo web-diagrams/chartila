@@ -6,6 +6,7 @@ import { useRegistrationMutation } from "@/app/api/authApi";
 
 import style from '../Auth.module.scss';
 import { useAuth } from "@/app/providers/AuthProvider";
+import s from '@/components/StartWindow/ui/StartWindow/StartWindow.module.scss'
 
 interface Props {
 
@@ -35,11 +36,11 @@ export const RegisterForm = ({
   return (
     <Modal title="Зарегистрироваться">
       <form onSubmit={onSubmit} className={style.form}>
-        <input type="text" placeholder="Логин" value={userInfo.login} onChange={onChangeLogin} />
-        <input type="password" placeholder="Пароль" value={userInfo.password} onChange={onChangePassword} />
+        <input className={style.input} type="text" placeholder="Логин" value={userInfo.login} onChange={onChangeLogin} />
+        <input className={style.input} type="password" placeholder="Пароль" value={userInfo.password} onChange={onChangePassword} />
         {error && 'data' in error && typeof error.data === 'string' && <p>{error.data}</p>}
-        <button type='submit'>{isLoading ? 'Регистрация...' : 'Зарегистрироваться'}</button>
-        <button onClick={onLoginClick}>Войти</button>
+        <button className={s.primary} type='submit'>{isLoading ? 'Регистрация...' : 'Зарегистрироваться'}</button>
+        <button className={s.secondary} onClick={onLoginClick}>Войти</button>
       </form>
     </Modal>
   )
