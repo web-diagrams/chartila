@@ -6,12 +6,12 @@ import { uploadFile } from '../services/uploadFile';
 import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
 import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import { DocDto } from '@/shared/types/doc';
 import { initState } from '../lib/initState';
 import { saveFileToDB, updateFileInDB } from '@/shared/lib/indexDb';
 
-const getDefaultState = (): FlowState => ({
+const getDoc = (): FlowState => ({
   pages: [
     {
       id: v1(),
@@ -26,16 +26,20 @@ const getDefaultState = (): FlowState => ({
   docName: 'Untitled',
 });
 
-const initialState: DocState = {
-  history: [getDefaultState()],
-  currentState: getDefaultState(),
-  step: 0,
-  isInited: false,
-};
+const getInitialState = () => {
+  const docState = getDoc()
+
+  return {
+    history: [cloneDeep(docState)],
+    currentState: docState,
+    step: 0,
+    isInited: false,
+  }
+}
 
 export const docSlice = createSlice({
   name: 'doc',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     onInitState: (state, { payload }: PayloadAction<{ id: string, isLocalDoc?: boolean }>) => {
       const { id, isLocalDoc } = payload;
@@ -216,7 +220,12 @@ export const docSlice = createSlice({
     },
 
     onResetState: (state) => {
-      state = cloneDeep(initialState);
+      const docState = getDoc()
+
+      state.currentState = docState;
+      state.history = [cloneDeep(docState)];
+      state.step = 0;
+      state.isInited = false;
     },
   },
   extraReducers: (builder) => {
