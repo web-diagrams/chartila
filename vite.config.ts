@@ -4,6 +4,7 @@ import Checker from 'vite-plugin-checker'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/web-diagrams/',
   plugins: [
     react(),
     Checker({
@@ -15,6 +16,5 @@ export default defineConfig({
   },
   define: {
     'process.env.MOCK_ENV': JSON.stringify(process.env.MOCK_ENV),
-    base: '/web-diagrams/',
   },
 })
