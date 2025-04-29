@@ -115,6 +115,8 @@ export const NodeAlignment = () => {
           edges.map((edge) => layoutedEdgeMap.get(edge.id) || edge)
         )
       );
+
+      dispatch(docActions.onStateToHistory());
     },
     [currentPage, dispatch]
   );

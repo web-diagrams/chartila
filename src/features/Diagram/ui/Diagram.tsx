@@ -3,7 +3,7 @@ import styles from './Diagram.module.scss';
 
 import ReactFlow, { Background, BackgroundVariant, Connection, Controls, SelectionMode } from 'reactflow';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useCurrentPage } from '@/hooks/useCurrentPage';
 import { CiCircleInfo } from 'react-icons/ci';
@@ -71,6 +71,7 @@ export const Diagram = ({
         onNodesChange={flowCallbacks.onNodeChange}
         onNodesDelete={(e) => console.log(e)}
         onNodeDragStop={flowCallbacks.onNodeDragStop}
+        onSelectionDragStop={flowCallbacks.onSelectionDragStop}
         onEdgesChange={flowCallbacks.onEdgesChange}
         onConnect={(changes: Connection) => dispatch(docActions.onConnect(changes))}
         onEdgeUpdateStart={flowCallbacks.onEdgeUpdateStart}
