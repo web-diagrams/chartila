@@ -205,6 +205,7 @@ export const docSlice = createSlice({
     onSave: (state, action: PayloadAction<{ id: string }>) => {
       const { id } = action.payload;
       const currentState = state.currentState;
+      state.currentState.isUpdated = false;
       updateFileInDB({ pages: currentState.pages, name: currentState.docName, id })
     },
     undo: (state) => {
