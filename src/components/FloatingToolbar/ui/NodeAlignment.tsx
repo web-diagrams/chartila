@@ -14,8 +14,8 @@ const nodeWidth = 172;
 const nodeHeight = 36;
 
 export function getLayoutedElements(
-  nodes: Node[],
-  edges: Edge[],
+  nodes: Node[] = [],
+  edges: Edge[] = [],
   direction: "TB" | "LR" = "TB"
 ): { nodes: Node[]; edges: Edge[] } {
   const isHorizontal = direction === "LR";
@@ -24,8 +24,12 @@ export function getLayoutedElements(
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: direction });
 
+  // 1. Используем реальные размеры
   nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+    const width = node.width ?? node.width ?? nodeWidth;
+    const height = node.height ?? node.height ?? nodeHeight;
+
+    dagreGraph.setNode(node.id, { width, height });
   });
 
   edges.forEach((edge) => {
@@ -35,12 +39,15 @@ export function getLayoutedElements(
   dagre.layout(dagreGraph);
 
   const layoutedNodes = nodes.map((node) => {
-    const { x, y } = dagreGraph.node(node.id);
+    const layoutedNode = dagreGraph.node(node.id);
+    const width = node.width ?? node.width ?? nodeWidth;
+    const height = node.height ?? node.height ?? nodeHeight;
+
     return {
       ...node,
       position: {
-        x: x - nodeWidth / 2,
-        y: y - nodeHeight / 2,
+        x: layoutedNode.x - width / 2,
+        y: layoutedNode.y - height / 2,
       },
     };
   });
