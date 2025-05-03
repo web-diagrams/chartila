@@ -29,6 +29,26 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
 
   }, [currentPage?.id, dispatch, history, step]);
 
+  const onSelectionDragStop = useCallback((event: React.MouseEvent, nodes: Node[]) => {
+    const pages = history[step].pages;
+
+    if (pages.length > 0) {
+      const prevNodes = pages.find(page => page.id === currentPage.id)?.nodes || [];
+
+      const hasMoved = nodes.some(node => {
+        const prevNode = prevNodes.find(n => n.id === node.id);
+        return prevNode && (
+          prevNode.position.x !== node.position.x ||
+          prevNode.position.y !== node.position.y
+        );
+      });
+
+      if (hasMoved) {
+        dispatch(docActions.onStateToHistory());
+      }
+    }
+  }, [currentPage?.id, dispatch, history, step]);
+
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
   }, []);
@@ -74,5 +94,6 @@ export const useGetFlowCallbacks = (history: FlowState[], step: number, currentP
     onRedo,
     onEdgesChange,
     onNodeDragStop,
+    onSelectionDragStop,
   };
 };

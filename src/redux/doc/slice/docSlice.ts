@@ -6,7 +6,7 @@ import { uploadFile } from '../services/uploadFile';
 import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
 import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
-import { cloneDeep, get } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { DocDto } from '@/shared/types/doc';
 import { initState } from '../lib/initState';
 import { saveFileToDB, updateFileInDB } from '@/shared/lib/indexDb';
@@ -205,6 +205,7 @@ export const docSlice = createSlice({
     onSave: (state, action: PayloadAction<{ id: string }>) => {
       const { id } = action.payload;
       const currentState = state.currentState;
+      currentState.isUpdated = false;
       updateFileInDB({ pages: currentState.pages, name: currentState.docName, id })
     },
     undo: (state) => {
