@@ -20,7 +20,7 @@ export const docsApi = rtkApi.injectEndpoints({
     updateDoc: build.mutation<undefined, DocDto>({
       query: (doc) => ({
         url: `doc/${doc.id}`,
-        method: 'POST',
+        method: 'PUT',
         body: doc,
       }),
     }),
