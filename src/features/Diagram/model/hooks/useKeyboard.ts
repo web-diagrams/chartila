@@ -22,32 +22,43 @@ export const useKeyboard = ({
   useKey(async (event) => {
     if (event.ctrlKey) {
 
-      if (event.key === 's') {
-        event.preventDefault();
-        onSave();
-      }
-
-      if (event.key === 'c') {
-        event.preventDefault();
-        if (currentPage) {
-          saveStateToClipboard(currentPage)
+      switch (event.key) {
+        case 's': {
+          event.preventDefault();
+          onSave();
+          break;
         }
-      }
 
-      if (event.key === 'v') {
-        event.preventDefault();
-        try {
-          const data = await getStateFromClipboard(screenToFlowPosition);
+        case 'c': {
+          event.preventDefault();
+          if (currentPage) {
+            saveStateToClipboard(currentPage)
+          }
+          break;
+        }
 
-          if (!data) return;
+        case 'v': {
+          event.preventDefault();
+          try {
+            const data = await getStateFromClipboard(screenToFlowPosition);
 
-          const { nodes, edges } = data;
-          dispatch(docActions.onPasteChanges({
-            nodes,
-            edges,
-          }));
-        } catch (error) {
-          console.error('Ошибка при вставке данных из буфера:', error);
+            if (!data) return;
+
+            const { nodes, edges } = data;
+            dispatch(docActions.onPasteChanges({
+              nodes,
+              edges,
+            }));
+          } catch (error) {
+            console.error('Ошибка при вставке данных из буфера:', error);
+          }
+          break;
+        }
+
+        case 'z': {
+          event.preventDefault();
+          dispatch(docActions.undo());
+          break;
         }
       }
     }

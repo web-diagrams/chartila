@@ -209,6 +209,7 @@ export const docSlice = createSlice({
       updateFileInDB({ pages: currentState.pages, name: currentState.docName, id })
     },
     undo: (state) => {
+      if (state.step === 0) return; // если шаг 0, то не делаем ничего
       state.step -= 1;
       state.currentState = state.history[state.step];
     },
