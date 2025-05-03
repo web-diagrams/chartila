@@ -20,7 +20,7 @@ export const useKeyboard = ({
   const currentPage = useCurrentPage(pages, currentPageId);
 
   useKey(async (event) => {
-    if (event.ctrlKey) {
+    if (event.ctrlKey || event.metaKey) {
 
       switch (event.key) {
         case 's': {

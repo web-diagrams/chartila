@@ -21,13 +21,13 @@ export enum AppRoutes {
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.START]: '/',
-    [AppRoutes.LOGIN]: '/login',
-    [AppRoutes.REGISTER]: '/register',
-    [AppRoutes.DOCS]: '/docs',
-    [AppRoutes.DOC]: '/doc',
+    [AppRoutes.START]: '',
+    [AppRoutes.LOGIN]: 'login',
+    [AppRoutes.REGISTER]: 'register',
+    [AppRoutes.DOCS]: 'docs',
+    [AppRoutes.DOC]: 'doc',
     // последний
-    [AppRoutes.NOT_FOUND]: '/*',
+    [AppRoutes.NOT_FOUND]: '*',
 };
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
