@@ -6,9 +6,11 @@ export const docsApi = rtkApi.injectEndpoints({
     docs: build.query<DocInfoDto[], undefined>({
       query: () => `docs`,
       providesTags: ['Docs'],
+      keepUnusedDataFor: 0,
     }),
     doc: build.query<DocDto, { id: string }>({
       query: ({ id }) => `doc/${id}`,
+      keepUnusedDataFor: 0,
     }),
     createDoc: build.mutation<undefined, DocDto>({
       query: (doc) => ({
