@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { Node, Edge } from "reactflow";
 
 import { useGetDocState } from "@/redux/doc/hooks/useGetDocState";
@@ -141,10 +141,10 @@ export const NodeAlignment = () => {
   return (
     <>
       <button onClick={onVertical} className={styles.button}>
-        ↕ Вертикально
+        ↕ Vertically
       </button>
       <button onClick={onHorizontal} className={styles.button}>
-        ↔ Горизонтально
+        ↔ Horizontally
       </button>
     </>
   );
