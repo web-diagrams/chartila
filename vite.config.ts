@@ -4,7 +4,7 @@ import Checker from 'vite-plugin-checker'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/web-diagrams-front/',
+  base: '/chartila/',
   plugins: [
     react(),
     Checker({
