@@ -1,14 +1,23 @@
+import { isJsonString } from '@/shared/lib/isJsonString/isJsonString';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
 const DEFAULT_NODE_WIDTH = 10;
 const DEFAULT_NODE_GAP = 2;
 
+/**
+ * Хук, отвечающий за работу с текстом
+ * @param textValue первоначальное значение
+ */
 export const useText = (textValue: string) => {
   const [text, setText] = useState<string>(textValue);
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.currentTarget.value;
-    setText(value);
+    if (isJsonString(value)) {
+      setText('');
+    } else {
+      setText(value);
+    }
   };
 
   const textWidth = useMemo(() => {
