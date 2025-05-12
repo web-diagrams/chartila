@@ -1,5 +1,5 @@
 import { RoutePath } from "./routeConfig";
-const BASE_URL = '/web-diagrams-front/';
+const BASE_URL = '/chartila/';
 
 export const getStartPath = () => BASE_URL + RoutePath.start;
 export const getLoginPath = () => BASE_URL + RoutePath.login;
