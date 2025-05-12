@@ -1,16 +1,20 @@
 import { useCurrentPage } from '@/hooks/useCurrentPage';
-import { useKey } from './../../../../shared/hooks/useKey';
 import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useReactFlow } from 'reactflow';
 import { saveStateToClipboard } from '../libs/saveStateToClipboard';
 import { getStateFromClipboard } from '../libs/getStateFromClipboard';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 interface KeyboardProps {
   onSave: () => void;
 }
 
+/**
+ * Хук, отвечающий за работу с клавиатурой
+ * @param onSave функция, которая вызывается при нажатии ctrl+s
+ */
 export const useKeyboard = ({
   onSave,
 }: KeyboardProps) => {
@@ -19,48 +23,30 @@ export const useKeyboard = ({
   const { pages, currentPageId } = useGetDocState();
   const currentPage = useCurrentPage(pages, currentPageId);
 
-  useKey(async (event) => {
-    if (event.ctrlKey || event.metaKey) {
+  useHotkeys('ctrl+s', onSave, { preventDefault: true });
 
-      switch (event.key) {
-        case 's': {
-          event.preventDefault();
-          onSave();
-          break;
-        }
+  useHotkeys('ctrl+z', () => dispatch(docActions.undo()));
+  useHotkeys('ctrl+shift+z', () => dispatch(docActions.redo()));
 
-        case 'c': {
-          event.preventDefault();
-          if (currentPage) {
-            saveStateToClipboard(currentPage)
-          }
-          break;
-        }
+  useHotkeys('ctrl+c', () => {
+    if (currentPage) {
+      saveStateToClipboard(currentPage);
+    }
+  });
 
-        case 'v': {
-          event.preventDefault();
-          try {
-            const data = await getStateFromClipboard(screenToFlowPosition);
+  useHotkeys('ctrl+v', async () => {
+    try {
+      const data = await getStateFromClipboard(screenToFlowPosition);
 
-            if (!data) return;
+      if (!data) return;
 
-            const { nodes, edges } = data;
-            dispatch(docActions.onPasteChanges({
-              nodes,
-              edges,
-            }));
-          } catch (error) {
-            console.error('Ошибка при вставке данных из буфера:', error);
-          }
-          break;
-        }
-
-        case 'z': {
-          event.preventDefault();
-          dispatch(docActions.undo());
-          break;
-        }
-      }
+      const { nodes, edges } = data;
+      dispatch(docActions.onPasteChanges({
+        nodes,
+        edges,
+      }));
+    } catch (error) {
+      console.error('Ошибка при вставке данных из буфера:', error);
     }
   });
 }
