@@ -11,10 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.3",
     "@reduxjs/toolkit": "^2.6.0",
+    "@uiw/react-codemirror": "^4.23.12",
     "dagre": "^0.8.5",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "highlight.js": "^11.9.0",
     "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "msw": "^2.6.8",
