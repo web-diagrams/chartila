@@ -1,4 +1,5 @@
 @import 'global';
+@import 'normalize.css';
 
 body {
     margin: 0;
@@ -6,7 +7,7 @@ body {
 
     * {
         font-family: var(--font-family-main);
-        font-size: 12px;
+        font-size: 14px;
     }
 
     pre {

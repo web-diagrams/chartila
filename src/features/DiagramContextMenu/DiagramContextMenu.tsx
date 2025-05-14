@@ -2,10 +2,9 @@ import { useAppDispatch } from "@/app/hooks";
 import { NodeData } from "@/redux/doc/constants/constants";
 import { docActions } from "@/redux/doc/slice/docSlice";
 import { ContextMenu } from "@/shared/ContextMenu"
-import { StateType } from "@/shared/ContextMenu/model/contexMenuTypes";
-import { Button } from "@/shared/ui/Button/Button";
-import { IoTextOutline } from "react-icons/io5";
-import { IoCodeSlash } from "react-icons/io5";
+import { ContextOption, StateType } from "@/shared/ContextMenu/model/contexMenuTypes";
+import { MdOutlineTextFields } from "react-icons/md";
+import { MdCode } from "react-icons/md";
 
 type Props = {
   state: StateType;
@@ -23,18 +22,22 @@ export const DiagramContextMenu = ({
         dispatch(docActions.onAddNode({ type: NodeData.CODE_NODE, position: state.nodePosition }))
     }
 
+    const options: ContextOption[] = [
+        {
+            label: 'Text',
+            icon: <MdOutlineTextFields size={15}/>,
+            onClick: onAddTextNode,
+            type: 'button',
+        },
+        {
+            label: 'Code',
+            icon: <MdCode size={15} />,
+            onClick: onAddCodeNode,
+            type: 'button',
+        },
+    ]
+
     return (
-        <ContextMenu state={state}>
-            <button
-                onClick={onAddTextNode}
-            >
-                <IoTextOutline /> текстовая нода
-            </button>
-            <button
-                onClick={onAddCodeNode}
-            >
-                <IoCodeSlash /> кодовая нода
-            </button>
-        </ContextMenu>
+        <ContextMenu state={state} options={options} />
     )
 }
