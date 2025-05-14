@@ -28,7 +28,7 @@ export const useText = (textValue: string) => {
     });
     tempElement.textContent = maxText;
     tempElement.style.visibility = 'hidden';
-    tempElement.style.fontSize = '12px';
+    tempElement.style.fontSize = '14px';
     document.body.appendChild(tempElement);
 
     number = tempElement.offsetWidth ? tempElement.offsetWidth + DEFAULT_NODE_GAP : DEFAULT_NODE_WIDTH;

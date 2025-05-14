@@ -11,12 +11,19 @@ export const ContextMenu = ({ state, options }: PropsWithChildren<NodeContextMen
   if (state.isOpen && !state.isNode) {
     return (
       <div style={state.style} className={styles.container}>
-        {options.map((option, i) => (
-          <div key={i} onClick={option.onClick} className={styles.contextItem}>
-            {option.icon ?? null}
-            {option.label && <p>{option.label}</p>}
-          </div>
-        ))}
+        {options.map((option, i) => {
+          if (option.type === 'button') {
+            return (
+              <div key={i} onClick={option.onClick} className={styles.contextItem}>
+                {option.icon ?? null}
+                {option.label && <p>{option.label}</p>}
+              </div>
+            )
+          }
+          if (option.type === 'divider') {
+            return <hr />;
+          }
+        })}
       </div>
     );
   }

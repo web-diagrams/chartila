@@ -1,3 +1,11 @@
+.codeMirror :global(.cm-content) {
+  padding: 0 !important;
+}
+
+.codeMirror :global(.cm-line) {
+  padding: 0 !important;
+}
+
 .textCursor {
   cursor: text;
 }

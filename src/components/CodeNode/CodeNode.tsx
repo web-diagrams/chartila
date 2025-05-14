@@ -6,6 +6,7 @@ import { useText } from '@/hooks/useText';
 import CodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import styles from './CodeNode.module.scss';
+import { classNames } from '@/utils';
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -46,7 +47,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
 
   return (
     <CodeMirror
-      className={isDoubleClicked ? styles.textCursor : ''}
+      className={classNames(styles.codeMirror, { [styles.textCursor]: isDoubleClicked }, [])}
       ref={editorRef}
       editable={isDoubleClicked}
       value={code}
