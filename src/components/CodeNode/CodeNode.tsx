@@ -5,7 +5,7 @@ import { docActions } from '@/redux/doc/slice/docSlice';
 import { useText } from '@/hooks/useText';
 import CodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-
+import styles from './CodeNode.module.scss';
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -46,6 +46,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
 
   return (
     <CodeMirror
+      className={isDoubleClicked ? styles.textCursor : ''}
       ref={editorRef}
       editable={isDoubleClicked}
       value={code}
