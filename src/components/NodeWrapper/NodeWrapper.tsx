@@ -1,5 +1,4 @@
 import React, { Dispatch, FC, SetStateAction, memo, useCallback, useMemo, useState } from 'react';
-import ModalWrapper from '@/components/ModalWrapper/ModalWrapper';
 import styles from './styles.module.scss';
 import { useDispatch } from 'react-redux';
 import { docActions } from '@/redux/doc/slice/docSlice';
@@ -16,7 +15,6 @@ type NodeWrapperProps = {
 };
 
 const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange, setIsDoubleClicked, isSelected }) => {
-  const [isModal, setIsModal] = useState(false);
   const dispatch = useDispatch();
   const node = useCurrentNode(id);
 
@@ -50,16 +48,12 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
       onMouseEnter={() => onHoveredChange(true)}
       onMouseLeave={() => onHoveredChange(false)}
     >
-      {isModal && <ModalWrapper />}
       <div
         style={{ backgroundColor: node?.data?.color ?? 'white' }}
         onDoubleClick={() => setIsDoubleClicked(true)}
         className={classNames(styles.node_wrapper_container, { [styles.focused]: isSelected }, [])}
       >
-        {isSelected && <NodeMenu nodeId={id} />}
         <div className={styles.node_wrapper_children_container}>{children}</div>
-        {/* Будем использовать в будущем */}
-        {/* <BsThreeDotsVertical onClick={() => setIsModal(!isModal)} /> */}
       </div>
     </div>
   );

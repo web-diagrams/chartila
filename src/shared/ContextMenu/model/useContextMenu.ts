@@ -9,7 +9,23 @@ export const useContextMenu = () => {
     isOpen: false,
     style: { top: 0, left: 0 },
     nodePosition: { x: 0, y: 0 },
+    isNode: false,
   });
+
+  const onNodeContextMenu = useCallback((e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenuProps((props) => ({
+      ...props,
+      isOpen: true,
+      style: { left: `${e.clientX}px`, top: `${e.clientY}px` },
+      nodePosition: screenToFlowPosition({
+        x: e.clientX,
+        y: e.clientY,
+      }),
+      isNode: true,
+    }));
+  }, [])
 
   const onShowContextMenu = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -31,6 +47,7 @@ export const useContextMenu = () => {
   const onCloseContextMenu = useCallback(() => {
     setContextMenuProps((props) => ({
       ...props,
+      isNode: false,
       isOpen: false,
     }));
   }, []);
@@ -39,5 +56,6 @@ export const useContextMenu = () => {
     contextMenuProps,
     onShowContextMenu,
     onCloseContextMenu,
+    onNodeContextMenu,
   };
 };

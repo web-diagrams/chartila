@@ -4,4 +4,5 @@ export type StateType = {
   isOpen: boolean;
   style: React.CSSProperties;
   nodePosition: XYPosition;
+  isNode: boolean; // контекстное меню ноды
 };
