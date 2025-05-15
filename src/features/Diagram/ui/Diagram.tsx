@@ -39,8 +39,8 @@ export const Diagram = ({
 
   useKeyboard({ onSave });
 
-  const { 
-    contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu, 
+  const {
+    contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu,
     isDiagramContextOpened, isNodeContextOpened
   } = useContextMenu();
 
@@ -67,7 +67,7 @@ export const Diagram = ({
         )}
       </div>
       <PageSettings />
-      <DiagramContextMenu state={contextMenuProps} isOpen={isDiagramContextOpened} />
+      <DiagramContextMenu state={contextMenuProps} isOpen={isDiagramContextOpened} onClose={onCloseContextMenu} />
       <ReactFlow
         nodes={currentPage.nodes}
         edges={currentPage.edges}
