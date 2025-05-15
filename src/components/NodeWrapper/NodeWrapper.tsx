@@ -3,7 +3,6 @@ import styles from './styles.module.scss';
 import { useDispatch } from 'react-redux';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { classNames } from '@/utils';
-import { NodeMenu } from './NodeMenu/NodeMenu';
 import { useCurrentNode } from '@/hooks/useCurrentNode';
 
 type NodeWrapperProps = {

@@ -39,7 +39,10 @@ export const Diagram = ({
 
   useKeyboard({ onSave });
 
-  const { contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu } = useContextMenu();
+  const { 
+    contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu, 
+    isDiagramContextOpened, isNodeContextOpened
+  } = useContextMenu();
 
   const flowCallbacks = useGetFlowCallbacks(history, step, currentPage);
 
@@ -64,7 +67,7 @@ export const Diagram = ({
         )}
       </div>
       <PageSettings />
-      <DiagramContextMenu state={contextMenuProps} />
+      <DiagramContextMenu state={contextMenuProps} isOpen={isDiagramContextOpened} />
       <ReactFlow
         nodes={currentPage.nodes}
         edges={currentPage.edges}

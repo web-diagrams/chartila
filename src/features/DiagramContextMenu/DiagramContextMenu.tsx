@@ -6,12 +6,13 @@ import { ContextOption, StateType } from "@/shared/ContextMenu/model/contexMenuT
 import { MdOutlineTextFields } from "react-icons/md";
 import { MdCode } from "react-icons/md";
 
-type Props = {
+interface Props {
   state: StateType;
+  isOpen: boolean;
 };
 
 export const DiagramContextMenu = ({
-    state   
+    state, isOpen,
 }: Props) => {
     const dispatch = useAppDispatch();
 
@@ -37,7 +38,13 @@ export const DiagramContextMenu = ({
         },
     ]
 
+    if (isOpen) {
+        return (
+            <ContextMenu state={state} options={options} />
+        )
+    }
+
     return (
-        <ContextMenu state={state} options={options} />
-    )
+        null
+    );
 }
