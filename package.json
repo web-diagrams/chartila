@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.3",
+    "@radix-ui/react-dropdown-menu": "^2.1.14",
     "@reduxjs/toolkit": "^2.6.0",
     "@uiw/react-codemirror": "^4.23.12",
     "dagre": "^0.8.5",
