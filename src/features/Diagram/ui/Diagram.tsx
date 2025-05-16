@@ -17,6 +17,7 @@ import { useKeyboard } from '../model/hooks/useKeyboard';
 import { FloatingToolbar } from '@/components/FloatingToolbar/FloatingToolbar';
 import { PageSettings } from '@/components/PageSettings/PageSettings';
 import { DiagramContextMenu } from '@/features/DiagramContextMenu/DiagramContextMenu';
+import { NodeContextMenu } from '@/features/NodeContextMenu/NodeContextMenu';
 
 const panOnDrag = [1, 2];
 
@@ -41,7 +42,7 @@ export const Diagram = ({
 
   const {
     contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu,
-    isDiagramContextOpened, isNodeContextOpened
+    isDiagramContextOpened, node,
   } = useContextMenu();
 
   const flowCallbacks = useGetFlowCallbacks(history, step, currentPage);
@@ -68,6 +69,7 @@ export const Diagram = ({
       </div>
       <PageSettings />
       <DiagramContextMenu state={contextMenuProps} isOpen={isDiagramContextOpened} onClose={onCloseContextMenu} />
+      <NodeContextMenu state={contextMenuProps} node={node} onClose={onCloseContextMenu} />
       <ReactFlow
         nodes={currentPage.nodes}
         edges={currentPage.edges}

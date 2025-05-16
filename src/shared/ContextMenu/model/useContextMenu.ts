@@ -4,7 +4,7 @@ import { useReactFlow, type Node } from 'reactflow';
 
 export const useContextMenu = () => {
   const [isDiagramContextOpened, setIsDiagramContextOpened] = useState(false);
-  const [isNodeContextOpened, setIsNodeContextOpened] = useState(false);
+  const [node, setNode] = useState<Node | null>(null);
   
   const { screenToFlowPosition } = useReactFlow();
 
@@ -16,7 +16,7 @@ export const useContextMenu = () => {
   const onNodeContextMenu = useCallback((e: React.MouseEvent<Element, MouseEvent>, node: Node) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsNodeContextOpened(true);
+    setNode(node);
     setContextMenuProps((props) => ({
       ...props,
       style: { left: `${e.clientX}px`, top: `${e.clientY}px` },
@@ -46,9 +46,9 @@ export const useContextMenu = () => {
 
   const onCloseContextMenu = useCallback(() => {
     setIsDiagramContextOpened(false);
+    setNode(null);
     setContextMenuProps((props) => ({
       ...props,
-      isNode: false,
       isOpen: false,
     }));
   }, []);
@@ -59,6 +59,6 @@ export const useContextMenu = () => {
     onCloseContextMenu,
     onNodeContextMenu,
     isDiagramContextOpened,
-    isNodeContextOpened,
+    node,
   };
 };

@@ -35,7 +35,8 @@ export type TextNodeData = {
   nodeType: 'stringNode';
 } & customData;
 
+export type Language = 'javascript' | 'java' | 'python';
 export type CodeNodeData = {
   nodeType: 'codeNode';
-  isWrapped: boolean;
+  language?: Language;
 } & customData;

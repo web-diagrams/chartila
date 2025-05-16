@@ -1,12 +1,14 @@
-import React, { Dispatch, FC, SetStateAction, memo, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { CodeNodeData } from '@/redux/doc/interfaces/docStateInterfaces';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useText } from '@/hooks/useText';
-import CodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
+import CodeMirror, { EditorView, Extension, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import styles from './CodeNode.module.scss';
 import { classNames } from '@/utils';
+import { javascript } from '@codemirror/lang-javascript';
+import { java } from '@codemirror/lang-java';
+import { python } from '@codemirror/lang-python';
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -18,12 +20,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
   const editorRef = useRef<ReactCodeMirrorRef | null>(null);
 
   const dispatch = useAppDispatch();
-  const [language, setLanguage] = useState('javascript');
   const { text: code, onChange } = useText(data.text);
-
-  const onChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(e.target.value)
-  }
 
   const onBlur = () => {
     dispatch(
@@ -45,6 +42,29 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
     }
   }, [isDoubleClicked]);
 
+  const extensions = useMemo(() => {
+    const ext: Extension[] = [
+        EditorView.lineWrapping,
+    ]
+    if (data.language) {
+      switch (data.language) {
+        case 'javascript': {
+          ext.push(javascript());
+          break;
+        }
+        case 'java': {
+          ext.push(java());
+          break;
+        }
+        case 'python': {
+          ext.push(python());
+          break;
+        }
+      }
+    }
+    return ext;
+  }, [data.language])
+
   return (
     <CodeMirror
       className={classNames(styles.codeMirror, { [styles.textCursor]: isDoubleClicked }, [])}
@@ -52,10 +72,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
       editable={isDoubleClicked}
       value={code}
       onBlur={onBlur}
-      extensions={[
-        javascript(),
-        EditorView.lineWrapping,
-      ]}
+      extensions={extensions}
       basicSetup={{
         lineNumbers: false,
         highlightActiveLine: false,
