@@ -11,8 +11,8 @@ const DEFAULT_NODE_GAP = 2;
 export const useText = (textValue: string) => {
   const [text, setText] = useState<string>(textValue);
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.currentTarget.value;
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement> | string) => {
+    const value = typeof e === 'string' ? e : e.currentTarget.value;
     if (isJsonString(value)) {
       setText('');
     } else {
@@ -28,7 +28,7 @@ export const useText = (textValue: string) => {
     });
     tempElement.textContent = maxText;
     tempElement.style.visibility = 'hidden';
-    tempElement.style.fontSize = '12px';
+    tempElement.style.fontSize = '14px';
     document.body.appendChild(tempElement);
 
     number = tempElement.offsetWidth ? tempElement.offsetWidth + DEFAULT_NODE_GAP : DEFAULT_NODE_WIDTH;

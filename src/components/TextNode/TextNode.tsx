@@ -18,12 +18,19 @@ const TextNode: FC<TextNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
   const { text, onChange, textWidth } = useText(data.text);
 
   const onBlur = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
-    dispatch(docActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value, saveToHistory: true }));
+    dispatch(
+      docActions.onChangeNode({
+        id: data.id,
+        key: 'text',
+        value: e.currentTarget.value,
+        saveToHistory: true
+      }));
     setIsDoubleClicked(false);
   };
 
   return (
     <textarea
+      autoFocus={isDoubleClicked}
       style={{ width: `${textWidth}px` }}
       rows={text.split('\n').length}
       className={classNames(styles.customNode, {}, [style.textNode])}

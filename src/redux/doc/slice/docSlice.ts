@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Node, Edge, XYPosition } from 'reactflow';
-import { CommonNodeDataType, FlowState, DocState } from '../interfaces/docStateInterfaces';
+import { CommonNodeDataType, FlowState, DocState, CodeNodeData, Language } from '../interfaces/docStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
 import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
 import { v1 } from 'uuid';
@@ -114,6 +114,23 @@ export const docSlice = createSlice({
           stateToHistory(state); // запоминаем состояние в истории
         }
       }
+    },
+    onChangeCodeNode: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof CodeNodeData;
+        value: Language;
+      }>,
+    ) => {
+      const currentPage = getCurrentPage(state)!;
+      const { id, value, key } = action.payload;
+
+      const currentNode = currentPage.nodes.find((node) => node.id === id)!;
+      if ('language' in currentNode?.data) {
+        currentNode.data['language'] = value;
+      }
+      stateToHistory(state); // запоминаем состояние в истории
     },
     onSetNodes: (state, action: PayloadAction<{ nodes: Node[] }>) => {
       const currentPage = getCurrentPage(state)!;

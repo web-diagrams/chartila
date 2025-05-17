@@ -12,11 +12,12 @@ import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 import { useGetFlowCallbacks } from '../model/hooks/useGetFlowCallbacks';
 import { NodeTypes } from '../model/interface';
 import { DiagramButtons } from '@/features/DiagramButtons/DiagramButtons';
-import { useContextMenu } from '@/features/NodeContextMenu';
-import { NodeContextMenu } from '@/features/NodeContextMenu/ui/NodeContextMenu';
+import { useContextMenu } from '@/shared/ContextMenu';
 import { useKeyboard } from '../model/hooks/useKeyboard';
 import { FloatingToolbar } from '@/components/FloatingToolbar/FloatingToolbar';
 import { PageSettings } from '@/components/PageSettings/PageSettings';
+import { DiagramContextMenu } from '@/features/DiagramContextMenu/DiagramContextMenu';
+import { NodeContextMenu } from '@/features/NodeContextMenu/NodeContextMenu';
 
 const panOnDrag = [1, 2];
 
@@ -39,7 +40,10 @@ export const Diagram = ({
 
   useKeyboard({ onSave });
 
-  const { contextMenuProps, onShowContextMenu, onCloseContextMenu } = useContextMenu();
+  const {
+    contextMenuProps, onShowContextMenu, onCloseContextMenu, onNodeContextMenu,
+    isDiagramContextOpened, node,
+  } = useContextMenu();
 
   const flowCallbacks = useGetFlowCallbacks(history, step, currentPage);
 
@@ -64,12 +68,12 @@ export const Diagram = ({
         )}
       </div>
       <PageSettings />
-      <NodeContextMenu state={contextMenuProps} />
+      <DiagramContextMenu state={contextMenuProps} isOpen={isDiagramContextOpened} onClose={onCloseContextMenu} />
+      <NodeContextMenu state={contextMenuProps} node={node} onClose={onCloseContextMenu} />
       <ReactFlow
         nodes={currentPage.nodes}
         edges={currentPage.edges}
         onNodesChange={flowCallbacks.onNodeChange}
-        onNodesDelete={(e) => console.log(e)}
         onNodeDragStop={flowCallbacks.onNodeDragStop}
         onSelectionDragStop={flowCallbacks.onSelectionDragStop}
         onEdgesChange={flowCallbacks.onEdgesChange}
@@ -81,6 +85,7 @@ export const Diagram = ({
         nodeTypes={NodeTypes}
         proOptions={{ hideAttribution: true }}
         onContextMenu={onShowContextMenu}
+        onNodeContextMenu={onNodeContextMenu}
         panOnScroll
         selectionOnDrag
         panOnDrag={panOnDrag}

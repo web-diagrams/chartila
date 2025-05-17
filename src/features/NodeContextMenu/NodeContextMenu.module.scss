@@ -1,0 +1,16 @@
+.languageItem {
+  justify-content: space-between;
+}
+
+.languageStack {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.languageLabel {
+  background-color: var(--violet);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+}

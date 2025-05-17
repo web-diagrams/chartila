@@ -1,9 +1,12 @@
-.node {
-    user-select: text;
-    cursor: auto;
-    padding: 0 !important;
-    margin: 0 !important;
-    background-color: transparent;
+.codeMirror :global(.cm-content) {
+  min-width: 10px;
+  padding: 0 !important;
+}
 
-    min-height: 13.6px;
+.codeMirror :global(.cm-line) {
+  padding: 0 !important;
+}
+
+.textCursor {
+  cursor: text;
 }

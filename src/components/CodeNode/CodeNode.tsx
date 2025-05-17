@@ -1,11 +1,13 @@
-import React, { Dispatch, FC, SetStateAction, memo } from 'react';
-import { classNames } from '@/utils';
+import { Dispatch, FC, SetStateAction, memo, useMemo } from 'react';
 import { CodeNodeData } from '@/redux/doc/interfaces/docStateInterfaces';
-import styles from '../CustomNode/CustomeNode.module.scss';
-import CodeComponent from './CodeComponent';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useText } from '@/hooks/useText';
+import CodeMirror, { EditorView, Extension } from '@uiw/react-codemirror';
+import style from './CodeNode.module.scss';
+import { classNames } from '@/utils';
+import { languages } from '@/redux/doc/constants/constants';
+import styles from '../CustomNode/CustomeNode.module.scss';
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -15,31 +17,53 @@ type CodeNodeProps = {
 
 const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleClicked }) => {
   const dispatch = useAppDispatch();
-  const { text, onChange, textWidth } = useText(data.text);
+  const { text: code, onChange } = useText(data.text);
 
-  const onBlur = (e: React.FocusEvent<HTMLTextAreaElement, Element>) => {
-    dispatch(docActions.onChangeNode({ id: data.id, key: 'text', value: e.currentTarget.value, saveToHistory: true }));
+  const onBlur = () => {
+    dispatch(
+      docActions.onChangeNode({
+        id: data.id,
+        key: 'text',
+        value: code,
+        saveToHistory: true,
+      })
+    );
     setIsDoubleClicked(false);
   };
 
+  const extensions = useMemo(() => {
+    const ext: Extension[] = [
+      EditorView.lineWrapping,
+    ]
+    if (data.language) {
+      const method = languages[data.language];
+      if (method) {
+        ext.push(method());
+      }
+    }
+    return ext;
+  }, [data.language])
+
   return (
-    <>
-      <div className={classNames('', { [styles.inputWrapper]: data.isWrapped }, [])}>
-        {isDoubleClicked ? (
-          <textarea
-            style={{ width: `${textWidth}px` }}
-            rows={text.split('\n').length}
-            className={classNames(styles.customNode)}
-            value={text}
-            onChange={onChange}
-            onBlur={onBlur}
-            autoFocus
-          />
-        ) : (
-          <CodeComponent code={text} />
-        )}
-      </div>
-    </>
+    <CodeMirror
+      className={classNames(
+        styles.customNode,
+        {},
+        [style.codeMirror, style.textCursor]
+      )}
+      readOnly={!isDoubleClicked}
+      autoFocus={isDoubleClicked}
+      value={code}
+      onBlur={onBlur}
+      extensions={extensions}
+      basicSetup={{
+        lineNumbers: false,
+        highlightActiveLine: false,
+        foldGutter: false,
+        autocompletion: false,
+      }}
+      onChange={onChange}
+    />
   );
 });
 CodeNode.displayName = 'CodeNode';

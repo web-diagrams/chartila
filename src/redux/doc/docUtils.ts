@@ -49,7 +49,7 @@ export const getNewNode = ({ type, position }: CreateNode): Node<CommonNodeDataT
           id: id,
           color: 'white',
           nodeType: 'codeNode',
-          isWrapped: false,
+          language: 'Javascript',
         },
         position,
       };
