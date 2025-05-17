@@ -1,13 +1,13 @@
-import React, { Dispatch, FC, SetStateAction, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, FC, SetStateAction, memo, useMemo } from 'react';
 import { CodeNodeData } from '@/redux/doc/interfaces/docStateInterfaces';
 import { useAppDispatch } from '@/app/hooks';
 import { docActions } from '@/redux/doc/slice/docSlice';
 import { useText } from '@/hooks/useText';
-import CodeMirror, { EditorView, Extension, ReactCodeMirrorRef } from '@uiw/react-codemirror';
-import styles from './CodeNode.module.scss';
+import CodeMirror, { EditorView, Extension } from '@uiw/react-codemirror';
+import style from './CodeNode.module.scss';
 import { classNames } from '@/utils';
 import { languages } from '@/redux/doc/constants/constants';
-
+import styles from '../CustomNode/CustomeNode.module.scss';
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -16,8 +16,6 @@ type CodeNodeProps = {
 };
 
 const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleClicked }) => {
-  const editorRef = useRef<ReactCodeMirrorRef | null>(null);
-
   const dispatch = useAppDispatch();
   const { text: code, onChange } = useText(data.text);
 
@@ -32,14 +30,6 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
     );
     setIsDoubleClicked(false);
   };
-
-  // Фокус при isDoubleClicked
-  useEffect(() => {
-    const view = editorRef.current?.view;
-    if (isDoubleClicked && view) {
-      view.focus();
-    }
-  }, [isDoubleClicked]);
 
   const extensions = useMemo(() => {
     const ext: Extension[] = [
@@ -56,9 +46,13 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
 
   return (
     <CodeMirror
-      className={classNames(styles.codeMirror, { [styles.textCursor]: isDoubleClicked }, [])}
-      ref={editorRef}
-      editable={isDoubleClicked}
+      className={classNames(
+        styles.customNode,
+        {},
+        [style.codeMirror, style.textCursor]
+      )}
+      readOnly={!isDoubleClicked}
+      autoFocus={isDoubleClicked}
       value={code}
       onBlur={onBlur}
       extensions={extensions}
@@ -66,6 +60,7 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
         lineNumbers: false,
         highlightActiveLine: false,
         foldGutter: false,
+        autocompletion: false,
       }}
       onChange={onChange}
     />

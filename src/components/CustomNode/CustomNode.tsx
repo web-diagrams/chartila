@@ -7,20 +7,15 @@ import { CommonNodeDataType } from '@/redux/doc/interfaces/docStateInterfaces';
 import CodeNode from '../CodeNode/CodeNode';
 import { CustomHandle } from '../CustomHandle/CustomHandle';
 import TextNode from '../TextNode/TextNode';
-import { useGetDocState } from '@/redux/doc/hooks/useGetDocState';
 
 type CustomNodeProps = {
   data: CommonNodeDataType;
+  selected: boolean;
 };
 
-export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
+export const CustomNode: FC<CustomNodeProps> = memo(({ data, selected }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
-  const { selectedNodes } = useGetDocState();
-
-  const isSelected = useMemo<boolean>(() => {
-    return selectedNodes.includes(data.id);
-  }, [data.id, selectedNodes]);
 
   const onHoveredChange = useCallback(
     (isHovered: boolean) => {
@@ -40,9 +35,9 @@ export const CustomNode: FC<CustomNodeProps> = memo(({ data }) => {
   return (
     <NodeWrapper
       setIsDoubleClicked={setIsDoubleClicked}
-      id={data.id}
+      data={data}
       onHoveredChange={onHoveredChange}
-      isSelected={isSelected}
+      isSelected={selected}
     >
       <CustomHandle isVisible={isHovered} type="target" position={Position.Top} id="top-target" />
 

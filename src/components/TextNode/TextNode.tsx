@@ -30,6 +30,7 @@ const TextNode: FC<TextNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
 
   return (
     <textarea
+      autoFocus={isDoubleClicked}
       style={{ width: `${textWidth}px` }}
       rows={text.split('\n').length}
       className={classNames(styles.customNode, {}, [style.textNode])}
