@@ -35,7 +35,7 @@ export type TextNodeData = {
   nodeType: 'stringNode';
 } & customData;
 
-export type Language = 'javascript' | 'java' | 'python';
+export type Language = 'Javascript' | 'Java' | 'Python';
 export type CodeNodeData = {
   nodeType: 'codeNode';
   language?: Language;

@@ -3,10 +3,12 @@ import { StateType } from "@/shared/ContextMenu/model/contexMenuTypes";
 import { Node } from 'reactflow';
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import styles from '../../shared/ContextMenu/ui/ContextMenu.module.scss';
+import style from './NodeContextMenu.module.scss';
 import { MdCode } from "react-icons/md";
 import { docActions } from "@/redux/doc/slice/docSlice";
 import { Language } from "@/redux/doc/interfaces/docStateInterfaces";
 import { languages } from "@/redux/doc/constants/constants";
+import { classNames } from "@/utils";
 
 interface Props {
     state: StateType;
@@ -37,10 +39,12 @@ export const NodeContextMenu = ({
                     }}
                 >
                     <DropdownMenu.Sub>
-                        <DropdownMenu.SubTrigger className={styles.contextItem}>
-                            <MdCode size={15} style={{ marginRight: 8 }} />
-                            Language
-                            <label>{node.data.language}</label>
+                        <DropdownMenu.SubTrigger className={classNames(styles.contextItem, {}, [style.languageItem])}>
+                            <div className={style.languageStack}>
+                                <MdCode size={15} style={{ marginRight: 8 }} />
+                                Language
+                            </div>
+                            <label className={style.languageLabel}>{node.data.language}</label>
                         </DropdownMenu.SubTrigger>
 
                         <DropdownMenu.Portal>
@@ -54,7 +58,7 @@ export const NodeContextMenu = ({
                                         className={styles.contextItem}
                                         onClick={() => onChangeCodeNode(lang as Language)}
                                     >
-                                        {lang}
+                                        <span className={styles.contextItem}>{lang}</span>
                                     </DropdownMenu.Item>
                                 ))}
                             </DropdownMenu.SubContent>

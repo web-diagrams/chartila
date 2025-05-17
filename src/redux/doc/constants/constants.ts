@@ -9,7 +9,7 @@ export enum NodeData {
 }
 
 export const languages: Record<Language, Function | undefined> = {
-  'javascript': javascript,
-  'java': java,
-  'python': python,
+  'Javascript': javascript,
+  'Java': java,
+  'Python': python,
 }
