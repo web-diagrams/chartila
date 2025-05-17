@@ -29,6 +29,8 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
     }
   };
 
+  console.log(id);
+
   return (
     <div
       onClick={handleClick}

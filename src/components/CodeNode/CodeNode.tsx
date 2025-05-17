@@ -6,9 +6,8 @@ import { useText } from '@/hooks/useText';
 import CodeMirror, { EditorView, Extension, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import styles from './CodeNode.module.scss';
 import { classNames } from '@/utils';
-import { javascript } from '@codemirror/lang-javascript';
-import { java } from '@codemirror/lang-java';
-import { python } from '@codemirror/lang-python';
+import { languages } from '@/redux/doc/constants/constants';
+
 
 type CodeNodeProps = {
   data: CodeNodeData;
@@ -44,22 +43,12 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
 
   const extensions = useMemo(() => {
     const ext: Extension[] = [
-        EditorView.lineWrapping,
+      EditorView.lineWrapping,
     ]
     if (data.language) {
-      switch (data.language) {
-        case 'javascript': {
-          ext.push(javascript());
-          break;
-        }
-        case 'java': {
-          ext.push(java());
-          break;
-        }
-        case 'python': {
-          ext.push(python());
-          break;
-        }
+      const method = languages[data.language];
+      if (method) {
+        ext.push(method());
       }
     }
     return ext;

@@ -6,11 +6,12 @@ import styles from '../../shared/ContextMenu/ui/ContextMenu.module.scss';
 import { MdCode } from "react-icons/md";
 import { docActions } from "@/redux/doc/slice/docSlice";
 import { Language } from "@/redux/doc/interfaces/docStateInterfaces";
+import { languages } from "@/redux/doc/constants/constants";
 
 interface Props {
-  state: StateType;
-  node: Node | null;
-  onClose: () => void;
+    state: StateType;
+    node: Node | null;
+    onClose: () => void;
 };
 
 export const NodeContextMenu = ({
@@ -31,8 +32,8 @@ export const NodeContextMenu = ({
                 <DropdownMenu.Content
                     className={styles.container}
                     style={{
-                    top: state.style.top,
-                    left: state.style.left,
+                        top: state.style.top,
+                        left: state.style.left,
                     }}
                 >
                     <DropdownMenu.Sub>
@@ -47,9 +48,15 @@ export const NodeContextMenu = ({
                                 className={styles.container}
                                 sideOffset={10}
                             >
-                                <DropdownMenu.Item className={styles.contextItem} onClick={() => onChangeCodeNode('javascript')}>JavaScript</DropdownMenu.Item>
-                                <DropdownMenu.Item className={styles.contextItem} onClick={() => onChangeCodeNode('java')}>Java</DropdownMenu.Item>
-                                <DropdownMenu.Item className={styles.contextItem} onClick={() => onChangeCodeNode('python')}>Python</DropdownMenu.Item>
+                                {Object.keys(languages).map((lang) => (
+                                    <DropdownMenu.Item
+                                        key={lang}
+                                        className={styles.contextItem}
+                                        onClick={() => onChangeCodeNode(lang as Language)}
+                                    >
+                                        {lang}
+                                    </DropdownMenu.Item>
+                                ))}
                             </DropdownMenu.SubContent>
                         </DropdownMenu.Portal>
                     </DropdownMenu.Sub>
