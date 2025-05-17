@@ -74,7 +74,6 @@ export const Diagram = ({
         nodes={currentPage.nodes}
         edges={currentPage.edges}
         onNodesChange={flowCallbacks.onNodeChange}
-        onNodesDelete={(e) => console.log(e)}
         onNodeDragStop={flowCallbacks.onNodeDragStop}
         onSelectionDragStop={flowCallbacks.onSelectionDragStop}
         onEdgesChange={flowCallbacks.onEdgesChange}

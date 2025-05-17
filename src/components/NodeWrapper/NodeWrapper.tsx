@@ -17,15 +17,6 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
   const dispatch = useDispatch();
   const node = useCurrentNode(id);
 
-  const onKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.code === 'Delete') {
-        dispatch(docActions.onDeleteNode(id));
-      }
-    },
-    [dispatch, id],
-  );
-
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     switch (e.detail) {
@@ -43,7 +34,6 @@ const NodeWrapper: FC<NodeWrapperProps> = memo(({ children, id, onHoveredChange,
       onClick={handleClick}
       className={styles.node_wrapper}
       tabIndex={0}
-      onKeyDown={onKeyDown}
       onMouseEnter={() => onHoveredChange(true)}
       onMouseLeave={() => onHoveredChange(false)}
     >
