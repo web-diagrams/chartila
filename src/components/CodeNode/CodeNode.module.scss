@@ -7,6 +7,12 @@
   padding: 0 !important;
 }
 
+.readOnly :global(.cm-editor) {
+  caret-color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+
 .textCursor {
   cursor: text;
 }

@@ -48,11 +48,14 @@ const CodeNode: FC<CodeNodeProps> = memo(({ data, isDoubleClicked, setIsDoubleCl
     <CodeMirror
       className={classNames(
         styles.customNode,
-        {},
-        [style.codeMirror, style.textCursor]
+        {
+          [style.textCursor]: isDoubleClicked,
+          [style.readOnly]: !isDoubleClicked,
+        },
+        [style.codeMirror]
       )}
-      readOnly={!isDoubleClicked}
       autoFocus={isDoubleClicked}
+      readOnly={!isDoubleClicked}
       value={code}
       onBlur={onBlur}
       extensions={extensions}
