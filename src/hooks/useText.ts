@@ -11,8 +11,8 @@ const DEFAULT_NODE_GAP = 2;
 export const useText = (textValue: string) => {
   const [text, setText] = useState<string>(textValue);
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.currentTarget.value;
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement> | string) => {
+    const value = typeof e === 'string' ? e : e.currentTarget.value;
     if (isJsonString(value)) {
       setText('');
     } else {
