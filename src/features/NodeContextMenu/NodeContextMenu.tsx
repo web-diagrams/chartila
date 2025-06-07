@@ -38,7 +38,11 @@ export const NodeContextMenu = ({
                         left: state.style.left,
                     }}
                 >
-                    <DropdownMenu.Sub>
+                    <DropdownMenu.Item className={styles.contextItem}>
+                        Color
+                        <input value={node.data.color} type='color' />
+                    </DropdownMenu.Item>
+                    {node.data.nodeType === 'codeNode' && <DropdownMenu.Sub>
                         <DropdownMenu.SubTrigger className={classNames(styles.contextItem, {}, [style.languageItem])}>
                             <div className={style.languageStack}>
                                 <MdCode size={15} style={{ marginRight: 8 }} />
@@ -63,7 +67,7 @@ export const NodeContextMenu = ({
                                 ))}
                             </DropdownMenu.SubContent>
                         </DropdownMenu.Portal>
-                    </DropdownMenu.Sub>
+                    </DropdownMenu.Sub>}
                 </DropdownMenu.Content>
             </DropdownMenu.Root>
         )
