@@ -13,6 +13,11 @@ type CustomNodeProps = {
   selected: boolean;
 };
 
+/**
+ * Custom node component that renders either a text node or code node with connection handles
+ * @param data - Node data containing type and content information
+ * @param selected - Whether the node is currently selected
+ */
 export const CustomNode: FC<CustomNodeProps> = memo(({ data, selected }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);

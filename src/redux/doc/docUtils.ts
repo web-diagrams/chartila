@@ -1,8 +1,7 @@
 import { v1 } from 'uuid';
 import { NodeData } from './constants/constants';
-import { CommonNodeDataType, FlowState, DocState } from './interfaces/docStateInterfaces';
-import { XYPosition } from 'reactflow';
-import { Node } from 'reactflow';
+import { CommonNodeDataType, DocState, FlowState } from './interfaces/docStateInterfaces';
+import { Node, XYPosition } from 'reactflow';
 import { cloneDeep } from 'lodash';
 
 type CreateNode = {
@@ -12,6 +11,10 @@ type CreateNode = {
 
 const HISTORY_LIMIT = 10;
 
+/**
+ * Adds current state to history for undo/redo functionality
+ * @param state - Current document state to save to history
+ */
 export const stateToHistory = (state: DocState) => {
   state.currentState.isUpdated = true;
 
@@ -28,6 +31,12 @@ export const stateToHistory = (state: DocState) => {
   }
 };
 
+/**
+ * Creates a new node based on the specified type and position
+ * @param type - Type of node to create (STRING_NODE or CODE_NODE)
+ * @param position - X,Y coordinates for the new node
+ * @returns New node object with generated ID and default data
+ */
 export const getNewNode = ({ type, position }: CreateNode): Node<CommonNodeDataType> => {
   switch (type) {
     case NodeData.STRING_NODE: {
@@ -57,6 +66,11 @@ export const getNewNode = ({ type, position }: CreateNode): Node<CommonNodeDataT
   }
 };
 
+/**
+ * Gets the currently active page from the document state
+ * @param state - Document state containing pages and current page ID
+ * @returns Current page object or undefined if not found
+ */
 export const getCurrentPage = (state: DocState) => {
   const currentState = state.currentState;
   return currentState.pages.find((page) => page.id === currentState.currentPageId);

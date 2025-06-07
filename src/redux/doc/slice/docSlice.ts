@@ -1,9 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Connection, NodeChange, applyNodeChanges, addEdge, getConnectedEdges, Node, Edge, XYPosition } from 'reactflow';
-import { CommonNodeDataType, FlowState, DocState, CodeNodeData, Language } from '../interfaces/docStateInterfaces';
+import { createSlice } from '@reduxjs/toolkit';
+import {
+  addEdge,
+  applyNodeChanges,
+  Connection,
+  Edge,
+  getConnectedEdges,
+  Node,
+  NodeChange,
+  XYPosition
+} from 'reactflow';
+import { CodeNodeData, CommonNodeDataType, FlowState, Language } from '../interfaces/docStateInterfaces';
 import { uploadFile } from '../services/uploadFile';
-import { stateToHistory, getNewNode, getCurrentPage } from '../docUtils';
+import { getCurrentPage, getNewNode, stateToHistory } from '../docUtils';
 import { v1 } from 'uuid';
 import { NodeData } from '../constants/constants';
 import { cloneDeep } from 'lodash';

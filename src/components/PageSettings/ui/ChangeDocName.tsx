@@ -3,6 +3,9 @@ import { docActions } from '@/redux/doc/slice/docSlice';
 import { Input } from '@/shared/ui/Input/Input';
 import { useEffect, useState } from 'react';
 
+/**
+ * Component for changing the document name with real-time updates
+ */
 export const ChangeDocName = () => {
   const dispatch = useAppDispatch();
   const { docName } = useAppSelector(state => state.doc.currentState);

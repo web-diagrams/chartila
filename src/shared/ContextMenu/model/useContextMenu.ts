@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { StateType } from './contexMenuTypes';
-import { useReactFlow, type Node } from 'reactflow';
+import { type Node, useReactFlow } from 'reactflow';
 
 export const useContextMenu = () => {
   const [isDiagramContextOpened, setIsDiagramContextOpened] = useState(false);

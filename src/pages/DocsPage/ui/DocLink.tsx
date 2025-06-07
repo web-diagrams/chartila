@@ -2,7 +2,8 @@ import { getDocPagePath } from "@/shared/config/routePaths";
 import { DocInfoDto } from "@/shared/types/doc"
 import { useNavigate } from "react-router-dom";
 import styles from './Doc.module.scss';
-import { FaRegTrashAlt, FaRegFolderOpen } from "react-icons/fa";
+import { FaRegFolderOpen, FaRegTrashAlt } from "react-icons/fa";
+
 interface DocProps {
   doc: DocInfoDto;
   onDeleteDoc: (id: string) => void;
