@@ -2,6 +2,10 @@ import { useAppSelector } from '@/app/hooks';
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+/**
+ * Hook for saving document data to a local file
+ * @returns Object containing the save function
+ */
 export const useSaveToFile = () => {
   const { docId = '' } = useParams();
   const { pages, docName } = useAppSelector(state => state.doc.currentState);

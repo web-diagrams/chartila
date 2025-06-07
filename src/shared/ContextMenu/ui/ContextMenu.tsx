@@ -1,4 +1,4 @@
-import { StateType, ContextOption } from '../model/contexMenuTypes';
+import { ContextOption, StateType } from '../model/contexMenuTypes';
 import styles from './ContextMenu.module.scss';
 
 type NodeContextMenuProps = {

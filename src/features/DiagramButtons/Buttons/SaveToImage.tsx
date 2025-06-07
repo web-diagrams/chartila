@@ -1,8 +1,4 @@
-import {
-  useReactFlow,
-  getNodesBounds,
-  getViewportForBounds,
-} from 'reactflow';
+import { getNodesBounds, getViewportForBounds, useReactFlow, } from 'reactflow';
 import { FaRegFileImage } from "react-icons/fa";
 import { toPng } from 'html-to-image';
 import styles from '../DiagramButtons.module.scss';

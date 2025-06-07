@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Node, Edge } from "reactflow";
+import { Edge, Node } from "reactflow";
 
 import { useGetDocState } from "@/redux/doc/hooks/useGetDocState";
 import { useCurrentPage } from "@/hooks/useCurrentPage";

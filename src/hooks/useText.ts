@@ -5,8 +5,9 @@ const DEFAULT_NODE_WIDTH = 10;
 const DEFAULT_NODE_GAP = 2;
 
 /**
- * Хук, отвечающий за работу с текстом
- * @param textValue первоначальное значение
+ * Hook for managing text input with automatic width calculation
+ * @param textValue - Initial text value
+ * @returns Object containing text state, change handler, and calculated width
  */
 export const useText = (textValue: string) => {
   const [text, setText] = useState<string>(textValue);

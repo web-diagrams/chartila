@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, memo } from 'react';
+import React, { Dispatch, FC, memo, SetStateAction } from 'react';
 import styles from './styles.module.scss';
 import { useDispatch } from 'react-redux';
 import { docActions } from '@/redux/doc/slice/docSlice';

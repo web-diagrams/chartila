@@ -1,4 +1,5 @@
 import { RoutePath } from "./routeConfig";
+
 const BASE_URL = '/chartila/';
 
 export const getStartPath = () => BASE_URL + RoutePath.start;

@@ -1,9 +1,8 @@
-import { useDocsQuery } from "@/app/api/docsApi";
+import { useDeleteDocMutation, useDocsQuery } from "@/app/api/docsApi";
 import { DocLink } from "./DocLink";
 import styles from './Doc.module.scss';
 import { useStartNewDoc } from "@/hooks/useStartNewDoc";
 import { useCallback } from "react";
-import { useDeleteDocMutation } from "@/app/api/docsApi";
 import { useNavigate } from "react-router-dom";
 import { getStartPath } from "@/shared/config/routePaths";
 

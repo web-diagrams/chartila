@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, memo } from 'react';
+import React, { Dispatch, FC, memo, SetStateAction } from 'react';
 import { classNames } from '@/utils';
 import { TextNodeData } from '@/redux/doc/interfaces/docStateInterfaces';
 import styles from '../CustomNode/CustomeNode.module.scss';

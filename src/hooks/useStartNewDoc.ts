@@ -8,6 +8,10 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { v1 } from "uuid";
 
+/**
+ * Hook for creating and starting a new document (local or server-based)
+ * @returns Object containing the function to start a new project
+ */
 export const useStartNewDoc = () => {
   const { isServerEnabled } = useServer();
   const dispatch = useAppDispatch();
