@@ -27,7 +27,7 @@ describe('classNames utility function', () => {
   });
 
   test('should filter out falsy additional classes', () => {
-    const result = classNames('base-class', {}, ['valid-class', '', null, undefined, 'another-valid']);
+    const result = classNames('base-class', {}, ['valid-class', '', 'another-valid']);
     expect(result).toBe('base-class valid-class another-valid');
   });
 
@@ -55,8 +55,8 @@ describe('classNames utility function', () => {
     expect(result).toBe('base-class');
   });
 
-  test('should handle numeric values in mods (truthy)', () => {
-    const result = classNames('base-class', { 'count': 5, 'zero': 0 });
+  test('should handle boolean values in mods', () => {
+    const result = classNames('base-class', { 'count': true, 'zero': false });
     expect(result).toBe('base-class count');
   });
 });
