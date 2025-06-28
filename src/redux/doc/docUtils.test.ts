@@ -1,4 +1,4 @@
-import { stateToHistory, getNewNode, getCurrentPage } from './docUtils';
+import { getCurrentPage, getNewNode, stateToHistory } from './docUtils';
 import { DocState, FlowState } from './interfaces/docStateInterfaces';
 import { NodeData } from './constants/constants';
 import { v1 } from 'uuid';
@@ -105,7 +105,7 @@ describe('docUtils functions', () => {
       expect(node.data.nodeType).toBe('codeNode');
       expect(node.data.text).toBe('');
       expect(node.data.color).toBe('white');
-      expect(node.data.language).toBe('Javascript');
+      expect(node.data).toHaveProperty('language', 'Javascript');
     });
 
     test('should generate unique IDs for multiple nodes', () => {
